@@ -1,0 +1,31 @@
+{
+  "prosper": {
+    "client_id": "client_id",
+    "client_secret": "client_secret",
+    "ps": "password",
+    "username": "username",
+    "prosper_order_url": "https://api.prosper.com/v1/orders/",
+    "prosper_base_url": "https://api.prosper.com/v1"
+  },
+  "postgres": {
+    "host": "localhost",
+    "user": "user",
+    "password": "1234",
+    "database": "livelongandprospermetrics"
+  },
+  "email": {
+    "send_from_email": "email",
+    "send_to_email": "send_email",
+    "send_from_email_pass": "password"
+  },
+  "directory": {
+    "local": "/Users/Username/Documents/Whatever/liveLongAndProsperFolder/liveLongAndProsperBot",
+    "prod": "/home/username/liveLongAndProsperBot"
+  },
+    "bid_size": {
+    "bid": 25,
+    "implement_increasing_recurring_bid": false,
+    "starting_bid_date": "2020-08-24",
+    "weekly_increase_amt": 1
+  }
+}

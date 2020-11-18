@@ -1,2 +1,3 @@
-./filters/filters.py
-./config/default_config.json
+filters/filters.py
+config/default_config.json
+*.pyc

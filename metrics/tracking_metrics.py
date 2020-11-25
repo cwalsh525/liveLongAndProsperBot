@@ -163,7 +163,7 @@ class TrackingMetrics(Connect):
     #TODO add error handling!
     #TODO clean this stuff up
     def execute(self):
-        self.update_deposits_and_withdrawls_table() # updates deposits_and_withdrawls_table table KNOWN BUG, can only handle 1 daily withdrawl and 1 daily deposit
+        self.update_deposits_and_withdrawls_table() # updates deposits_and_withdrawls_table table KNOWN BUG, can only handle 1 daily withdrawl and 1 daily deposit KNOWN BUG if you transfer and its not instant, and then do another transfer and it is instant... it messes things up.
         annual_returns = AnnualizedReturns(header=self.header)
         annual_returns.update_annualized_returns_table() # calculates and updates the annualized_returns_table for today
 

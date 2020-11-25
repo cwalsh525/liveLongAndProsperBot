@@ -8,6 +8,7 @@ from token_gen.token_generation import TokenGeneration
 import log.logging as log
 import config.default as default
 import utils.utils as utils
+from metrics.connect import Connect
 
 from orders.orders import Orders
 
@@ -76,10 +77,11 @@ access_token = TokenGeneration(
     username=config['prosper']['username']
 ).execute()
 
-# header = utils.http_header_build(access_token)
+header = utils.http_header_build(access_token)
+# # #
 # #
-# #
-# a = Accounts(header)
+a = Accounts(header)
+print(a.get_account_response())
 # # for i in range(10):
 #     # a = Accounts(header).get_account_response()
 # print(a.get_account_response())
@@ -98,3 +100,8 @@ access_token = TokenGeneration(
 
 # o = Orders(access_token=access_token, amt=25, available_cash=75, filters_used_dict={}, listings_list=["123", "231", "444"])
 # o.handle_cash_balance()
+
+
+# already_invested_listings = Connect().get_bid_listings()  # Takes a fraction of a second, should be ok. Repetitive as submitted_order_listings will handle it, but perfer cutting the listing logic off if not needed
+
+

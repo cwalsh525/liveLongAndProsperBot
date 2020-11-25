@@ -7,7 +7,7 @@ import log.logging as log
 metrics = TrackingMetrics().execute()
 
 
-# TrackingMetrics().pull_note_response("1429437-68")
+# TrackingMetrics().pull_note_response("1378768-23")
 #TODO add note_default_reason and note_default_reason_description as null
 
 # TrackingMetrics().update_deposits_and_withdrawls_table()

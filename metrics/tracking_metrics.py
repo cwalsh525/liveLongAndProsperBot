@@ -131,6 +131,8 @@ class TrackingMetrics(Connect):
     #     return note_ids
 
     #TODO make its own class?
+    # This will bug if you deposit, and then after that, but before deposit has cleared (it takes a week) do an instant transfer deposit.
+    # This is because 'last_deposit_date' is not the date it clears but the date you initiate the transfer
     def update_deposits_and_withdrawls_table(self):
         account = Accounts(self.header)
         account_response = account.get_account_response()
@@ -163,7 +165,7 @@ class TrackingMetrics(Connect):
     #TODO add error handling!
     #TODO clean this stuff up
     def execute(self):
-        self.update_deposits_and_withdrawls_table() # updates deposits_and_withdrawls_table table KNOWN BUG, can only handle 1 daily withdrawl and 1 daily deposit
+        self.update_deposits_and_withdrawls_table() # updates deposits_and_withdrawls_table table KNOWN BUG, can only handle 1 daily withdrawl and 1 daily deposit KNOWN BUG if you transfer and its not instant, and then do another transfer and it is instant... it messes things up.
         annual_returns = AnnualizedReturns(header=self.header)
         annual_returns.update_annualized_returns_table() # calculates and updates the annualized_returns_table for today
 
@@ -205,5 +207,11 @@ class TrackingMetrics(Connect):
             date=date)
         results = self.execute_select(select_query)
         return results  # Only one record returned
+
+    def pull_bid_requests_listing_ids(self, date):
+        select_query = "select listing_id from bid_requests where created_timestamp::date = '{date}';".format(
+            date=date)
+        results = self.execute_select(select_query)
+        return results
 
 

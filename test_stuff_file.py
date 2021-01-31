@@ -1,6 +1,6 @@
 from notes.update_notes import UpdateNotes
 import config.default as default
-from datetime import datetime
+from datetime import datetime, timedelta
 from notes.update_missing_notes import UpdateMissingNotes
 from notes.notes import Notes
 from accounts.accounts import Accounts
@@ -8,6 +8,8 @@ from token_gen.token_generation import TokenGeneration
 import log.logging as log
 import config.default as default
 import utils.utils as utils
+from metrics.connect import Connect
+from listings.listing import Listing
 
 from orders.orders import Orders
 
@@ -16,6 +18,8 @@ from metrics.tracking_metrics import TrackingMetrics
 from metrics.reporting_metrics.notes_metrics import NotesMetrics
 from metrics.reporting_metrics.daily_metric_scripts.create_daily_metrics_table import CreateDailyMetricsTable
 import logging
+
+from run_v1.search_and_destroy import SearchAndDestroy
 
 # update_notes = UpdateNotes()
 # update_notes.build_notes_to_update_query()
@@ -75,17 +79,25 @@ access_token = TokenGeneration(
     ps=config['prosper']['ps'],
     username=config['prosper']['username']
 ).execute()
+#
+header = utils.http_header_build(access_token)
 
-# header = utils.http_header_build(access_token)
+
+
+
+# # #
 # #
-# #
-# a = Accounts(header)
+a = Accounts(header)
+print(a.get_account_response())
 # # for i in range(10):
 #     # a = Accounts(header).get_account_response()
 # print(a.get_account_response())
 # print(a)
 #
 # tm = TrackingMetrics()
+#
+# order = tm.get_order_response_by_order_id("51c907be-8534-4d69-abe7-db664ef438dc")
+# print(order.json())
 # tm.update_deposits_and_withdrawls_table()
 
 # ar = AnnualizedReturns(header)
@@ -98,3 +110,54 @@ access_token = TokenGeneration(
 
 # o = Orders(access_token=access_token, amt=25, available_cash=75, filters_used_dict={}, listings_list=["123", "231", "444"])
 # o.handle_cash_balance()
+
+
+# already_invested_listings = Connect().get_bid_listings()  # Takes a fraction of a second, should be ok. Repetitive as submitted_order_listings will handle it, but perfer cutting the listing logic off if not needed
+
+
+
+
+# search_destory = SearchAndDestroy(order_header="",
+#                  listing_header=header,
+#                  time_to_run_for=4 * 60,
+#                  filters_dict={},
+#                  bid_amt=115,
+#                  available_cash=33,
+#                  min_run_time=0.85 # Number of filters (16) / 20 Max 20 post / get to Prosper API per second. # May want to let throttling do its thing
+#                  ).handle_cash_balance(33, ['foo'])
+
+
+# listings = TrackingMetrics().pull_bid_requests_listing_ids("2020-07-13")
+# listings_list = []
+# for l in listings:
+#     listings_list.append(l[0])
+# print(listings_list)
+# listing = Listing(header)
+# listing.pull_specific_listings([11737043, 11944519])
+# listing.pull_specific_listings([11737043])
+
+# [10770601, 10640798, 10799967, 10850400, 10565312, 10835395]
+
+
+# TrackingMetrics().pull_note_response("1386700-65")
+
+# current_date = datetime.today()
+# last_month_date = (current_date - timedelta(days=(current_date.day)))
+#
+# notes_today = NotesMetrics(current_date)
+# projected_default_dict_this_month, _, _, _, _ = notes_today.default_rate_tracking()
+#
+# notes_last_month = NotesMetrics(last_month_date)
+# projected_default_dict_last_month, _, _, _, _ = notes_last_month.default_rate_tracking()
+#
+# default_count_this_month = 0
+# default_count_last_month = 0
+#
+# for k in projected_default_dict_this_month:
+#     default_count_this_month += projected_default_dict_this_month[k]
+# print(default_count_this_month)
+#
+# for k in projected_default_dict_last_month:
+#     default_count_last_month += projected_default_dict_last_month[k]
+# print(default_count_last_month)
+

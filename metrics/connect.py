@@ -32,7 +32,7 @@ class Connect:
         # This takes 0.0009644031524658203 seconds
         #TODO have bid requests table be sorted
         listings = []
-        result = self.execute_select("select listing_id from bid_requests where created_timestamp > current_date - 14;")
+        result = self.execute_select("select listing_id from bid_requests where created_timestamp > current_date - 7;")
         for l in result:
             listings.append(l[0])
         return listings

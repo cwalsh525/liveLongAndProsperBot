@@ -16,4 +16,3 @@ def get_bid_amount(starting_bid_amt, starting_bid_date, implement_increasing_rec
         get_weeks_since_start = math.floor((((datetime.today() - datetime.strptime(starting_bid_date, '%Y-%m-%d')).days) / 7) * increase_amt)
         amt_to_bid = starting_bid_amt + get_weeks_since_start
     return amt_to_bid
-

@@ -49,6 +49,13 @@ runs = 0
 # One possible issue with that is if listing throttle also pertains to orders (if im throttled i wont be able to submit an order) and will add to overall throttling issues
 # After first minute decreases speed of run or something
 # if listings_posted: # new listings, run the program a bunch (run more than once to account for late prosper batches)
+# Results:
+# 2020-11-3 to 2020-11-22, so this is only 12%, and to be fair, 3 out of those 4 i think i can fixed with just looping...
+#------------+-------
+# EXPIRED    |     4
+# INVESTED   |    23
+# PENDING    |     6
+
 
 time.sleep(10) # Sleep 20 seconds as prosper doesn't release listings until after 20 seconds
 while time.time() < time_to_continuously_run_submit_orders:

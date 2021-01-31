@@ -6,11 +6,15 @@ The program must have filter/s in place and based off of those filters will inve
 I use crontab scheduler to run the program (run.py) at noon and 6 pm EST weekdays. This is when prosper posts new loans
 
     run.py: 
+        This is deprecated in lieu of runV1
         This runs the program, in this script it checks to see if new loans have been posted by prosper, if yes the program is ran
         Since the program checks to see if you already invested in a loan, this can be running continuously without fear of double dipping in a specific note
         Prosper posts loans at noon and 6 pm est, typically 20 - 180 seconds after the hour, as soon as new loans are found, the program runs the Listing class to find listings that meet the filters
         I run run.py multiple times as sometimes Prosper posts loans in batches
         Sometimes prosper posts loans late (i run again on the 30 min after they are supposed to post, just to be safe)
+        
+    runV1.py: 
+        Utilizes search_and_destory.py which runs the listing and order together as one thread to speed up order submission in an attempt to lower the amount of notes that return "EXPIRED" right away
     
     run_tracking_metrics.py
         This handles inserts and updates to the postgres backend that track the metrics
@@ -44,7 +48,7 @@ I use crontab scheduler to run the program (run.py) at noon and 6 pm EST weekday
 ##### Priority
 * Add Testing Suite. Will probably have to break down functions slightly to do so. include code cleanup
 * Will need to create logic to not invest more than 10% of total note amount when bid amount reaches $200 (as $2000 is min loan amount for a borrower)
-* Rewrite to create a listing / order as one entity, multithreaded to run even faster. (Prosper will release notes in batches and if you find 2 listings in a row, my program is still submitting the first listing, need to multithread orders asm well)
+* Add tables instead of strings to metric email, and add late notes by day late count cats
 ##### Lesser Prioirty
 * Balance note ownership and purchasing by prosper_rating (currently program invests if the criteria is met, add functionality to balance the weight by prosper rating if desired)
 * Create a calculator that determines how much notes to buy to hold a certain portfolio value

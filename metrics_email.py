@@ -9,6 +9,7 @@ from datetime import datetime
 from metrics.reporting_metrics.build_message import BuildMessage
 from token_gen.token_generation import TokenGeneration
 from accounts.accounts import Accounts
+from listings.listing import Listing
 from metrics.reporting_metrics.daily_metric_scripts.create_daily_metrics_table import CreateDailyMetricsTable
 
 import config.default as default
@@ -57,9 +58,11 @@ def create_email_message(from_address, to_address, subject, body, file_location_
     fp2.close()
     img2.add_header('Content-ID', '<{}>'.format(file_location_annualized_returns))
     msg.attach(img2)
+    # add avg daily outstanding yield chart
     return msg
 
 accounts = Accounts(header)
+listing = Listing(header=header)
 
 # path_to_save = default.base_path + '/log/daily_metrics.png'
 path_to_save_defaults = default.base_path + '/log/daily_defaults.png'
@@ -73,7 +76,7 @@ msg = create_email_message(
     from_address=default.config['email']['send_from_email'],
     to_address=default.config['email']['send_to_email'],
     subject='Prosper default tracking for {date}'.format(date=today),
-    body=BuildMessage(accounts).build_complete_message(),
+    body=BuildMessage(accounts, listing).build_complete_message(),
     file_location_defaults=path_to_save_defaults,
     file_location_annualized_returns=path_to_save_annualized_returns
 )

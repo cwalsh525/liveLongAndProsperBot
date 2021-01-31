@@ -36,7 +36,10 @@ class UpdateNotes:
                 # Create a locked column so the record for sure never gets updated again once the note is completed or charged off?
                 if (n['note_status_description'] == "COMPLETED" and k == "age_in_months")\
                         or (n['note_status_description'] == "CHARGEOFF" and k == "age_in_months")\
-                        or (n['note_status_description'] == "CHARGEOFF" and k == "days_past_due"):
+                        or (n['note_status_description'] == "CHARGEOFF" and k == "days_past_due") \
+                        or (n['note_status_description'] == "DEFAULTED" and k == "age_in_months") \
+                        or (n['note_status_description'] == "DEFAULTED" and k == "days_past_due") \
+                        :
                     return False
                 # Ignore COMPLETED loans if its just updating the age_in_months
                 else:

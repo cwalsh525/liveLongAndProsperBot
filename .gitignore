@@ -1,3 +1,7 @@
 filters/filters.py
 config/default_config.json
 *.pyc
+.idea/*
+*.xml
+log/*.log
+log/*.png

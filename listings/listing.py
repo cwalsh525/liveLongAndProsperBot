@@ -144,6 +144,24 @@ class Listing:
             self.logger.info("Warning, no new listings found! :(")
         return listings_posted
 
+    def pull_specific_listings(self, listing_ids):
+        # GET / listingsvc / v2 / listings /?listing_number = 2641407, 567332
+        listing_ids_as_string = ""
+        for l in listing_ids:
+            listing_ids_as_string += "{listing_id},".format(listing_id=l)
+        listing_ids_as_string_formatted = listing_ids_as_string[0:-1]
+        print(listing_ids_as_string_formatted)
+
+        r = requests.get("https://api.prosper.com/listingsvc/v2/listings/?listing_number={listing_ids}&biddable=false".format(listing_ids=listing_ids_as_string_formatted), headers=self.header,
+                         timeout=30.0)  # Check if this is what takes bulk of time when listings found OR if its my logic
+        #TODO Doesn't seem to retrieve pending listings...
+        print(r.status_code)
+        query_listing = r.json()
+        # print("https://api.prosper.com/listingsvc/v2/listings/?listing_number={listing_ids}&biddable=false".format(listing_ids=listing_ids_as_string_formatted))
+        print(query_listing)
+
+
+
     def testing(self):
         r = requests.get(filters.query_builder(filters.example_query), headers=self.header, timeout=30.0)
         listings = r.json()

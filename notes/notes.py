@@ -20,17 +20,38 @@ class Notes: #TODO make base class for all note stuff
         ).execute()
         self.header = utils.http_header_build(access_token)
 
+    # @staticmethod
+    # def identify_default_or_not(json, include_late_to_default):
+    #     if json['note_status_description'] == 'CURRENT' and json['days_past_due'] > 15:  # Accounting only more than 15 days late as defulted
+    #         if include_late_to_default:
+    #             # gain = json['payment_received'] - json['principal_balance_pro_rata_share']
+    #             gain = json['payment_received'] - json['note_ownership_amount']
+    #         else:
+    #             gain = json['principal_balance_pro_rata_share']
+    #     elif json['note_status_description'] != 'CURRENT' and json['note_status_description'] != 'COMPLETED': # assume completed has been reinvested
+    #         # gain = json['payment_received'] - json['principal_balance_pro_rata_share']
+    #         gain = json['payment_received'] - json['note_ownership_amount']
+    #     else:
+    #         gain = json['principal_balance_pro_rata_share']
+    #     return gain
+
     @staticmethod
     def identify_default_or_not(json, include_late_to_default):
-        if json['note_status_description'] == 'CURRENT' and json['days_past_due'] > 14:  # Accounting only more than 15 days late as defulted
+        gain = 0 # if note_status_description is not current, then it is accounted for in cash /  not receiving etc.
+        if json['note_status_description'] == 'CURRENT':
             if include_late_to_default:
-                gain = json['payment_received'] - json['principal_balance_pro_rata_share']
+                if json['days_past_due'] <= 15:  # Accounting only more than 15 days late as defulted
+                    gain = json['principal_balance_pro_rata_share']
+                    # gain = json['payment_received'] - json['principal_balance_pro_rata_share']
+                    # gain = json['payment_received'] - json['note_ownership_amount']
             else:
                 gain = json['principal_balance_pro_rata_share']
-        elif json['note_status_description'] != 'CURRENT' and json['note_status_description'] != 'COMPLETED': # assume completed has been reinvested
-            gain = json['payment_received'] - json['principal_balance_pro_rata_share']
-        else:
-            gain = json['principal_balance_pro_rata_share']
+
+        # elif json['note_status_description'] != 'CURRENT' and json['note_status_description'] != 'COMPLETED': # assume completed has been reinvested
+        #     # gain = json['payment_received'] - json['principal_balance_pro_rata_share']
+        #     gain = json['payment_received'] - json['note_ownership_amount']
+        # else:
+        #     gain = json['principal_balance_pro_rata_share']
         return gain
 
     def get_account_value(self):

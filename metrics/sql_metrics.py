@@ -12,7 +12,7 @@ class SQLMetrics:
         self.config = default.config['postgres']
         self.connection = psycopg2.connect(**self.config)
 
-    def listing_filters_used(self, listing_id, filter):
+    def listing_filters_used(self, listing_id, filter, prosper_rating):
         cursor = self.connection.cursor()
         """
         :param listing_id:
@@ -20,17 +20,17 @@ class SQLMetrics:
         :return:
         """
         insert_query = """
-        insert into listings_filters_used values ({listing_id}, '{filter}');
-        """.format(listing_id=listing_id, filter=filter)
+        insert into listings_filters_used values ({listing_id}, '{filter}', '{prosper_rating}');
+        """.format(listing_id=listing_id, filter=filter, prosper_rating=prosper_rating)
 
         cursor.execute(insert_query)
         self.connection.commit()
         cursor.close()
 
     def run_listing_filters_used(self, listing_filters_dict):
-        for key in listing_filters_dict:
-            for l in listing_filters_dict[key]:
-                self.listing_filters_used(key, l)
+        for listing in listing_filters_dict:
+            for x in range(len(listing_filters_dict[listing][0])):
+                self.listing_filters_used(listing, listing_filters_dict[listing][0][x], listing_filters_dict[listing][1][x])
 
     def insert_bid_request(self, order_id, listing_id, amt, status):
         insert_query = """

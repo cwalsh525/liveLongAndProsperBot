@@ -25,12 +25,26 @@ class NotesMetrics:
                                       "E": .2519,
                                       "HR": .2847
                                     }
+        # self.total_chance_of_default_v2 = { # ~ X Avg notes per day depr 20201207
+        #     "B": .1068, # Stronger than Prosper A's 56% of baseline
+        #       "C": .1325, # Close to Propser A's, Stronger than prosper B's 48% of baseline (lower % of baseline is best)
+        #       "D": .1834, # Equal to Prosper B's # 53% of baseline
+        #       "E": .2548, # Better than prosper C's 68% of baseline
+        #       "HR": .2875 # Better than Prosper D's, ~ prosper C 74% of baseline
+        #       } # added 2 more filters for more c, d , e
+        # self.total_chance_of_default_v2 = { # ~ X Avg notes per day # depr 20201210
+        #     "B": .1068, # Stronger than Prosper A's 56% of baseline
+        #       "C": .1351, # Close to Propser A's, Stronger than prosper B's 49% of baseline (lower % of baseline is best)
+        #       "D": .1857, # Equal to Prosper B's # 54% of baseline
+        #       "E": .2524, # Better than prosper C's 68% of baseline
+        #       "HR": .2875 # Better than Prosper D's, ~ prosper C 74% of baseline
+        #       }
         self.total_chance_of_default_v2 = { # ~ X Avg notes per day
-            "B": .1068, # Stronger than Prosper A's
-              "C": .1325, # Close to Propser A's, Stronger than prosper B's
-              "D": .1834, # Equal to Prosper B's
-              "E": .2548, # Better than prosper C's
-              "HR": .2875 # Better than Prosper D's
+            "B": .1063, # Stronger than Prosper A's 56% of baseline
+              "C": .1351, # Close to Propser A's, Stronger than prosper B's 49% of baseline (lower % of baseline is best)
+              "D": .1888, # Equal to Prosper B's # 55% of baseline
+              "E": .2541, # Better than prosper C's 68% of baseline
+              "HR": .2875 # Better than Prosper D's, ~ prosper C 74% of baseline
               }
         self.total_chance_of_default_prosper = {"AA": .0566,
                                       "A": .1184,
@@ -150,137 +164,6 @@ class NotesMetrics:
         # print("weighted_percent_gain: {weighted_percent_gain}".format(weighted_percent_gain=weighted_percent_gain))
 
         return annual_return
-
-    # Depreciated
-    """
-    Total gain realized. That is to say any completed note minus defaulted chargeoff late
-    This function will likely return a negative number for a new portfolio and isn't necessarily indicative of whats to come
-    This function is weighted for annual return
-    """
-    #T ODO Think about how lower age_in_months decreases negative returns and increases postive returns
-    # def realized_gains(self):
-    #     payments_received = 0
-    #     note_ownership_amt = 0
-    #     age_in_months = 0
-    #     note_count = 0
-    #     for note in self.notes_data:
-    #         if note['note_status_description'] != "CURRENT" or (note['note_status_description'] == "CURRENT" and note['days_past_due'] > 0):
-    #             payments_received += note['payment_received']
-    #             note_ownership_amt += note['note_ownership_amount']
-    #             age_in_months += note['age_in_months']
-    #             note_count += 1
-    #     # avg_age_in_months = age_in_months / note_count
-    #     # exponent_value = 12 / avg_age_in_months
-    #     # dollar_gain = payments_received - note_ownership_amt
-    #     # percent_gain = float(dollar_gain) / float(note_ownership_amt) + 1
-    #     # weighted_percent_gain = (percent_gain ** exponent_value - 1) * 100
-    #     # # annual_return = round(float((payments_received - note_ownership_amt) / note_ownership_amt) * (12 / (age_in_months / note_count)) * 100, 4)
-    #     # annual_return = round(weighted_percent_gain, 4)
-    #     annual_return = self.calculate_annual_return(sum_age_in_months=age_in_months,
-    #                                                  sum_note_ownership_amt=note_ownership_amt,
-    #                                                  sum_payments_received=payments_received,
-    #                                                  note_count=note_count)
-    #     return annual_return
-
-    # Depreciated
-    # """
-    # This function adds up total gains, minus loses
-    # """
-    # def unrealized_gains_with_oppertunity_cost(self):
-    #     payments_received = 0
-    #     note_ownership_amt = 0
-    #     age_in_months = 0
-    #     note_count = 0
-    #     for note in self.notes_data:
-    #         if note['note_status_description'] != "CURRENT" or (note['note_status_description'] == "CURRENT" and note['days_past_due'] > 0):
-    #             payments_received += note['payment_received']
-    #             note_ownership_amt += note['note_ownership_amount']
-    #             age_in_months += note['age_in_months']
-    #             note_count += 1
-    #         else:
-    #             # payments_received += note['payment_received'] - note['principal_paid_pro_rata_share'] + note['note_ownership_amount']
-    #             payments_received += note['payment_received'] + note['principal_balance_pro_rata_share']
-    #             note_ownership_amt += note['note_ownership_amount']
-    #             age_in_months += note['age_in_months']
-    #             note_count += 1
-    #     annual_return = self.calculate_annual_return(sum_age_in_months=age_in_months,
-    #                                                  sum_note_ownership_amt=note_ownership_amt,
-    #                                                  sum_payments_received=payments_received,
-    #                                                  note_count=note_count)
-    #     return annual_return
-
-    # Depreciated
-    # def unrealized_gains(self):
-    #     payments_received = 0
-    #     note_ownership_amt = 0
-    #     age_in_months = 0
-    #     note_count = 0
-    #     for note in self.notes_data:
-    #         if note['note_status_description'] != "CURRENT" or (note['note_status_description'] == "CURRENT" and note['days_past_due'] > 0):
-    #             payments_received += note['payment_received']
-    #             note_ownership_amt += note['note_ownership_amount']
-    #             age_in_months += note['age_in_months']
-    #             note_count += 1
-    #         else:
-    #             # payments_received += note['payment_received'] - note['principal_paid_pro_rata_share'] + note['note_ownership_amount']
-    #             payments_received += note['payment_received']
-    #             note_ownership_amt += note['principal_paid_pro_rata_share']
-    #             age_in_months += note['age_in_months']
-    #             note_count += 1
-    #     annual_return = self.calculate_annual_return(sum_age_in_months=age_in_months,
-    #                                                  sum_note_ownership_amt=note_ownership_amt,
-    #                                                  sum_payments_received=payments_received,
-    #                                                  note_count=note_count)
-    #     return annual_return
-
-    # Depreciated
-    # def forecasted_returns_builder(self, default_rates_dict):
-    #
-    #     payments_received = 0
-    #     note_ownership_amt = 0
-    #     age_in_months = 0
-    #     note_count = 0
-    #     for note in self.notes_data:
-    #         if note['note_status_description'] != "CURRENT" or (note['note_status_description'] == "CURRENT" and note['days_past_due'] > 0):
-    #             payments_received += note['payment_received']
-    #             note_ownership_amt += note['note_ownership_amount']
-    #             age_in_months += note['age_in_months']
-    #             note_count += 1
-    #         else:
-    #             payments_received += note['payment_received']
-    #             note_ownership_amt += note['note_ownership_amount']
-    #             # age_in_months += note['age_in_months']
-    #             age_in_months += 36 # forcasting paid back in 3 years
-    #             note_count += 1
-    #
-    #             # calculate expected return
-    #             prosper_rating = note['prosper_rating']
-    #             chance_of_default = float(default_rates_dict[prosper_rating])
-    #             expected_interest_paid = (((1 + note['lender_yield']) ** 3) * note['note_ownership_amount']) - note['note_ownership_amount']
-    #             interest_remaining_to_be_paid = expected_interest_paid - note['interest_paid_pro_rata_share']
-    #             returns_if_no_default = (interest_remaining_to_be_paid + note['principal_balance_pro_rata_share']) * decimal.Decimal((1 - chance_of_default))
-    #             chance_of_remaining_default = (chance_of_default / 36) * (36 - note['age_in_months'])
-    #             returns_if_default = float(note['note_ownership_amount']) * .40 * chance_of_remaining_default # hardcode 40%, tyipcally 40 - 50% based on prosper rating
-    #
-    #             payments_received += returns_if_no_default
-    #             payments_received += decimal.Decimal(returns_if_default)
-    #     annual_return = self.calculate_annual_return(sum_age_in_months=age_in_months,
-    #                                                  sum_note_ownership_amt=note_ownership_amt,
-    #                                                  sum_payments_received=payments_received,
-    #                                                  note_count=note_count)
-    #     return annual_return
-
-    # # Depreciated
-    # def forecasted_returns_forcasted(self):
-    #     return self.forecasted_returns_builder(self.total_chance_of_default_v2)
-    #
-    # # Depreciated
-    # def forecasted_returns(self):
-    #     _, _, _, actual_default_rates = self.default_rate_tracking()
-    #     return self.forecasted_returns_builder(actual_default_rates)
-
-
-
 
     """
     Chance of defualt is hardcoded.

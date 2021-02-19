@@ -39,8 +39,6 @@ class Orders:
         self.request = {
             "bid_requests": []
         }
-        # for l in self.listings_list:
-        #     self.request['bid_requests'].append({"listing_id": l, "bid_amount": self.amt})
 
         self.logger = log.create_logger(log_name="app_run", logger_name="Orders_logger")
 

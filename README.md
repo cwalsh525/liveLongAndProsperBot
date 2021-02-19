@@ -53,3 +53,4 @@ I use crontab scheduler to run the program (run.py) at noon and 6 pm EST weekday
 * Create a calculator that determines how much notes to buy to hold a certain portfolio value
 ##### Make program run faster
 * Done
+* Next thing to do is a re-write based on diff bid amt per rating. This was done sloppy. Also, add in while doing re-write the ability to bid more than $200. Check if bid amt is less than 10% of note, if so allow if not submit $200. This is only needed for bid amts greater than 200.

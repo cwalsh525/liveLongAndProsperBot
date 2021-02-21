@@ -17,7 +17,7 @@ class BuildMessage:
 
     def display_default_rate_tracking(self):
         table = Texttable()
-        table.add_row(["Rating", "Expected", "Baseline", "Actual", "Diff", "Diff Baseline", "Late"])
+        table.add_row(["Rating", "Expected", "BL", "Actual", "% +/-", "Diff", "Diff BL", "Late"])
         projected_default_dict, projected_default_dict_prosper, actual_default_dict, actual_default_rates_dict, actual_late_dict = self.notes.default_rate_tracking()
         total_expected_defaulted_v1 = 0
         total_expected_defaulted_prosper = 0
@@ -37,6 +37,7 @@ class BuildMessage:
                                round(projected_default_dict[k], 4),
                                round(projected_default_dict_prosper[k], 4),
                                actual_num,
+                               str(round(((projected_default_dict[k] - actual_num)/ projected_default_dict[k]) * 100, 2)) + "%",
                                # "actual is {actual_num} (Including {late_num} late)".format(actual_num=actual_num, late_num=actual_late_dict[k]),
                                round(projected_default_dict[k], 4) - actual_num,
                                round(projected_default_dict_prosper[k], 4) - actual_num,
@@ -49,6 +50,7 @@ class BuildMessage:
                                round(projected_default_dict[k], 4),
                                round(projected_default_dict_prosper[k], 4),
                                actual_num,
+                               str(round(((projected_default_dict[k] - actual_num)/ projected_default_dict[k]) * 100, 2)) + "%",
                                # "actual is {actual_num} (Including {late_num} late)".format(actual_num=actual_num, late_num=0),
                                round(projected_default_dict[k], 4) - actual_num,
                                round(projected_default_dict_prosper[k], 4) - actual_num,
@@ -62,6 +64,7 @@ class BuildMessage:
                        round(total_expected_defaulted_v1, 4),
                        round(total_expected_defaulted_prosper, 4),
                        total_actual_num,
+                       str(round(((total_expected_defaulted_v1 - total_actual_num) / total_expected_defaulted_v1) * 100, 2)) + "%",
                        round(total_expected_defaulted_v1, 4) - total_actual_num,
                        round(total_expected_defaulted_prosper, 4) - total_actual_num,
                        total_late

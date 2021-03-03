@@ -44,6 +44,7 @@ cash_balance = math.floor(account.get_account_response()['available_cash_balance
 # 1/12/21 - 1/26/21 had 4/61 expired due to demand 6.5%
 # On 1/27/21 turned off all 5 HR filters to see if reduced expired finds.
 # 1/27/21 - X had X / Y expired due to demand Z%. (Looking for sub 5% if not def turn back on HR, if so reevaluate
+# seemed to be working vwell. added diff prosper bif amt by rating on 2/2.
 #TODO Is 5 HR filters worth having considering virtually no HR loans out there?
 SearchAndDestroy(order_header=order_header,
                  listing_header=header,
@@ -52,6 +53,6 @@ SearchAndDestroy(order_header=order_header,
                  bid_amt=bid_amt,
                  available_cash=cash_balance,
                  # min_run_time=None # Number of filters (16) / 20 Max 20 post / get to Prosper API per second. # May want to let throttling do its thing
-                 min_run_time=0.68 # TODO automate
+                 min_run_time=(len(filters.v2_filters_dict) / 20) + .03
                  ).execute()
 # Added query_v2_1 back into filters on 12/7. See if it gets anything and is worth it.

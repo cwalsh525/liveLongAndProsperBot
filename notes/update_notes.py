@@ -98,3 +98,5 @@ class UpdateNotes:
 
     def execute(self):
         self.connect.execute_insert_or_update(self.build_transaction())
+        # TODO bug, age_in_months updates after a note is charged off when the debt is sold (make a final column?, use is sold) (check for sold off defaulted records and update the age_in_months to the min when defaulted or charged off)
+        # The effect of bug is all chargeoff loans are basically 1 month older than should be bc thats when they get sold off.

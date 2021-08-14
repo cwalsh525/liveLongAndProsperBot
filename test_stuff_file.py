@@ -87,10 +87,10 @@ header = utils.http_header_build(access_token)
 
 # # #
 # #
-a = Accounts(header)
-print(a.get_account_response())
-# # for i in range(10):
-#     # a = Accounts(header).get_account_response()
+# a = Accounts(header)
+# # print(a.get_account_response())
+# # # for i in range(10):
+# #     # a = Accounts(header).get_account_response()
 # print(a.get_account_response())
 # print(a)
 #
@@ -139,7 +139,7 @@ print(a.get_account_response())
 # [10770601, 10640798, 10799967, 10850400, 10565312, 10835395]
 
 
-# TrackingMetrics().pull_note_response("1386700-65")
+TrackingMetrics().pull_note_response("1432468-80")
 
 # current_date = datetime.today()
 # last_month_date = (current_date - timedelta(days=(current_date.day)))

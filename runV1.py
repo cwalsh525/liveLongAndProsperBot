@@ -43,7 +43,10 @@ cash_balance = math.floor(account.get_account_response()['available_cash_balance
 # Turned min_run_time back on for 1/12/21. 12/17/20 - 1/11/21 was 8 / 81 was expired due to demand 9.8%...
 # 1/12/21 - 1/26/21 had 4/61 expired due to demand 6.5%
 # On 1/27/21 turned off all 5 HR filters to see if reduced expired finds.
-# 1/27/21 - X had X / Y expired due to demand Z%. (Looking for sub 5% if not def turn back on HR, if so reevaluate
+# 1/27/21 - 3/30/21 so far is 7/230 or 3% expired due to demand.. so it does decrease expired number... But, if HR is more than 7 or 8 over that time, it's worth it?
+# seemed to be working vwell. added diff prosper bif amt by rating on 2/2.
+# 3/31/21 turning back on HR. If i get more than 7 or 8 HR's per 2 months it's worth having the filters on?? I think so
+# on 8/10/21, upgraded vm.
 #TODO Is 5 HR filters worth having considering virtually no HR loans out there?
 SearchAndDestroy(order_header=order_header,
                  listing_header=header,
@@ -52,6 +55,6 @@ SearchAndDestroy(order_header=order_header,
                  bid_amt=bid_amt,
                  available_cash=cash_balance,
                  # min_run_time=None # Number of filters (16) / 20 Max 20 post / get to Prosper API per second. # May want to let throttling do its thing
-                 min_run_time=0.68 # TODO automate
+                 min_run_time=(len(filters.v2_filters_dict) / 20) + .03
                  ).execute()
 # Added query_v2_1 back into filters on 12/7. See if it gets anything and is worth it.

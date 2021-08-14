@@ -48,15 +48,11 @@ I use crontab scheduler to run the program (run.py) at noon and 6 pm EST weekday
 ##### Priority
 * Add Testing Suite. Will probably have to break down functions slightly to do so. include code cleanup
 * Will need to create logic to not invest more than 10% of total note amount when bid amount reaches $200 (as $2000 is min loan amount for a borrower)
-* Add tables instead of strings to metric email, and add late notes by day late count cats
 ##### Lesser Prioirty
 * Balance note ownership and purchasing by prosper_rating (currently program invests if the criteria is met, add functionality to balance the weight by prosper rating if desired)
 * Create a calculator that determines how much notes to buy to hold a certain portfolio value
 ##### Make program run faster
-* Make program run super fast to try to reduce "EXPIRED" issue (is it worth it?)
-* 20% of listings i find i get "EXPIRED" when i try to submit because program is too slow
-* May be a fools errand, even after all enhancements, i may not lower that percentage much, or at all
-* Perhaps submit separate order requests as well? Would need to keep track of listing_ids ordered as to not double order.
-* pull already invested listings for listing class on class creation
-* Change to a faster program language than python3
-* Pull number of new listings, and run program everytime that increases vs just looping and running when they submit new listings
+* Done
+* Next thing to do is a re-write based on diff bid amt per rating. This was done sloppy. Also, add in while doing re-write the ability to bid more than $200. Check if bid amt is less than 10% of note, if so allow if not submit $200. This is only needed for bid amts greater than 200.
+* At same time also clean up psql stuff which results in un-needed number of records. This will grow too large at some point.
+* For bid amt, create a script that outputs to a csv that controls the price, so you can implement auto increase but not use it if you dont want...

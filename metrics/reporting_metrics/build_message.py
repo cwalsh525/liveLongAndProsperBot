@@ -17,7 +17,7 @@ class BuildMessage:
 
     def display_default_rate_tracking(self):
         table = Texttable()
-        table.add_row(["Rating", "Expected", "Baseline", "Actual", "Diff", "Diff Baseline", "Late"])
+        table.add_row(["Rating", "Expected", "BL", "Actual", "% +/-", "Diff", "Diff BL", "Late"])
         projected_default_dict, projected_default_dict_prosper, actual_default_dict, actual_default_rates_dict, actual_late_dict = self.notes.default_rate_tracking()
         total_expected_defaulted_v1 = 0
         total_expected_defaulted_prosper = 0
@@ -37,6 +37,7 @@ class BuildMessage:
                                round(projected_default_dict[k], 4),
                                round(projected_default_dict_prosper[k], 4),
                                actual_num,
+                               str(round(((projected_default_dict[k] - actual_num)/ projected_default_dict[k]) * 100, 2)) + "%",
                                # "actual is {actual_num} (Including {late_num} late)".format(actual_num=actual_num, late_num=actual_late_dict[k]),
                                round(projected_default_dict[k], 4) - actual_num,
                                round(projected_default_dict_prosper[k], 4) - actual_num,
@@ -49,6 +50,7 @@ class BuildMessage:
                                round(projected_default_dict[k], 4),
                                round(projected_default_dict_prosper[k], 4),
                                actual_num,
+                               str(round(((projected_default_dict[k] - actual_num)/ projected_default_dict[k]) * 100, 2)) + "%",
                                # "actual is {actual_num} (Including {late_num} late)".format(actual_num=actual_num, late_num=0),
                                round(projected_default_dict[k], 4) - actual_num,
                                round(projected_default_dict_prosper[k], 4) - actual_num,
@@ -62,6 +64,7 @@ class BuildMessage:
                        round(total_expected_defaulted_v1, 4),
                        round(total_expected_defaulted_prosper, 4),
                        total_actual_num,
+                       str(round(((total_expected_defaulted_v1 - total_actual_num) / total_expected_defaulted_v1) * 100, 2)) + "%",
                        round(total_expected_defaulted_v1, 4) - total_actual_num,
                        round(total_expected_defaulted_prosper, 4) - total_actual_num,
                        total_late
@@ -95,7 +98,7 @@ class BuildMessage:
         self.message += "\nTotal notes by status: {status_dict}".format(status_dict=self.notes.get_note_status_description())
 
     def display_average_notes_purchased_last_X_days(self, days_to_query):
-        query = "select count(*) from notes where ownership_start_date > current_date - {days_to_query} AND latest_record_flag='t'".format(days_to_query=days_to_query)
+        query = "select count(*) from notes where ownership_start_date between current_date - {days_to_query} AND current_date AND latest_record_flag='t'".format(days_to_query=days_to_query)
         number_of_new_loans = Connect().execute_select(query)[0][0]
         if number_of_new_loans != 0:
             avg_daily_notes_purchased = round(number_of_new_loans / days_to_query, 2)
@@ -113,7 +116,7 @@ class BuildMessage:
 
     def display_bids_placed_today_by_prosper_rating(self):
         query = """
-        select lfu.prosper_rating, count(*)
+        select lfu.prosper_rating, count(distinct br.listing_id) -- distinct to account for multiple filters finding same listing
         from bid_requests br
         join listings_filters_used lfu
         on br.listing_id = lfu.listing_id
@@ -151,6 +154,7 @@ class BuildMessage:
         note_ownership = 0
         note_count = 0
         for note in notes_data:
+
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] == 0:
                 total_principal += note['principal_balance_pro_rata_share']
                 note_ownership += note['note_ownership_amount']

@@ -45,6 +45,7 @@ class SearchAndDestroy:
         self.logger = logging.create_logger(logger_name="search_and_destroy", log_name="app_run")
         self.time_to_continuously_run_submit_orders = time.time() + time_to_run_for
         self.connect = Connect()
+        self.start_sleep_time = 1 / (len(filters_dict) + 1)
 
     def listing_logic(self, query, query_get):
         already_invested_listings = self.connect.get_bid_listings() # Takes a fraction of a second, should be ok. Repetitive as submitted_order_listings will handle it, but perfer cutting the listing logic off if not needed
@@ -79,12 +80,20 @@ class SearchAndDestroy:
         return listings_found, track_filters, throttled_count
 
     def order_logic(self, listing_list, bid_amt, filters_used):
+
         request = {
             "bid_requests": []
         }
-        for l in listing_list:
-            request['bid_requests'].append({"listing_id": l, "bid_amount": round(bid_amt, 2)})
-            # TODO What happens if i get throttled!? Is Prosper API post / get throttled different or the same?? Monitor and modify if need error handling like in listing logic
+        if bid_amt != self.bid_amt: # logic of function handle_cash_balance changed the bid amt due to lack of funds so ignoring different bid amt by rating in this case
+            for l in listing_list:
+                request['bid_requests'].append({"listing_id": l, "bid_amount": round(bid_amt, 2)})
+
+        else: # uses the dictionary in config file to modify bid amt by prosper rating as a multiple of bid amt
+            for l in listing_list:
+                prosper_rating_specific_bid_amt = bid_amt * default.config["bid_size"]["prosper_rating"][filters_used[l][1][0]] # out of lazyness used filters_used to identify the propser rating instead of doing a large rewrite.
+                request['bid_requests'].append({"listing_id": l, "bid_amount": round(prosper_rating_specific_bid_amt, 2)})
+            # I think will get throttled if over 20 posts to api in one second (I'll never get this issue)
+
         response = requests.post(default.config['prosper']['prosper_order_url'], json=request, headers=self.order_header).json()
         logging.log_it_info(self.logger, "request = {request}".format(request=request))
         logging.log_it_info(self.logger, "response = {response}".format(response=response))
@@ -107,7 +116,7 @@ class SearchAndDestroy:
                         if listing not in submitted_order_listings:
                             submitted_order_listings.append(listing)
                             unique_listings.append(listing)
-                    listings_to_invest, new_bid_amt, cash_used = self.handle_cash_balance(self.remaining_cash, unique_listings)
+                    listings_to_invest, new_bid_amt, cash_used = self.handle_cash_balance(self.remaining_cash, unique_listings, filters_used)
                     self.remaining_cash -= cash_used # Will count cash used towards an expired listing. Calculate cash on fly because get cash from prosper api not always quick enough
                 if len(listings_to_invest) > 0:
                     logging.log_it_info(self.logger, "Listings to invest at {current_time}: {listings}".format(listings=listings_to_invest, current_time=datetime.now()))
@@ -138,8 +147,7 @@ class SearchAndDestroy:
             t = threading.Thread(target=self.thread_worker, args=(query, self.filters_dict[query], submitted_order_listings))
             threads.append(t)
             t.start()
-            time.sleep(0.07143) # Start threads over ~ 1 second to space out threads, hopefully increasing chance of hitting a note fi multiple filters can find it. filters +1 / 1
-            # TODO automate sleep
+            time.sleep(self.start_sleep_time) # Start threads over ~ 1 second to space out threads, hopefully increasing chance of hitting a note fi multiple filters can find it. filters +1 / 1
         for thread in threads:
             thread.join()
 
@@ -197,39 +205,48 @@ class SearchAndDestroy:
                 return aval_amt, listing_list
 
     # Add to testing suite
-    def handle_cash_balance(self, available_cash, listings_list):
+    #TODO clean this up and do a logic rewrite as a result of implementing diff bid amt for different prosper rating...
+    def handle_cash_balance(self, available_cash, listings_list, filters_used):
         investment_number = len(listings_list)
         if investment_number == 0: # Handles no listings
             return listings_list, self.bid_amt, 0 # [], self.bid_amt, no cash used
         else:
+            total_bid_amt = 0
+            for l in listings_list:
+                total_bid_amt += self.bid_amt * default.config["bid_size"]["prosper_rating"][filters_used[l][1][0]]
             new_listing_list = listings_list
             new_amt = self.bid_amt
             aval_amt = available_cash / investment_number
-            if available_cash >= 25:  # min bid for a listing
-                if aval_amt < self.bid_amt:
-                    if aval_amt <= available_cash:
-                        if aval_amt >= 25:
-                            situation_one_msg = "1: {cash} is not enough available cash for desired bid amount of {amt}, for {investment_number} listings, modifying to {new_amt}".format(
-                                    cash=available_cash, investment_number=investment_number, amt=self.bid_amt, new_amt=aval_amt)
-                            # self.amt = aval_amt
-                            new_amt = aval_amt
-                            logging.log_it_info(self.logger, situation_one_msg)
-                        elif aval_amt <= 25 and investment_number > 1:
-                            new_amt, new_listing_list = self.recalculate_bid_amount(cash=available_cash, listing_list=listings_list)
-                            situation_two_msg = "2: {cash} is not enough available cash for desired bid amount of {amt}, for {investment_number}  listings, modifying to bids of {new_amt} for {listing_num} listings".format(
-                                    cash=available_cash, investment_number=investment_number, amt=self.bid_amt, new_amt=new_amt,
-                                    listing_num=len(new_listing_list))
-                            logging.log_it_info(self.logger, situation_two_msg)
-                            # self.amt = new_bid_amt
-                            # self.listings_list = new_listing_list
-
+            if total_bid_amt > available_cash:
+                if available_cash >= 25:  # min bid for a listing
+                    if aval_amt < self.bid_amt:
+                        if aval_amt <= available_cash:
+                            if aval_amt >= 25:
+                                situation_one_msg = "1: {cash} is not enough available cash for desired bid amount of {amt}, for {investment_number} listings, modifying to {new_amt}".format(
+                                        cash=available_cash, investment_number=investment_number, amt=self.bid_amt, new_amt=aval_amt)
+                                # self.amt = aval_amt
+                                new_amt = aval_amt
+                                logging.log_it_info(self.logger, situation_one_msg)
+                            elif aval_amt <= 25 and investment_number > 1:
+                                new_amt, new_listing_list = self.recalculate_bid_amount(cash=available_cash, listing_list=listings_list)
+                                situation_two_msg = "2: {cash} is not enough available cash for desired bid amount of {amt}, for {investment_number}  listings, modifying to bids of {new_amt} for {listing_num} listings".format(
+                                        cash=available_cash, investment_number=investment_number, amt=self.bid_amt, new_amt=new_amt,
+                                        listing_num=len(new_listing_list))
+                                logging.log_it_info(self.logger, situation_two_msg)
+                                # self.amt = new_bid_amt
+                                # self.listings_list = new_listing_list
                 else:
-                    normal_op_msg = f"available_cash of {available_cash} is enough for normal bidding submission"
-                    logging.log_it_info(self.logger, normal_op_msg)
+                    situation_three_msg = "Your available cash of {cash} is not enough to invest in anything... Wow dude".format(
+                        cash=available_cash)
+                    logging.log_it_info(self.logger, situation_three_msg)
+                    new_listing_list = []
+                    # self.listings_list = []
 
             else:
-                situation_three_msg = "Your available cash of {cash} is not enough to invest in anything... Wow dude".format(cash=available_cash)
-                logging.log_it_info(self.logger, situation_three_msg)
-                new_listing_list = []
-                # self.listings_list = []
+                normal_op_msg = f"available_cash of {available_cash} is enough for normal bidding submission"
+                logging.log_it_info(self.logger, normal_op_msg)
+                new_amt = 0
+                for l in listings_list:
+                    new_amt += self.bid_amt * default.config["bid_size"]["prosper_rating"][filters_used[l][1][0]]
+
             return new_listing_list, new_amt, len(new_listing_list) * new_amt # May be the same as original

@@ -1,0 +1,1328 @@
+search_and_destroy - INFO - Started running query_v2_0_1 at 2020-12-10 15:41:27.580210
+search_and_destroy - INFO - Started running query_v2_0_2 at 2020-12-10 15:41:27.706001
+search_and_destroy - INFO - Started running query_v1_1 at 2020-12-10 15:41:27.834159
+search_and_destroy - INFO - Started running query_v1_2 at 2020-12-10 15:41:27.963500
+search_and_destroy - INFO - Started running query_v1_3 at 2020-12-10 15:41:28.091423
+search_and_destroy - INFO - Started running query_v1_4 at 2020-12-10 15:41:28.221855
+search_and_destroy - INFO - Started running query_v1_5 at 2020-12-10 15:41:28.350540
+search_and_destroy - INFO - Started running query_v2_6 at 2020-12-10 15:41:28.480020
+search_and_destroy - INFO - Started running query_v1_7 at 2020-12-10 15:41:28.607671
+search_and_destroy - INFO - Started running query_v1_8 at 2020-12-10 15:41:28.736366
+search_and_destroy - INFO - Started running query_v2_1 at 2020-12-10 15:41:28.862012
+search_and_destroy - INFO - Started running query_v3_0 at 2020-12-10 15:41:28.990089
+search_and_destroy - INFO - Started running query_v3_1 at 2020-12-10 15:41:29.119633
+search_and_destroy - INFO - Started running query_v3_2 at 2020-12-10 15:41:29.246180
+search_and_destroy - INFO - Started running query_v3_3 at 2020-12-10 15:41:29.373506
+search_and_destroy - INFO - Started running query_v3_4 at 2020-12-10 15:41:29.502978
+search_and_destroy - INFO - query query_v2_0_2 got an error, error is: {'timestamp': '2020-12-10T20:41:43.35Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_1 got an error, error is: {'timestamp': '2020-12-10T20:42:57.385Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-10T20:43:13.432Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-10T20:43:15.421Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-10T20:43:19.403Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-10T20:43:26.436Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_1 got an error, error is: {'timestamp': '2020-12-10T20:43:36.456Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_1 got an error, error is: {'timestamp': '2020-12-10T20:43:44.418Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-10T20:43:48.363Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-10T20:43:49.468Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-10T20:43:53.471Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-10T20:44:01.464Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_1 got an error, error is: {'timestamp': '2020-12-10T20:44:01.464Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_1 got an error, error is: {'timestamp': '2020-12-10T20:44:07.451Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_6 got an error, error is: {'timestamp': '2020-12-10T20:44:15.493Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_1 got an error, error is: {'timestamp': '2020-12-10T20:44:24.501Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-10T20:44:30.481Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-10T20:44:41.491Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_6 got an error, error is: {'timestamp': '2020-12-10T20:44:44.508Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_8 got an error, error is: {'timestamp': '2020-12-10T20:44:49.503Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_6 got an error, error is: {'timestamp': '2020-12-10T20:44:50.472Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_2 got an error, error is: {'timestamp': '2020-12-10T20:45:01.537Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - Ended running query_v1_8 at 2020-12-10 15:45:27.580028, with 280 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2020-12-10 15:45:27.620322, with 280 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v2_1 at 2020-12-10 15:45:27.649321, with 279 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v1_2 at 2020-12-10 15:45:27.655141, with 281 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v2_6 at 2020-12-10 15:45:27.706262, with 279 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v3_0 at 2020-12-10 15:45:27.812522, with 280 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v1_1 at 2020-12-10 15:45:27.816188, with 281 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v3_2 at 2020-12-10 15:45:27.894998, with 276 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v3_1 at 2020-12-10 15:45:28.025560, with 280 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v1_7 at 2020-12-10 15:45:28.052033, with 280 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v1_5 at 2020-12-10 15:45:28.079055, with 281 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v1_4 at 2020-12-10 15:45:28.107897, with 281 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2020-12-10 15:45:28.187261, with 282 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v3_3 at 2020-12-10 15:45:28.187560, with 280 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v3_4 at 2020-12-10 15:45:28.303019, with 280 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - Ended running query_v1_3 at 2020-12-10 15:45:28.390947, with 281 pings to the listing api, and 0 order pings to the order api
+search_and_destroy - INFO - 1: 33 is not enough available cash for desired bid amount of 115, for 1 listings, modifying to 33.0
+search_and_destroy - INFO - Started running query_v2_0_1 at 2020-12-11 18:04:52.481294
+search_and_destroy - INFO - Started running query_v2_0_2 at 2020-12-11 18:04:52.611806
+search_and_destroy - INFO - Started running query_v1_1 at 2020-12-11 18:04:52.741778
+search_and_destroy - INFO - Started running query_v1_2 at 2020-12-11 18:04:52.870711
+search_and_destroy - INFO - Started running query_v1_3 at 2020-12-11 18:04:53.000913
+search_and_destroy - INFO - Started running query_v1_4 at 2020-12-11 18:04:53.131294
+search_and_destroy - INFO - Started running query_v1_5 at 2020-12-11 18:04:53.259582
+search_and_destroy - INFO - Started running query_v2_6 at 2020-12-11 18:04:53.385478
+search_and_destroy - INFO - Started running query_v1_7 at 2020-12-11 18:04:53.515008
+search_and_destroy - INFO - Started running query_v1_8 at 2020-12-11 18:04:53.643047
+search_and_destroy - INFO - Started running query_v2_1 at 2020-12-11 18:04:53.771020
+search_and_destroy - INFO - Started running query_v3_0 at 2020-12-11 18:04:53.898647
+search_and_destroy - INFO - Started running query_v3_1 at 2020-12-11 18:04:54.027064
+search_and_destroy - INFO - Started running query_v3_2 at 2020-12-11 18:04:54.154942
+search_and_destroy - INFO - Started running query_v3_3 at 2020-12-11 18:04:54.283393
+search_and_destroy - INFO - Started running query_v3_4 at 2020-12-11 18:04:54.411079
+search_and_destroy - INFO - query query_v3_4 got an error, error is: {'timestamp': '2020-12-11T23:04:57.157Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-11T23:05:01.186Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_3 got an error, error is: {'timestamp': '2020-12-11T23:05:04.063Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-11T23:05:04.063Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_1 got an error, error is: {'timestamp': '2020-12-11T23:05:04.146Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-11T23:05:04.15Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_0 got an error, error is: {'timestamp': '2020-12-11T23:05:04.15Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_5 got an error, error is: {'timestamp': '2020-12-11T23:05:04.17Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_1 got an error, error is: {'timestamp': '2020-12-11T23:05:05.754Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_3 got an error, error is: {'timestamp': '2020-12-11T23:05:05.761Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_1 got an error, error is: {'timestamp': '2020-12-11T23:05:05.803Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_4 got an error, error is: {'timestamp': '2020-12-11T23:05:05.822Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_2 got an error, error is: {'timestamp': '2020-12-11T23:05:05.846Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_2 got an error, error is: {'timestamp': '2020-12-11T23:05:05.895Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_1 got an error, error is: {'timestamp': '2020-12-11T23:05:05.926Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_2 got an error, error is: {'timestamp': '2020-12-11T23:05:05.992Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_7 got an error, error is: {'timestamp': '2020-12-11T23:05:06.093Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_1 got an error, error is: {'timestamp': '2020-12-11T23:05:06.101Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-11T23:05:06.112Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_3 got an error, error is: {'timestamp': '2020-12-11T23:05:06.118Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_1 got an error, error is: {'timestamp': '2020-12-11T23:05:06.176Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_4 got an error, error is: {'timestamp': '2020-12-11T23:05:06.176Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-11T23:05:06.779Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_1 got an error, error is: {'timestamp': '2020-12-11T23:05:06.847Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_7 got an error, error is: {'timestamp': '2020-12-11T23:05:06.934Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_3 got an error, error is: {'timestamp': '2020-12-11T23:05:06.935Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_1 got an error, error is: {'timestamp': '2020-12-11T23:05:06.946Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_4 got an error, error is: {'timestamp': '2020-12-11T23:05:07.129Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-11T23:05:07.129Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-11T23:05:07.89Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_4 got an error, error is: {'timestamp': '2020-12-11T23:05:08.002Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_0 got an error, error is: {'timestamp': '2020-12-11T23:05:08.133Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_8 got an error, error is: {'timestamp': '2020-12-11T23:05:08.152Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-11T23:05:08.153Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_5 got an error, error is: {'timestamp': '2020-12-11T23:05:08.153Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-11T23:05:08.176Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_8 got an error, error is: {'timestamp': '2020-12-11T23:05:08.984Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_5 got an error, error is: {'timestamp': '2020-12-11T23:05:08.984Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_6 got an error, error is: {'timestamp': '2020-12-11T23:05:09.005Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-11T23:05:09.007Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_2 got an error, error is: {'timestamp': '2020-12-11T23:05:09.094Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_2 got an error, error is: {'timestamp': '2020-12-11T23:05:09.136Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_1 got an error, error is: {'timestamp': '2020-12-11T23:05:09.188Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_1 got an error, error is: {'timestamp': '2020-12-11T23:05:10.003Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_2 got an error, error is: {'timestamp': '2020-12-11T23:05:10.013Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_2 got an error, error is: {'timestamp': '2020-12-11T23:05:10.079Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_1 got an error, error is: {'timestamp': '2020-12-11T23:05:10.089Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-11T23:05:10.116Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_3 got an error, error is: {'timestamp': '2020-12-11T23:05:10.136Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_7 got an error, error is: {'timestamp': '2020-12-11T23:05:10.17Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_1 got an error, error is: {'timestamp': '2020-12-11T23:05:10.185Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_5 got an error, error is: {'timestamp': '2020-12-11T23:05:11.801Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_0 got an error, error is: {'timestamp': '2020-12-11T23:05:11.799Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_1 got an error, error is: {'timestamp': '2020-12-11T23:05:12.065Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_1 got an error, error is: {'timestamp': '2020-12-11T23:05:12.072Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_2 got an error, error is: {'timestamp': '2020-12-11T23:05:12.086Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-11T23:05:12.138Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_4 got an error, error is: {'timestamp': '2020-12-11T23:05:12.154Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_5 got an error, error is: {'timestamp': '2020-12-11T23:05:12.174Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_2 got an error, error is: {'timestamp': '2020-12-11T23:05:12.164Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_0 got an error, error is: {'timestamp': '2020-12-11T23:05:12.164Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - Started running query_v2_0_1 at 2020-12-11 18:05:25.679813
+search_and_destroy - INFO - Started running query_v2_0_2 at 2020-12-11 18:05:25.808572
+search_and_destroy - INFO - Started running query_v1_1 at 2020-12-11 18:05:25.937473
+search_and_destroy - INFO - Started running query_v1_2 at 2020-12-11 18:05:26.067397
+search_and_destroy - INFO - Started running query_v1_3 at 2020-12-11 18:05:26.197329
+search_and_destroy - INFO - Started running query_v1_4 at 2020-12-11 18:05:26.323204
+search_and_destroy - INFO - Started running query_v1_5 at 2020-12-11 18:05:26.452879
+search_and_destroy - INFO - Started running query_v2_6 at 2020-12-11 18:05:26.582077
+search_and_destroy - INFO - Started running query_v1_7 at 2020-12-11 18:05:26.712034
+search_and_destroy - INFO - Started running query_v1_8 at 2020-12-11 18:05:26.841874
+search_and_destroy - INFO - Started running query_v2_1 at 2020-12-11 18:05:26.968040
+search_and_destroy - INFO - Started running query_v3_0 at 2020-12-11 18:05:27.096165
+search_and_destroy - INFO - Started running query_v3_1 at 2020-12-11 18:05:27.224312
+search_and_destroy - INFO - Started running query_v3_2 at 2020-12-11 18:05:27.352368
+search_and_destroy - INFO - Started running query_v3_3 at 2020-12-11 18:05:27.481607
+search_and_destroy - INFO - Started running query_v3_4 at 2020-12-11 18:05:27.609174
+search_and_destroy - INFO - query query_v1_7 got an error, error is: {'timestamp': '2020-12-11T23:05:30.209Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_2 got an error, error is: {'timestamp': '2020-12-11T23:05:31.154Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_1 got an error, error is: {'timestamp': '2020-12-11T23:05:33.062Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-11T23:05:33.074Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_1 got an error, error is: {'timestamp': '2020-12-11T23:05:33.099Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_5 got an error, error is: {'timestamp': '2020-12-11T23:05:33.135Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_5 got an error, error is: {'timestamp': '2020-12-11T23:05:33.955Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_2 got an error, error is: {'timestamp': '2020-12-11T23:05:34.05Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_6 got an error, error is: {'timestamp': '2020-12-11T23:05:34.052Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_2 got an error, error is: {'timestamp': '2020-12-11T23:05:34.051Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-11T23:05:34.168Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_7 got an error, error is: {'timestamp': '2020-12-11T23:05:34.173Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-11T23:05:34.195Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-11T23:05:34.951Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_2 got an error, error is: {'timestamp': '2020-12-11T23:05:34.958Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-11T23:05:35.05Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_8 got an error, error is: {'timestamp': '2020-12-11T23:05:36.097Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_1 got an error, error is: {'timestamp': '2020-12-11T23:05:36.165Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_4 got an error, error is: {'timestamp': '2020-12-11T23:05:36.192Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_3 got an error, error is: {'timestamp': '2020-12-11T23:05:36.195Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_0 got an error, error is: {'timestamp': '2020-12-11T23:05:36.201Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-11T23:05:36.216Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_0 got an error, error is: {'timestamp': '2020-12-11T23:05:37.003Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_4 got an error, error is: {'timestamp': '2020-12-11T23:05:37.015Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_1 got an error, error is: {'timestamp': '2020-12-11T23:05:37.023Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_1 got an error, error is: {'timestamp': '2020-12-11T23:05:37.055Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_5 got an error, error is: {'timestamp': '2020-12-11T23:05:37.152Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_5 got an error, error is: {'timestamp': '2020-12-11T23:05:37.935Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_0_2 got an error, error is: {'timestamp': '2020-12-11T23:05:38.034Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v2_6 got an error, error is: {'timestamp': '2020-12-11T23:05:38.066Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_3 got an error, error is: {'timestamp': '2020-12-11T23:05:38.106Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_2 got an error, error is: {'timestamp': '2020-12-11T23:05:38.152Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_7 got an error, error is: {'timestamp': '2020-12-11T23:05:38.156Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_7 got an error, error is: {'timestamp': '2020-12-11T23:05:38.929Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v3_2 got an error, error is: {'timestamp': '2020-12-11T23:05:38.939Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - query query_v1_1 got an error, error is: {'timestamp': '2020-12-11T23:05:39.066Z', 'errors': [{'code': 'too_many_requests', 'message': 'The request limit has been exceeded - you are temporarily throttled'}]}
+search_and_destroy - INFO - Started running query_v2_0_1 at 2020-12-16 09:56:09.513354
+search_and_destroy - INFO - Started running query_v2_0_2 at 2020-12-16 09:56:09.643222
+search_and_destroy - INFO - Started running query_v1_1 at 2020-12-16 09:56:09.772199
+search_and_destroy - INFO - Started running query_v1_2 at 2020-12-16 09:56:09.902151
+search_and_destroy - INFO - Started running query_v1_3 at 2020-12-16 09:56:10.031567
+search_and_destroy - INFO - Started running query_v1_4 at 2020-12-16 09:56:10.161475
+search_and_destroy - INFO - Started running query_v1_5 at 2020-12-16 09:56:10.289052
+search_and_destroy - INFO - Started running query_v2_6 at 2020-12-16 09:56:10.416641
+search_and_destroy - INFO - Started running query_v1_7 at 2020-12-16 09:56:10.544923
+search_and_destroy - INFO - Started running query_v1_8 at 2020-12-16 09:56:10.673044
+search_and_destroy - INFO - Started running query_v2_1 at 2020-12-16 09:56:10.800908
+search_and_destroy - INFO - Started running query_v3_0 at 2020-12-16 09:56:10.933674
+search_and_destroy - INFO - Started running query_v3_1 at 2020-12-16 09:56:11.063652
+search_and_destroy - INFO - Started running query_v3_2 at 2020-12-16 09:56:11.193058
+search_and_destroy - INFO - Started running query_v3_3 at 2020-12-16 09:56:11.321557
+search_and_destroy - INFO - Started running query_v3_4 at 2020-12-16 09:56:11.451087
+search_and_destroy - INFO - Started running query_v2_0_1 at 2020-12-16 09:57:41.631463
+search_and_destroy - INFO - Started running query_v2_0_2 at 2020-12-16 09:57:41.758765
+search_and_destroy - INFO - Started running query_v1_1 at 2020-12-16 09:57:41.887972
+search_and_destroy - INFO - Started running query_v1_2 at 2020-12-16 09:57:42.014433
+search_and_destroy - INFO - Started running query_v1_3 at 2020-12-16 09:57:42.144541
+search_and_destroy - INFO - Started running query_v1_4 at 2020-12-16 09:57:42.272155
+search_and_destroy - INFO - Started running query_v1_5 at 2020-12-16 09:57:42.400031
+search_and_destroy - INFO - Started running query_v2_6 at 2020-12-16 09:57:42.528665
+search_and_destroy - INFO - Started running query_v1_7 at 2020-12-16 09:57:42.654987
+search_and_destroy - INFO - Started running query_v1_8 at 2020-12-16 09:57:42.783947
+search_and_destroy - INFO - Started running query_v2_1 at 2020-12-16 09:57:42.912253
+search_and_destroy - INFO - Started running query_v3_0 at 2020-12-16 09:57:43.040459
+search_and_destroy - INFO - Started running query_v3_1 at 2020-12-16 09:57:43.166552
+search_and_destroy - INFO - Started running query_v3_2 at 2020-12-16 09:57:43.300482
+search_and_destroy - INFO - Started running query_v3_3 at 2020-12-16 09:57:43.429759
+search_and_destroy - INFO - Started running query_v3_4 at 2020-12-16 09:57:43.557271
+search_and_destroy - INFO - Ended running query_v3_1 at 2020-12-16 09:58:11.653353, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 37 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2020-12-16 09:58:11.656440, with 39 pings to the listing api, and 0 order pings to the order api, and ignored 43 throttles from api
+search_and_destroy - INFO - Ended running query_v2_1 at 2020-12-16 09:58:11.658048, with 39 pings to the listing api, and 0 order pings to the order api, and ignored 41 throttles from api
+search_and_destroy - INFO - Ended running query_v1_7 at 2020-12-16 09:58:11.660094, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 42 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2020-12-16 09:58:11.662155, with 39 pings to the listing api, and 0 order pings to the order api, and ignored 40 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2020-12-16 09:58:11.664733, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 40 throttles from api
+search_and_destroy - INFO - Ended running query_v1_8 at 2020-12-16 09:58:11.668300, with 39 pings to the listing api, and 0 order pings to the order api, and ignored 34 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2020-12-16 09:58:11.714219, with 30 pings to the listing api, and 0 order pings to the order api, and ignored 41 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2020-12-16 09:58:11.887195, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 39 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2020-12-16 09:58:11.920786, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 42 throttles from api
+search_and_destroy - INFO - Ended running query_v2_6 at 2020-12-16 09:58:11.923578, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 40 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2020-12-16 09:58:11.932339, with 44 pings to the listing api, and 0 order pings to the order api, and ignored 39 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2020-12-16 09:58:12.029157, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 36 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2020-12-16 09:58:12.653729, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 41 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2020-12-16 09:58:12.686106, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 40 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2020-12-16 09:58:12.742613, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 40 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2020-12-16 09:59:25.864316
+search_and_destroy - INFO - Started running query_v2_0_2 at 2020-12-16 09:59:25.992254
+search_and_destroy - INFO - Started running query_v1_1 at 2020-12-16 09:59:26.120330
+search_and_destroy - INFO - Started running query_v1_2 at 2020-12-16 09:59:26.250436
+search_and_destroy - INFO - Started running query_v1_3 at 2020-12-16 09:59:26.377441
+search_and_destroy - INFO - Started running query_v1_4 at 2020-12-16 09:59:26.506509
+search_and_destroy - INFO - Started running query_v1_5 at 2020-12-16 09:59:26.632809
+search_and_destroy - INFO - Started running query_v2_6 at 2020-12-16 09:59:26.762665
+search_and_destroy - INFO - Started running query_v1_7 at 2020-12-16 09:59:26.888799
+search_and_destroy - INFO - Started running query_v1_8 at 2020-12-16 09:59:27.016798
+search_and_destroy - INFO - Started running query_v2_1 at 2020-12-16 09:59:27.145992
+search_and_destroy - INFO - Started running query_v3_0 at 2020-12-16 09:59:27.274267
+search_and_destroy - INFO - Started running query_v3_1 at 2020-12-16 09:59:27.402771
+search_and_destroy - INFO - Started running query_v3_2 at 2020-12-16 09:59:27.528788
+search_and_destroy - INFO - Started running query_v3_3 at 2020-12-16 09:59:27.658145
+search_and_destroy - INFO - Started running query_v3_4 at 2020-12-16 09:59:27.788412
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2020-12-16 09:59:55.844485, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_7 at 2020-12-16 09:59:55.898280, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2020-12-16 09:59:55.930286, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2020-12-16 09:59:55.987847, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_8 at 2020-12-16 09:59:56.026421, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2020-12-16 09:59:56.099291, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_1 at 2020-12-16 09:59:56.151006, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2020-12-16 09:59:56.245018, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2020-12-16 09:59:56.275096, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2020-12-16 09:59:56.369732, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2020-12-16 09:59:56.391590, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2020-12-16 09:59:56.504426, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2020-12-16 09:59:56.527682, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2020-12-16 09:59:56.579053, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_6 at 2020-12-16 09:59:56.620662, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2020-12-16 09:59:56.662035, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2020-12-16 10:02:34.738825
+search_and_destroy - INFO - Started running query_v2_0_2 at 2020-12-16 10:02:34.865800
+search_and_destroy - INFO - Started running query_v1_1 at 2020-12-16 10:02:34.994646
+search_and_destroy - INFO - Started running query_v1_2 at 2020-12-16 10:02:35.123609
+search_and_destroy - INFO - Started running query_v1_3 at 2020-12-16 10:02:35.255785
+search_and_destroy - INFO - Started running query_v1_4 at 2020-12-16 10:02:35.383508
+search_and_destroy - INFO - Started running query_v1_5 at 2020-12-16 10:02:35.513710
+search_and_destroy - INFO - Started running query_v2_6 at 2020-12-16 10:02:35.642490
+search_and_destroy - INFO - Started running query_v1_7 at 2020-12-16 10:02:35.771936
+search_and_destroy - INFO - Started running query_v1_8 at 2020-12-16 10:02:35.901085
+search_and_destroy - INFO - Started running query_v2_1 at 2020-12-16 10:02:36.030429
+search_and_destroy - INFO - Started running query_v3_0 at 2020-12-16 10:02:36.161412
+search_and_destroy - INFO - Started running query_v3_1 at 2020-12-16 10:02:36.290485
+search_and_destroy - INFO - Started running query_v3_2 at 2020-12-16 10:02:36.419390
+search_and_destroy - INFO - Started running query_v3_3 at 2020-12-16 10:02:36.544760
+search_and_destroy - INFO - Started running query_v3_4 at 2020-12-16 10:02:36.674539
+search_and_destroy - INFO - Ended running query_v1_5 at 2020-12-16 10:03:04.748767, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 45 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2020-12-16 10:03:04.751472, with 40 pings to the listing api, and 0 order pings to the order api, and ignored 41 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2020-12-16 10:03:04.765466, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 43 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2020-12-16 10:03:04.773789, with 40 pings to the listing api, and 0 order pings to the order api, and ignored 41 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2020-12-16 10:03:04.776494, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 42 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2020-12-16 10:03:04.779027, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 44 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2020-12-16 10:03:04.851449, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 46 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2020-12-16 10:03:04.867658, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 41 throttles from api
+search_and_destroy - INFO - Ended running query_v1_7 at 2020-12-16 10:03:04.870327, with 40 pings to the listing api, and 0 order pings to the order api, and ignored 40 throttles from api
+search_and_destroy - INFO - Ended running query_v1_8 at 2020-12-16 10:03:04.878827, with 39 pings to the listing api, and 0 order pings to the order api, and ignored 41 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2020-12-16 10:03:04.903574, with 39 pings to the listing api, and 0 order pings to the order api, and ignored 43 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2020-12-16 10:03:04.907080, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 43 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2020-12-16 10:03:04.909673, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 43 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2020-12-16 10:03:04.947724, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 39 throttles from api
+search_and_destroy - INFO - Ended running query_v2_1 at 2020-12-16 10:03:05.044787, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 42 throttles from api
+search_and_destroy - INFO - Ended running query_v2_6 at 2020-12-16 10:03:05.070830, with 40 pings to the listing api, and 0 order pings to the order api, and ignored 41 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-11 18:14:26.783850
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-11 18:14:26.909525
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-11 18:14:27.035532
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-11 18:14:27.161581
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-11 18:14:27.289614
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-11 18:14:27.418870
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-11 18:14:27.545662
+search_and_destroy - INFO - Started running query_v2_6 at 2021-01-11 18:14:27.672157
+search_and_destroy - INFO - Started running query_v1_7 at 2021-01-11 18:14:27.800307
+search_and_destroy - INFO - Started running query_v1_8 at 2021-01-11 18:14:27.925502
+search_and_destroy - INFO - Started running query_v2_1 at 2021-01-11 18:14:28.055910
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-11 18:14:28.184176
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-11 18:14:28.312980
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-11 18:14:28.439579
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-11 18:14:28.566490
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-11 18:14:28.694508
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-11 18:14:56.731274, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 4 throttles from api
+search_and_destroy - INFO - Ended running query_v1_8 at 2021-01-11 18:14:56.830697, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-11 18:14:56.830877, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-11 18:14:56.859705, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v2_1 at 2021-01-11 18:14:56.963143, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 3 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-11 18:14:56.984754, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 3 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-11 18:14:57.063524, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-11 18:14:57.113011, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-11 18:14:57.214955, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-11 18:14:57.226527, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-11 18:14:57.290574, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-11 18:14:57.356023, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_6 at 2021-01-11 18:14:57.367517, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-11 18:14:57.418738, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-11 18:14:57.459609, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_7 at 2021-01-11 18:14:57.513001, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-11 18:15:23.807794
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-11 18:15:23.938139
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-11 18:15:24.065930
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-11 18:15:24.192798
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-11 18:15:24.319333
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-11 18:15:24.448164
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-11 18:15:24.574869
+search_and_destroy - INFO - Started running query_v2_6 at 2021-01-11 18:15:24.703009
+search_and_destroy - INFO - Started running query_v1_7 at 2021-01-11 18:15:24.832430
+search_and_destroy - INFO - Started running query_v1_8 at 2021-01-11 18:15:24.963012
+search_and_destroy - INFO - Started running query_v2_1 at 2021-01-11 18:15:25.092821
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-11 18:15:25.219651
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-11 18:15:25.349122
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-11 18:15:25.477690
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-11 18:15:25.604300
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-11 18:15:25.733370
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-11 18:15:53.821772, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_1 at 2021-01-11 18:15:53.880392, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-11 18:15:53.933813, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-11 18:15:54.015294, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-11 18:15:54.045025, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-11 18:15:54.142016, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-11 18:15:54.192504, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-11 18:15:54.255736, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-11 18:15:54.279039, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_6 at 2021-01-11 18:15:54.324352, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-11 18:15:54.385401, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-11 18:15:54.395934, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_7 at 2021-01-11 18:15:54.439839, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-11 18:15:54.515163, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-11 18:15:54.525419, with 35 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_8 at 2021-01-11 18:15:54.563855, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-11 18:16:11.776830
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-11 18:16:11.907005
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-11 18:16:12.036698
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-11 18:16:12.165369
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-11 18:16:12.294367
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-11 18:16:12.424994
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-11 18:16:12.554540
+search_and_destroy - INFO - Started running query_v2_6 at 2021-01-11 18:16:12.684756
+search_and_destroy - INFO - Started running query_v1_7 at 2021-01-11 18:16:12.810742
+search_and_destroy - INFO - Started running query_v1_8 at 2021-01-11 18:16:12.937551
+search_and_destroy - INFO - Started running query_v2_1 at 2021-01-11 18:16:13.064853
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-11 18:16:13.193113
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-11 18:16:13.320139
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-11 18:16:13.449264
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-11 18:16:13.577557
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-11 18:16:13.706099
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-11 18:16:41.766453, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 11 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-11 18:16:41.895638, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 10 throttles from api
+search_and_destroy - INFO - Ended running query_v1_8 at 2021-01-11 18:16:41.896109, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 10 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-11 18:16:41.896338, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 10 throttles from api
+search_and_destroy - INFO - Ended running query_v1_7 at 2021-01-11 18:16:42.005470, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 10 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-11 18:16:42.071590, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 11 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-11 18:16:42.071769, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 13 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-11 18:16:42.143505, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 10 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-11 18:16:42.182294, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 13 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-11 18:16:42.276410, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 9 throttles from api
+search_and_destroy - INFO - Ended running query_v2_1 at 2021-01-11 18:16:42.282056, with 37 pings to the listing api, and 0 order pings to the order api, and ignored 12 throttles from api
+search_and_destroy - INFO - Ended running query_v2_6 at 2021-01-11 18:16:42.424622, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 8 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-11 18:16:42.440888, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 11 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-11 18:16:42.457716, with 36 pings to the listing api, and 0 order pings to the order api, and ignored 16 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-11 18:16:42.490032, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 13 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-11 18:16:42.519420, with 38 pings to the listing api, and 0 order pings to the order api, and ignored 10 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-14 13:16:16.975934
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-14 13:16:17.102995
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-14 13:16:17.233372
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-14 13:16:17.361775
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-14 13:16:17.490437
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-14 13:16:17.618682
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-14 13:16:17.745329
+search_and_destroy - INFO - Started running query_v2_6 at 2021-01-14 13:16:17.876039
+search_and_destroy - INFO - Started running query_v1_7 at 2021-01-14 13:16:18.005881
+search_and_destroy - INFO - Started running query_v1_8 at 2021-01-14 13:16:18.133226
+search_and_destroy - INFO - Started running query_v2_1 at 2021-01-14 13:16:18.259053
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-14 13:16:18.390558
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-14 13:16:18.517232
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-14 13:16:18.647368
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-14 13:16:18.774479
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-14 13:16:18.899792
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-14 13:16:19.029691
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-14 13:16:37.489384
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-14 13:16:37.616578
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-14 13:16:37.746147
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-14 13:16:37.873857
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-14 13:16:38.000814
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-14 13:16:38.129154
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-14 13:16:38.258801
+search_and_destroy - INFO - Started running query_v2_6 at 2021-01-14 13:16:38.387781
+search_and_destroy - INFO - Started running query_v1_7 at 2021-01-14 13:16:38.516174
+search_and_destroy - INFO - Started running query_v1_8 at 2021-01-14 13:16:38.643696
+search_and_destroy - INFO - Started running query_v2_1 at 2021-01-14 13:16:38.770640
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-14 13:16:38.896378
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-14 13:16:39.024466
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-14 13:16:39.153460
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-14 13:16:39.282053
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-14 13:16:39.411371
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-14 13:16:39.540933
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-14 13:17:07.513613, with 31 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_8 at 2021-01-14 13:17:07.513864, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-14 13:17:07.522297, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-14 13:17:07.667544, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_1 at 2021-01-14 13:17:07.667679, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-14 13:17:07.782742, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-14 13:17:07.783227, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-14 13:17:07.904054, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-14 13:17:07.915862, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-14 13:17:08.034846, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-14 13:17:08.034992, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-14 13:17:08.162540, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-14 13:17:08.163639, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_6 at 2021-01-14 13:17:08.163788, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-14 13:17:08.283818, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-14 13:17:08.311992, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_7 at 2021-01-14 13:17:08.312564, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-14 13:17:45.983486
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-14 13:17:46.112886
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-14 13:17:46.239853
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-14 13:17:46.368358
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-14 13:17:46.497784
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-14 13:17:46.626491
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-14 13:17:46.753312
+search_and_destroy - INFO - Started running query_v2_6 at 2021-01-14 13:17:46.884201
+search_and_destroy - INFO - Started running query_v1_7 at 2021-01-14 13:17:47.013082
+search_and_destroy - INFO - Started running query_v1_8 at 2021-01-14 13:17:47.141932
+search_and_destroy - INFO - Started running query_v2_1 at 2021-01-14 13:17:47.271668
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-14 13:17:47.401988
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-14 13:17:47.530291
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-14 13:17:47.659260
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-14 13:17:47.788632
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-14 13:17:47.917691
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-14 13:17:48.045043
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-14 13:18:16.044761, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-14 13:18:16.124954, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_7 at 2021-01-14 13:18:16.144767, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-14 13:18:16.166438, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-14 13:18:16.232495, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_8 at 2021-01-14 13:18:16.262670, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-14 13:18:16.284116, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-14 13:18:16.374396, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-14 13:18:16.393450, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_1 at 2021-01-14 13:18:16.404026, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-14 13:18:16.444641, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-14 13:18:16.494484, with 31 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-14 13:18:16.503219, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-14 13:18:16.530237, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v2_6 at 2021-01-14 13:18:16.530458, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-14 13:18:16.535610, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-14 13:18:16.646905, with 31 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-23 12:48:04.298559
+search_and_destroy - INFO - Started running example_query1 at 2021-01-23 12:48:04.426979
+search_and_destroy - INFO - Started running example_query at 2021-01-23 12:58:56.918408
+search_and_destroy - INFO - Started running example_query1 at 2021-01-23 12:58:57.044364
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:58:57.328455
+search_and_destroy - INFO - available_cash of 2611 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-23 12:58:57.328704: [11814677]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 11814677, 'bid_amount': 103}]}
+search_and_destroy - INFO - response = TEST
+search_and_destroy - INFO - <class 'KeyError'>
+search_and_destroy - INFO - Listings invested at 2021-01-23 12:58:57.339030: [11814677]
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:58:57.489725
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:58:57.769257
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:58:58.319150
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:58:58.615521
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:58:59.162268
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:58:59.487984
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:59:00.101440
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:59:00.327145
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:59:00.936380
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:59:01.203508
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:59:01.836163
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:59:02.095941
+search_and_destroy - INFO - Started running example_query at 2021-01-23 12:59:56.572497
+search_and_destroy - INFO - Started running example_query1 at 2021-01-23 12:59:56.700719
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:59:56.971745
+search_and_destroy - INFO - available_cash of 2611 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-23 12:59:56.972030: [11814677]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 11814677, 'bid_amount': 103}]}
+search_and_destroy - INFO - response = TEST
+search_and_destroy - INFO - <class 'KeyError'>
+search_and_destroy - INFO - Listings invested at 2021-01-23 12:59:56.977819: [11814677]
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:59:57.078827
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:59:57.340829
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:59:57.954101
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:59:58.227330
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:59:58.833346
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:59:59.075002
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 12:59:59.695669
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 12:59:59.994266
+search_and_destroy - INFO - Started running example_query at 2021-01-23 13:08:35.253787
+search_and_destroy - INFO - Started running example_query1 at 2021-01-23 13:08:35.382598
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:08:35.672017
+search_and_destroy - INFO - available_cash of 2611 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-23 13:08:35.672239: [11814677]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 11814677, 'bid_amount': 103}]}
+search_and_destroy - INFO - response = TEST
+search_and_destroy - INFO - <class 'IndexError'>
+search_and_destroy - INFO - Listings invested at 2021-01-23 13:08:35.677720: [11814677]
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:08:35.754333
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:08:36.061070
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:08:36.679472
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:08:36.940060
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:08:37.495948
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:08:37.797787
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:08:38.382052
+search_and_destroy - INFO - Started running example_query at 2021-01-23 13:20:31.267948
+search_and_destroy - INFO - Started running example_query1 at 2021-01-23 13:20:31.396467
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:31.749958
+search_and_destroy - INFO - available_cash of 2611 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-23 13:20:31.750261: [11814677]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 11814677, 'bid_amount': 103}]}
+search_and_destroy - INFO - response = TEST
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:31.753905
+search_and_destroy - INFO - Listings invested at 2021-01-23 13:20:31.764359: [11814677]
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:32.154583
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:32.652047
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:32.984072
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:33.510783
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:33.858723
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:34.435648
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:34.820152
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:35.289143
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:35.634126
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:36.165948
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:36.556246
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:37.052621
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:37.411737
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:38.122648
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:38.315699
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:38.834084
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:39.162606
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:39.685520
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:40.058032
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:40.572370
+search_and_destroy - INFO - filter example_query found listing: 11814677 at 2021-01-23 13:20:40.923316
+search_and_destroy - INFO - Ended running example_query at 2021-01-23 13:20:41.473829, with 12 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 11814677 at 2021-01-23 13:20:41.499469
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-23 13:20:41.999659, with 12 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:31:44.220735
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:31:44.347192
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:31:44.476639
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:31:44.606959
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:31:44.732772
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:31:44.862836
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:31:44.991035
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:31:45.119197
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:31:45.249202
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:31:45.375673
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:31:45.503109
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:31:45.633304
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:31:45.759850
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:32:14.177514, with 32 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:32:14.232184, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:32:14.267249, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:32:14.369922, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:32:14.378580, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:32:14.497220, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:32:14.628632, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:32:14.642444, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:32:14.750424, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:32:14.886945, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:32:14.887319, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:32:15.023835, with 34 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:32:15.307901, with 33 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:32:41.852951
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:32:41.982040
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:32:42.108283
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:32:42.238511
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:32:42.367815
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:32:42.497027
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:32:42.624438
+search_and_destroy - INFO - Started running query_v2_6 at 2021-01-26 18:32:42.752415
+search_and_destroy - INFO - Started running query_v1_7 at 2021-01-26 18:32:42.882825
+search_and_destroy - INFO - Started running query_v1_8 at 2021-01-26 18:32:43.012822
+search_and_destroy - INFO - Started running query_v2_1 at 2021-01-26 18:32:43.142897
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:32:43.268364
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:32:43.396634
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:32:43.523773
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:32:43.652789
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:32:43.779073
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:32:43.907584
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:33:11.838592, with 31 pings to the listing api, and 0 order pings to the order api, and ignored 12 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:33:11.870457, with 28 pings to the listing api, and 0 order pings to the order api, and ignored 21 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:33:11.881458, with 30 pings to the listing api, and 0 order pings to the order api, and ignored 16 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:33:11.884380, with 26 pings to the listing api, and 0 order pings to the order api, and ignored 21 throttles from api
+search_and_destroy - INFO - Ended running query_v1_7 at 2021-01-26 18:33:11.921588, with 25 pings to the listing api, and 0 order pings to the order api, and ignored 18 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:33:11.956248, with 29 pings to the listing api, and 0 order pings to the order api, and ignored 18 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:33:12.014558, with 31 pings to the listing api, and 0 order pings to the order api, and ignored 15 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:33:12.057332, with 25 pings to the listing api, and 0 order pings to the order api, and ignored 18 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:33:12.846046, with 30 pings to the listing api, and 0 order pings to the order api, and ignored 15 throttles from api
+search_and_destroy - INFO - Ended running query_v1_8 at 2021-01-26 18:33:12.855356, with 28 pings to the listing api, and 0 order pings to the order api, and ignored 22 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:33:13.114866, with 29 pings to the listing api, and 0 order pings to the order api, and ignored 20 throttles from api
+search_and_destroy - INFO - Ended running query_v2_1 at 2021-01-26 18:33:13.856007, with 29 pings to the listing api, and 0 order pings to the order api, and ignored 25 throttles from api
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:33:14.129423, with 29 pings to the listing api, and 0 order pings to the order api, and ignored 25 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:33:14.135693, with 30 pings to the listing api, and 0 order pings to the order api, and ignored 24 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:33:14.923448, with 31 pings to the listing api, and 0 order pings to the order api, and ignored 19 throttles from api
+search_and_destroy - INFO - Ended running query_v2_6 at 2021-01-26 18:33:15.146892, with 31 pings to the listing api, and 0 order pings to the order api, and ignored 21 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:33:15.186265, with 28 pings to the listing api, and 0 order pings to the order api, and ignored 20 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:33:55.595287
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:33:55.723594
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:33:55.850228
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:33:55.979643
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:33:56.109582
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:33:56.238912
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:33:56.364928
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:33:56.491434
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:33:56.619179
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:33:56.750394
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:33:56.880388
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:33:57.009767
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:33:57.139488
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:34:25.894738, with 22 pings to the listing api, and 0 order pings to the order api, and ignored 57 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:34:25.897661, with 21 pings to the listing api, and 0 order pings to the order api, and ignored 53 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:34:25.904657, with 14 pings to the listing api, and 0 order pings to the order api, and ignored 63 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:34:25.907323, with 17 pings to the listing api, and 0 order pings to the order api, and ignored 57 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:34:25.920489, with 19 pings to the listing api, and 0 order pings to the order api, and ignored 50 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:34:25.963227, with 19 pings to the listing api, and 0 order pings to the order api, and ignored 53 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:34:26.056594, with 16 pings to the listing api, and 0 order pings to the order api, and ignored 46 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:34:26.082042, with 20 pings to the listing api, and 0 order pings to the order api, and ignored 56 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:34:26.150218, with 19 pings to the listing api, and 0 order pings to the order api, and ignored 54 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:34:26.993888, with 21 pings to the listing api, and 0 order pings to the order api, and ignored 52 throttles from api
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:34:26.996087, with 12 pings to the listing api, and 0 order pings to the order api, and ignored 60 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:34:27.015381, with 15 pings to the listing api, and 0 order pings to the order api, and ignored 53 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:34:27.942552, with 21 pings to the listing api, and 0 order pings to the order api, and ignored 60 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:34:56.572569
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:34:56.653874
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:34:56.733203
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:34:56.811908
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:34:56.893828
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:34:56.974797
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:34:57.052410
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:34:57.133513
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:34:57.213565
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:34:57.293589
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:34:57.374094
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:34:57.454922
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:34:57.536970
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:35:27.205079, with 10 pings to the listing api, and 0 order pings to the order api, and ignored 67 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:35:27.259475, with 21 pings to the listing api, and 0 order pings to the order api, and ignored 61 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:35:27.294324, with 19 pings to the listing api, and 0 order pings to the order api, and ignored 61 throttles from api
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:35:27.985475, with 13 pings to the listing api, and 0 order pings to the order api, and ignored 61 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:35:28.016628, with 19 pings to the listing api, and 0 order pings to the order api, and ignored 64 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:35:28.027445, with 18 pings to the listing api, and 0 order pings to the order api, and ignored 61 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:35:28.051709, with 23 pings to the listing api, and 0 order pings to the order api, and ignored 62 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:35:28.085105, with 16 pings to the listing api, and 0 order pings to the order api, and ignored 61 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:35:28.103856, with 16 pings to the listing api, and 0 order pings to the order api, and ignored 68 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:35:28.140848, with 20 pings to the listing api, and 0 order pings to the order api, and ignored 58 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:35:28.145371, with 21 pings to the listing api, and 0 order pings to the order api, and ignored 56 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:35:28.151834, with 15 pings to the listing api, and 0 order pings to the order api, and ignored 68 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:35:30.288121, with 18 pings to the listing api, and 0 order pings to the order api, and ignored 67 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:35:33.433262
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:35:33.590762
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:35:33.750259
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:35:33.908995
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:35:34.068635
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:35:34.226392
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:35:34.383576
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:35:34.542757
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:35:34.701350
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:35:34.858123
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:35:35.013305
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:35:35.171367
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:35:35.328962
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:36:03.996430, with 18 pings to the listing api, and 0 order pings to the order api, and ignored 56 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:36:03.998342, with 15 pings to the listing api, and 0 order pings to the order api, and ignored 65 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:36:04.007803, with 17 pings to the listing api, and 0 order pings to the order api, and ignored 55 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:36:04.014346, with 23 pings to the listing api, and 0 order pings to the order api, and ignored 63 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:36:04.091851, with 14 pings to the listing api, and 0 order pings to the order api, and ignored 66 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:36:04.097275, with 17 pings to the listing api, and 0 order pings to the order api, and ignored 58 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:36:04.126005, with 20 pings to the listing api, and 0 order pings to the order api, and ignored 58 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:36:05.278068, with 15 pings to the listing api, and 0 order pings to the order api, and ignored 72 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:36:05.280577, with 17 pings to the listing api, and 0 order pings to the order api, and ignored 71 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:36:05.292843, with 19 pings to the listing api, and 0 order pings to the order api, and ignored 56 throttles from api
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:36:05.994934, with 21 pings to the listing api, and 0 order pings to the order api, and ignored 64 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:36:06.309654, with 16 pings to the listing api, and 0 order pings to the order api, and ignored 70 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:36:07.037540, with 22 pings to the listing api, and 0 order pings to the order api, and ignored 70 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:36:18.161136
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:36:18.315852
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:36:18.475155
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:36:18.633357
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:36:18.792106
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:36:18.947803
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:36:19.104543
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:36:19.261643
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:36:19.419652
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:36:19.575650
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:36:19.731110
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:36:19.888408
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:36:20.046663
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:36:48.171148, with 21 pings to the listing api, and 0 order pings to the order api, and ignored 56 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:36:48.191319, with 18 pings to the listing api, and 0 order pings to the order api, and ignored 63 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:36:48.194408, with 18 pings to the listing api, and 0 order pings to the order api, and ignored 55 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:36:48.199977, with 17 pings to the listing api, and 0 order pings to the order api, and ignored 60 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:36:48.275553, with 17 pings to the listing api, and 0 order pings to the order api, and ignored 56 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:36:48.278198, with 19 pings to the listing api, and 0 order pings to the order api, and ignored 60 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:36:49.142452, with 16 pings to the listing api, and 0 order pings to the order api, and ignored 64 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:36:49.186823, with 10 pings to the listing api, and 0 order pings to the order api, and ignored 71 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:36:49.204047, with 17 pings to the listing api, and 0 order pings to the order api, and ignored 66 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:36:49.284579, with 21 pings to the listing api, and 0 order pings to the order api, and ignored 63 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:36:49.329094, with 18 pings to the listing api, and 0 order pings to the order api, and ignored 64 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:36:49.349757, with 19 pings to the listing api, and 0 order pings to the order api, and ignored 62 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:36:49.394876, with 22 pings to the listing api, and 0 order pings to the order api, and ignored 61 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:37:01.625863
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:37:01.782021
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:37:01.940066
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:37:02.097016
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:37:02.255962
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:37:02.414961
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:37:02.570027
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:37:02.728778
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:37:02.883386
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:37:03.042240
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:37:03.200327
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:37:03.356251
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:37:03.514292
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:37:31.643578, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:37:31.700099, with 39 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:37:31.700408, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:37:31.788668, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:37:31.868603, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:37:31.933368, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:37:32.030760, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:37:32.101800, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:37:32.157886, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:37:32.158169, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:37:32.172089, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 3 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:37:32.210915, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:37:32.254048, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:38:16.442857
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:38:16.597659
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:38:16.756834
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:38:16.916157
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:38:17.072326
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:38:17.230026
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:38:17.385856
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:38:17.543006
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:38:17.702498
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:38:17.859609
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:38:18.018074
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:38:18.173214
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:38:18.332613
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:38:46.527979, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:38:46.581006, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 3 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:38:46.672586, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:38:46.748951, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:38:46.791962, with 44 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:38:46.794485, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:38:46.803289, with 40 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:38:46.824429, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:38:46.904939, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 4 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:38:46.996554, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:38:47.022567, with 44 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:38:47.022968, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 3 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:38:47.060824, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 3 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:39:30.312234
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:39:30.393771
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:39:30.475282
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:39:30.555670
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:39:30.635893
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:39:30.716420
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:39:30.798870
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:39:30.880355
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:39:30.960750
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:39:31.042508
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:39:31.124629
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:39:31.204900
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:39:31.285582
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:40:00.294642, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:40:00.343065, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:40:00.359110, with 42 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:40:00.391328, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:40:00.453857, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:40:00.546282, with 44 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:40:00.558292, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:40:00.609027, with 44 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:40:00.668694, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:40:00.668998, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:40:00.683697, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 1 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:40:00.846955, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:40:00.895086, with 44 pings to the listing api, and 0 order pings to the order api, and ignored 3 throttles from api
+search_and_destroy - INFO - Started running query_v2_0_1 at 2021-01-26 18:40:18.128273
+search_and_destroy - INFO - Started running query_v2_0_2 at 2021-01-26 18:40:18.209669
+search_and_destroy - INFO - Started running query_v1_1 at 2021-01-26 18:40:18.289343
+search_and_destroy - INFO - Started running query_v1_2 at 2021-01-26 18:40:18.366911
+search_and_destroy - INFO - Started running query_v1_3 at 2021-01-26 18:40:18.446322
+search_and_destroy - INFO - Started running query_v1_4 at 2021-01-26 18:40:18.525801
+search_and_destroy - INFO - Started running query_v1_5 at 2021-01-26 18:40:18.608042
+search_and_destroy - INFO - Started running query_v3_0 at 2021-01-26 18:40:18.691417
+search_and_destroy - INFO - Started running query_v3_1 at 2021-01-26 18:40:18.771339
+search_and_destroy - INFO - Started running query_v3_2 at 2021-01-26 18:40:18.849088
+search_and_destroy - INFO - Started running query_v3_3 at 2021-01-26 18:40:18.932311
+search_and_destroy - INFO - Started running query_v3_4 at 2021-01-26 18:40:19.014448
+search_and_destroy - INFO - Started running query_v4_0 at 2021-01-26 18:40:19.094579
+search_and_destroy - INFO - Ended running query_v1_2 at 2021-01-26 18:40:48.200019, with 45 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_0 at 2021-01-26 18:40:48.241053, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v4_0 at 2021-01-26 18:40:48.260078, with 44 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_4 at 2021-01-26 18:40:48.355039, with 45 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_1 at 2021-01-26 18:40:48.355263, with 44 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v1_3 at 2021-01-26 18:40:48.387866, with 41 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_3 at 2021-01-26 18:40:48.480921, with 43 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_1 at 2021-01-26 18:40:48.597468, with 45 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v3_4 at 2021-01-26 18:40:48.597651, with 40 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v1_5 at 2021-01-26 18:40:48.655395, with 45 pings to the listing api, and 0 order pings to the order api, and ignored 2 throttles from api
+search_and_destroy - INFO - Ended running query_v3_2 at 2021-01-26 18:40:48.676067, with 45 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_2 at 2021-01-26 18:40:48.710318, with 46 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running query_v2_0_1 at 2021-01-26 18:40:48.716953, with 46 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 17:19:16.689760
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 17:19:16.763772
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:19:17.254883
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:19:17.255034
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:19:17.255118
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:19:17.255193
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:19:17.255261
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:19:17.255327
+search_and_destroy - INFO - available_cash of 2964 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 17:19:17.255509: [12051084, 12050493, 12041968, 11842007, 12034015, 12052602]
+search_and_destroy - INFO - Listings invested at 2021-01-31 17:19:17.255578: [12051084, 12050493, 12041968, 11842007, 12034015, 12052602]
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:19:17.326662
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:19:17.326818
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:19:17.326897
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:19:17.326967
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:19:17.327034
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:19:17.327100
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:19:17.712909
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:19:17.713065
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:19:17.713146
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:19:17.713219
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:19:17.713287
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:19:17.713379
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:19:17.804020
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:19:17.804165
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:19:17.804245
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:19:17.804316
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:19:17.804383
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:19:17.804449
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:19:18.396070
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:19:18.396228
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:19:18.396309
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:19:18.396380
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:19:18.396446
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:19:18.396511
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:19:18.583002
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:19:18.583133
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:19:18.583195
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:19:18.583249
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:19:18.583300
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:19:18.583357
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:19:19.078467
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:19:19.078616
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:19:19.078697
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:19:19.078772
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:19:19.078839
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:19:19.078905
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:19:19.199305
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:19:19.199505
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:19:19.199589
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:19:19.199663
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:19:19.199731
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:19:19.199798
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:19:19.783461
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:19:19.783612
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:19:19.783697
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:19:19.783769
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:19:19.783838
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:19:19.783905
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:19:19.845312
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:19:19.845458
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:19:19.845537
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:19:19.845608
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:19:19.845675
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:19:19.845741
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:19:20.427084
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:19:20.427233
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:19:20.427313
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:19:20.427384
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:19:20.427452
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:19:20.427518
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:19:20.527822
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:19:20.527967
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:19:20.528048
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:19:20.528124
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:19:20.528193
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:19:20.528260
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:19:21.138427
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:19:21.138593
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:19:21.138679
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:19:21.138743
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:19:21.138803
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:19:21.138862
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:19:21.216686
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:19:21.216835
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:19:21.216918
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:19:21.216989
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:19:21.217056
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:19:21.217121
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:19:21.817998
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:19:21.818271
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:19:21.818447
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:19:21.818552
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:19:21.818647
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:19:21.818730
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:19:21.888940
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:19:21.889090
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:19:21.889156
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:19:21.889208
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:19:21.889257
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:19:21.889305
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 17:19:22.032926, with 8 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 17:19:22.146859, with 8 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 17:21:53.953211
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 17:21:54.028170
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:21:54.541250
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:21:54.541405
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:21:54.541496
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:21:54.541580
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:21:54.541655
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:21:54.541726
+search_and_destroy - INFO - available_cash of 2964 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 17:21:54.541963: [12051084, 12050493, 12041968, 11842007, 12034015, 12052602]
+search_and_destroy - INFO - Listings invested at 2021-01-31 17:21:54.542092: [12051084, 12050493, 12041968, 11842007, 12034015, 12052602]
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:21:54.547356
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:21:54.547459
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:21:54.547525
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:21:54.547680
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:21:54.547767
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:21:54.547829
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:21:55.058963
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:21:55.059118
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:21:55.059371
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:21:55.059466
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:21:55.059545
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:21:55.059626
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:21:55.180977
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:21:55.181102
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:21:55.181168
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:21:55.181226
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:21:55.181281
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:21:55.181335
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 17:21:55.224548, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 17:21:55.394672, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 17:42:21.456184
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 17:42:21.532198
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:42:21.968498
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:42:21.968615
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:42:21.968680
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:42:21.968735
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:42:21.968787
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:42:21.968839
+search_and_destroy - INFO - available_cash of 2964 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 17:42:21.968994: [11842007, 12041968, 12052602, 12034015, 12051084, 12050493]
+search_and_destroy - INFO - Listings invested at 2021-01-31 17:42:21.969055: [11842007, 12041968, 12052602, 12034015, 12051084, 12050493]
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:42:21.980498
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:42:21.980596
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:42:21.980652
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:42:21.980702
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:42:21.980748
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:42:21.980795
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:42:22.390793
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:42:22.390937
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:42:22.391003
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:42:22.391061
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:42:22.391115
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:42:22.391168
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:42:22.627068
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:42:22.627256
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:42:22.627362
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:42:22.627423
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:42:22.627478
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:42:22.627531
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 17:42:22.653518, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 17:42:22.901224, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 17:44:49.737629
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 17:44:49.814290
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:44:50.225220
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:44:50.225370
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:44:50.225448
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:44:50.225520
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:44:50.225586
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:44:50.225650
+search_and_destroy - INFO - available_cash of 2964 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 17:44:50.225830: [12052602, 12034015, 12051084, 11842007, 12050493, 12041968]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12052602, 'bid_amount': 70}, {'listing_id': 12034015, 'bid_amount': 70}, {'listing_id': 12051084, 'bid_amount': 70}, {'listing_id': 11842007, 'bid_amount': 70}, {'listing_id': 12050493, 'bid_amount': 70}, {'listing_id': 12041968, 'bid_amount': 70}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 17:44:50.226026: [12052602, 12034015, 12051084, 11842007, 12050493, 12041968]
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:44:50.307650
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:44:50.307820
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:44:50.307902
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:44:50.307975
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:44:50.308043
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:44:50.308110
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:44:50.643737
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:44:50.643884
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:44:50.643963
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:44:50.644032
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:44:50.644097
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:44:50.644161
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 17:44:50.908524, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:44:50.969055
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:44:50.969234
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:44:50.969315
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:44:50.969386
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:44:50.969459
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:44:50.969525
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 17:44:51.178060, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 17:45:32.201537
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 17:45:32.276838
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:45:32.705854
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:45:32.706003
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:45:32.706083
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:45:32.706151
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:45:32.706218
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:45:32.706282
+search_and_destroy - INFO - available_cash of 2964 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 17:45:32.706466: [12050493, 12041968, 12052602, 11842007, 12034015, 12051084]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12050493, 'bid_amount': 70}, {'listing_id': 12041968, 'bid_amount': 70}, {'listing_id': 12052602, 'bid_amount': 70}, {'listing_id': 11842007, 'bid_amount': 70}, {'listing_id': 12034015, 'bid_amount': 70}, {'listing_id': 12051084, 'bid_amount': 70}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 17:45:32.706627: [12050493, 12041968, 12052602, 11842007, 12034015, 12051084]
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:45:32.755287
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:45:32.755450
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:45:32.755529
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:45:32.755597
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:45:32.755663
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:45:32.755727
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:45:33.166276
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:45:33.166427
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:45:33.166507
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:45:33.166579
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:45:33.166648
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:45:33.166715
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 17:45:33.390441, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:45:33.427218
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:45:33.427756
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:45:33.427873
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:45:33.427944
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:45:33.428012
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:45:33.428078
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 17:45:33.642350, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 17:45:58.134093
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 17:45:58.210565
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:45:58.662034
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:45:58.662180
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:45:58.662259
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:45:58.662330
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:45:58.662397
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:45:58.662463
+search_and_destroy - INFO - available_cash of 2964 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 17:45:58.662648: [12050493, 12041968, 12052602, 11842007, 12051084, 12034015]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12050493, 'bid_amount': 105.0}, {'listing_id': 12041968, 'bid_amount': 105.0}, {'listing_id': 12052602, 'bid_amount': 105.0}, {'listing_id': 11842007, 'bid_amount': 105.0}, {'listing_id': 12051084, 'bid_amount': 105.0}, {'listing_id': 12034015, 'bid_amount': 105.0}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 17:45:58.662825: [12050493, 12041968, 12052602, 11842007, 12051084, 12034015]
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:45:58.724173
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:45:58.724341
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:45:58.724422
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:45:58.724493
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:45:58.724560
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:45:58.724626
+search_and_destroy - INFO - filter example_query found listing: 12052602 at 2021-01-31 17:45:59.124486
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 17:45:59.124635
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 17:45:59.124716
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 17:45:59.124788
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 17:45:59.124856
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 17:45:59.124922
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 17:45:59.346806, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 17:45:59.368275
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 17:45:59.368442
+search_and_destroy - INFO - filter example_query1 found listing: 12052602 at 2021-01-31 17:45:59.368532
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 17:45:59.368604
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 17:45:59.368671
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 17:45:59.368738
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 17:45:59.576591, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 19:01:09.913644
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 19:01:09.988097
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 19:01:10.425411
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 19:01:10.425557
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 19:01:10.425637
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 19:01:10.425705
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 19:01:10.425769
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 19:01:10.441457
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 19:01:10.441565
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 19:01:10.441643
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 19:01:10.441711
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 19:01:10.441775
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 19:01:11.122440
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 19:01:11.122586
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 19:01:11.122667
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 19:01:11.122737
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 19:01:11.122803
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 19:01:11.354226, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 19:02:12.525072
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 19:02:12.597875
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 19:02:13.010715
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 19:02:13.010857
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 19:02:13.010936
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 19:02:13.011005
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 19:02:13.011070
+search_and_destroy - INFO - Listings to invest at 2021-01-31 19:02:13.011173: [11842007, 12051084, 12050493, 12041968, 12034015]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 11842007, 'bid_amount': 70}, {'listing_id': 12051084, 'bid_amount': 70}, {'listing_id': 12050493, 'bid_amount': 70}, {'listing_id': 12041968, 'bid_amount': 70}, {'listing_id': 12034015, 'bid_amount': 70}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 19:02:13.011333: [11842007, 12051084, 12050493, 12041968, 12034015]
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 19:02:13.050336
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 19:02:13.050484
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 19:02:13.050566
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 19:02:13.050636
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 19:02:13.050703
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 19:02:13.474980
+search_and_destroy - INFO - filter example_query found listing: 11842007 at 2021-01-31 19:02:13.475124
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 19:02:13.475204
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 19:02:13.475273
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 19:02:13.475339
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 19:02:13.694238, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 19:02:13.709209
+search_and_destroy - INFO - filter example_query1 found listing: 11842007 at 2021-01-31 19:02:13.709383
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 19:02:13.709447
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 19:02:13.709502
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 19:02:13.709554
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 19:02:13.964769, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 21:13:03.027041
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 21:13:03.102338
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:13:03.531036
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:13:03.531183
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:13:03.531262
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:13:03.531332
+search_and_destroy - INFO - available_cash of 2964 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 21:13:03.531494: [12034015, 12050493, 12051084, 12041968]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12034015, 'bid_amount': 70}, {'listing_id': 12050493, 'bid_amount': 70}, {'listing_id': 12051084, 'bid_amount': 70}, {'listing_id': 12041968, 'bid_amount': 70}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 21:13:03.531646: [12034015, 12050493, 12051084, 12041968]
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:13:03.603269
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:13:03.603417
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:13:03.603494
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:13:03.603561
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:13:03.990208
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:13:03.990359
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:13:03.990438
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:13:03.990506
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 21:13:04.216486, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:13:04.245572
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:13:04.245729
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:13:04.245807
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:13:04.245876
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 21:13:04.469427, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 21:54:28.262918
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 21:54:28.336947
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:54:28.740611
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:54:28.740757
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:54:28.740839
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:54:28.740909
+search_and_destroy - INFO - available_cash of 2964 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 21:54:28.741080: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12050493, 'bid_amount': 70}, {'listing_id': 12051084, 'bid_amount': 70}, {'listing_id': 12034015, 'bid_amount': 70}, {'listing_id': 12041968, 'bid_amount': 70}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 21:54:28.741238: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:54:28.884253
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:54:28.884504
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:54:28.884869
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:54:28.884961
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:54:29.541935
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:54:29.542104
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:54:29.542190
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:54:29.542262
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 21:54:29.542412, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:54:29.759802
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:54:29.760128
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:54:29.760311
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:54:29.760390
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 21:54:29.760605, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 21:55:01.460428
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 21:55:01.535441
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:55:01.957952
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:55:01.958096
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:55:01.958174
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:55:01.958244
+search_and_destroy - INFO - available_cash of 280 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 21:55:01.958405: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12050493, 'bid_amount': 70}, {'listing_id': 12051084, 'bid_amount': 70}, {'listing_id': 12034015, 'bid_amount': 70}, {'listing_id': 12041968, 'bid_amount': 70}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 21:55:01.958557: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:55:01.965057
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:55:01.965145
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:55:01.965208
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:55:01.965263
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:55:02.420324
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:55:02.420473
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:55:02.420551
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:55:02.420619
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 21:55:02.641228, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:55:02.684892
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:55:02.685094
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:55:02.685188
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:55:02.685260
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 21:55:02.900396, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 21:55:12.212405
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 21:55:12.285529
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:55:12.669384
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:55:12.669537
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:55:12.669618
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:55:12.669687
+search_and_destroy - INFO - 1: 279 is not enough available cash for desired bid amount of 70, for 4 listings, modifying to 69.75
+search_and_destroy - INFO - Listings to invest at 2021-01-31 21:55:12.669863: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12050493, 'bid_amount': 69.75}, {'listing_id': 12051084, 'bid_amount': 69.75}, {'listing_id': 12034015, 'bid_amount': 69.75}, {'listing_id': 12041968, 'bid_amount': 69.75}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 21:55:12.670022: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:55:12.741899
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:55:12.742035
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:55:12.742113
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:55:12.742184
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:55:13.105289
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:55:13.105453
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:55:13.105536
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:55:13.105609
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 21:55:13.354133, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:55:13.426548
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:55:13.426700
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:55:13.426780
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:55:13.426848
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 21:55:13.653829, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 21:55:31.867882
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 21:55:31.944679
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:55:32.341906
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:55:32.342056
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:55:32.342137
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:55:32.342207
+search_and_destroy - INFO - 1: 100 is not enough available cash for desired bid amount of 70, for 4 listings, modifying to 25.0
+search_and_destroy - INFO - Listings to invest at 2021-01-31 21:55:32.342384: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12050493, 'bid_amount': 25.0}, {'listing_id': 12051084, 'bid_amount': 25.0}, {'listing_id': 12034015, 'bid_amount': 25.0}, {'listing_id': 12041968, 'bid_amount': 25.0}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 21:55:32.342542: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:55:32.416868
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:55:32.417004
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:55:32.417084
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:55:32.417152
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:55:32.801279
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:55:32.801456
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:55:32.801542
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:55:32.801610
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 21:55:33.027595, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:55:33.087419
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:55:33.087596
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:55:33.087678
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:55:33.087748
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 21:55:33.310707, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 21:55:43.479855
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 21:55:43.555710
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:55:43.921672
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:55:43.921823
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:55:43.921904
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:55:43.921974
+search_and_destroy - INFO - 2: 90 is not enough available cash for desired bid amount of 70, for 4  listings, modifying to bids of 30.0 for 3 listings
+search_and_destroy - INFO - Listings to invest at 2021-01-31 21:55:43.922158: [12051084, 12034015, 12041968]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12051084, 'bid_amount': 30.0}, {'listing_id': 12034015, 'bid_amount': 30.0}, {'listing_id': 12041968, 'bid_amount': 30.0}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 21:55:43.922315: [12051084, 12034015, 12041968]
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:55:43.984590
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:55:43.984725
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:55:43.984804
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:55:43.984874
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:55:44.390156
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:55:44.390297
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:55:44.390367
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:55:44.390424
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 21:55:44.606936, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:55:44.742452
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:55:44.742596
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:55:44.742674
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:55:44.742742
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 21:55:44.923524, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 21:57:45.030589
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 21:57:45.102920
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:57:45.640242
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:57:45.640389
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:57:45.640468
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:57:45.640536
+search_and_destroy - INFO - 2: 90 is not enough available cash for desired bid amount of 70, for 4  listings, modifying to bids of 30.0 for 3 listings
+search_and_destroy - INFO - Listings to invest at 2021-01-31 21:57:45.640718: [12051084, 12034015, 12041968]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12051084, 'bid_amount': 30.0}, {'listing_id': 12034015, 'bid_amount': 30.0}, {'listing_id': 12041968, 'bid_amount': 30.0}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 21:57:45.640871: [12051084, 12034015, 12041968]
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:57:45.695643
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:57:45.695792
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:57:45.695873
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:57:45.695942
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:57:46.335684
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:57:46.335832
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:57:46.335912
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:57:46.335982
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 21:57:46.336139, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:57:46.442379
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:57:46.442519
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:57:46.442596
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:57:46.442665
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 21:57:46.463818, with 2 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - Started running example_query at 2021-01-31 21:58:00.860542
+search_and_destroy - INFO - Started running example_query1 at 2021-01-31 21:58:00.936570
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:58:01.780410
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:58:01.780564
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:58:01.780646
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:58:01.780717
+search_and_destroy - INFO - available_cash of 1000 is enough for normal bidding submission
+search_and_destroy - INFO - Listings to invest at 2021-01-31 21:58:01.780889: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - request = {'bid_requests': [{'listing_id': 12050493, 'bid_amount': 105.0}, {'listing_id': 12051084, 'bid_amount': 105.0}, {'listing_id': 12034015, 'bid_amount': 105.0}, {'listing_id': 12041968, 'bid_amount': 105.0}]}
+search_and_destroy - INFO - Listings invested at 2021-01-31 21:58:01.781062: [12050493, 12051084, 12034015, 12041968]
+search_and_destroy - INFO - filter example_query1 found listing: 12050493 at 2021-01-31 21:58:01.963617
+search_and_destroy - INFO - filter example_query1 found listing: 12051084 at 2021-01-31 21:58:01.963738
+search_and_destroy - INFO - filter example_query1 found listing: 12034015 at 2021-01-31 21:58:01.963804
+search_and_destroy - INFO - filter example_query1 found listing: 12041968 at 2021-01-31 21:58:01.963859
+search_and_destroy - INFO - Ended running example_query1 at 2021-01-31 21:58:01.963989, with 1 pings to the listing api, and 0 order pings to the order api, and ignored 0 throttles from api
+search_and_destroy - INFO - filter example_query found listing: 12041968 at 2021-01-31 21:58:02.694287
+search_and_destroy - INFO - filter example_query found listing: 12034015 at 2021-01-31 21:58:02.694434
+search_and_destroy - INFO - filter example_query found listing: 12050493 at 2021-01-31 21:58:02.694516
+search_and_destroy - INFO - filter example_query found listing: 12051084 at 2021-01-31 21:58:02.694586
+search_and_destroy - INFO - Ended running example_query at 2021-01-31 21:58:02.694690, with 2 pings to the listing api, and 1 order pings to the order api, and ignored 0 throttles from api

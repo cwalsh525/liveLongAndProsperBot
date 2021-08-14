@@ -116,7 +116,7 @@ class BuildMessage:
 
     def display_bids_placed_today_by_prosper_rating(self):
         query = """
-        select lfu.prosper_rating, count(*)
+        select lfu.prosper_rating, count(distinct br.listing_id) -- distinct to account for multiple filters finding same listing
         from bid_requests br
         join listings_filters_used lfu
         on br.listing_id = lfu.listing_id
@@ -154,6 +154,7 @@ class BuildMessage:
         note_ownership = 0
         note_count = 0
         for note in notes_data:
+
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] == 0:
                 total_principal += note['principal_balance_pro_rata_share']
                 note_ownership += note['note_ownership_amount']

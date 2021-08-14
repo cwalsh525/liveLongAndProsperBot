@@ -245,5 +245,8 @@ class SearchAndDestroy:
             else:
                 normal_op_msg = f"available_cash of {available_cash} is enough for normal bidding submission"
                 logging.log_it_info(self.logger, normal_op_msg)
+                new_amt = 0
+                for l in listings_list:
+                    new_amt += self.bid_amt * default.config["bid_size"]["prosper_rating"][filters_used[l][1][0]]
 
             return new_listing_list, new_amt, len(new_listing_list) * new_amt # May be the same as original

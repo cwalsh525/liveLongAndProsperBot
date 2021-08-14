@@ -29,7 +29,7 @@ header = utils.http_header_build(access_token)
 
 today = datetime.today().strftime('%Y-%m-%d')
 
-def create_email_message(from_address, to_address, subject, body, file_location_defaults, file_location_annualized_returns):
+def create_email_message(from_address, to_address, subject, body, file_location_defaults):
     # msg = EmailMessage()
     msg = MIMEMultipart()
     msg['From'] = from_address
@@ -39,10 +39,8 @@ def create_email_message(from_address, to_address, subject, body, file_location_
     msg.attach(msgtext)
     # picText = MIMEText('<b>%s</b><br><img src="cid:%s"><br>' % ("", file_location), 'html')
     picText1 = MIMEText('<b>%s</b><br><img src="cid:%s"><br>' % ("", file_location_defaults), 'html')
-    picText2 = MIMEText('<b>%s</b><br><img src="cid:%s"><br>' % ("", file_location_annualized_returns), 'html')
     # msg.attach(picText)  # Added, and edited the previous line
     msg.attach(picText1)
-    msg.attach(picText2)
     # fp = open(file_location, 'rb')
     # img = MIMEImage(fp.read())
     # fp.close()
@@ -53,11 +51,6 @@ def create_email_message(from_address, to_address, subject, body, file_location_
     fp1.close()
     img1.add_header('Content-ID', '<{}>'.format(file_location_defaults))
     msg.attach(img1)
-    fp2 = open(file_location_annualized_returns, 'rb')
-    img2 = MIMEImage(fp2.read())
-    fp2.close()
-    img2.add_header('Content-ID', '<{}>'.format(file_location_annualized_returns))
-    msg.attach(img2)
     # add avg daily outstanding yield chart
     return msg
 
@@ -67,18 +60,15 @@ listing = Listing(header=header)
 # path_to_save = default.base_path + '/log/daily_metrics.png'
 path_to_save_defaults = default.base_path + '/log/daily_defaults.png'
 path_to_save_annualized_returns = default.base_path + '/log/daily_annualized_returns.png'
-c = CreateDailyMetricsTable(start_date="2020-03-02", path_to_save_defaults=path_to_save_defaults, path_to_save_annualized_returns=path_to_save_annualized_returns)
-# c.create_line_graph_metrics_png()
+c = CreateDailyMetricsTable(start_date="2020-03-02", path_to_save_defaults=path_to_save_defaults)
 c.create_default_tracking_line_graph_png()
-c.create_annualized_returns_line_graph()
 
 msg = create_email_message(
     from_address=default.config['email']['send_from_email'],
     to_address=default.config['email']['send_to_email'],
     subject='Prosper default tracking for {date}'.format(date=today),
     body=BuildMessage(accounts, listing).build_complete_message(),
-    file_location_defaults=path_to_save_defaults,
-    file_location_annualized_returns=path_to_save_annualized_returns
+    file_location_defaults=path_to_save_defaults
 )
 
 with smtplib.SMTP('smtp.gmail.com', port=587) as smtp_server:

@@ -8,14 +8,13 @@ import matplotlib.pyplot as plt
 
 class CreateDailyMetricsTable:
 
-    def __init__(self, start_date, path_to_save_defaults, path_to_save_annualized_returns):
+    def __init__(self, start_date, path_to_save_defaults):
         self.connect = Connect()
         self.today = datetime.today().strftime("%Y-%m-%d")
         self.table_name = "daily_notes_metrics_{date}".format(date=datetime.today().strftime("%Y-%m-%d").replace("-", "_"))
         self.start_date = start_date
         # self.path_to_save = path_to_save
         self.path_to_save_defaults = path_to_save_defaults
-        self.path_to_save_annualized_returns = path_to_save_annualized_returns
 
     # Depreciated
     # def create_table(self):
@@ -129,28 +128,29 @@ class CreateDailyMetricsTable:
         plt.legend()
 
         plt.savefig(self.path_to_save_defaults)
+        print("saved")
 
-    def create_annualized_returns_line_graph(self):
-        query = "select * from daily_annualized_returns;"
-        results = self.connect.execute_select(query)
-
-        dates = []
-        annualized_returns = []
-        annualized_returns_late_equals_default = []
-        for t in results:
-            dates.append(t[0])
-            annualized_returns.append(t[1])
-            annualized_returns_late_equals_default.append(t[2])
-
-        plt.figure(3)
-        plt.plot(dates, annualized_returns, label="annualized_returns")
-        plt.plot(dates, annualized_returns_late_equals_default, label="annualized_returns_late_equals_default")
-        plt.title("annualized_returns Over Time {start_date} - {end_date}".format(start_date=dates[0], end_date=dates[-1]))
-        plt.xlabel("Date")
-        plt.ylabel("annualized_returns %")
-        plt.legend()
-
-        plt.savefig(self.path_to_save_annualized_returns)
+    # def create_annualized_returns_line_graph(self):
+    #     query = "select * from daily_annualized_returns;"
+    #     results = self.connect.execute_select(query)
+    #
+    #     dates = []
+    #     annualized_returns = []
+    #     annualized_returns_late_equals_default = []
+    #     for t in results:
+    #         dates.append(t[0])
+    #         annualized_returns.append(t[1])
+    #         annualized_returns_late_equals_default.append(t[2])
+    #
+    #     plt.figure(3)
+    #     plt.plot(dates, annualized_returns, label="annualized_returns")
+    #     plt.plot(dates, annualized_returns_late_equals_default, label="annualized_returns_late_equals_default")
+    #     plt.title("annualized_returns Over Time {start_date} - {end_date}".format(start_date=dates[0], end_date=dates[-1]))
+    #     plt.xlabel("Date")
+    #     plt.ylabel("annualized_returns %")
+    #     plt.legend()
+    #
+    #     plt.savefig(self.path_to_save_annualized_returns)
 
 
     # def execute_table(self):

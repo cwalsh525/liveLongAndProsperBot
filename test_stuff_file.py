@@ -9,11 +9,7 @@ import log.logging as log
 import config.default as default
 import utils.utils as utils
 from metrics.connect import Connect
-from listings.listing import Listing
 
-from orders.orders import Orders
-
-from metrics.annualized_returns import AnnualizedReturns
 from metrics.tracking_metrics import TrackingMetrics
 from metrics.reporting_metrics.notes_metrics import NotesMetrics
 from metrics.reporting_metrics.daily_metric_scripts.create_daily_metrics_table import CreateDailyMetricsTable
@@ -139,7 +135,7 @@ header = utils.http_header_build(access_token)
 # [10770601, 10640798, 10799967, 10850400, 10565312, 10835395]
 
 
-TrackingMetrics().pull_note_response("1432468-80")
+TrackingMetrics().pull_note_response("1410555-142")
 
 # current_date = datetime.today()
 # last_month_date = (current_date - timedelta(days=(current_date.day)))

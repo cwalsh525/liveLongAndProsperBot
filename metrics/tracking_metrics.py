@@ -12,8 +12,6 @@ import log.logging as log
 
 from token_gen.token_generation import TokenGeneration
 from notes.update_notes import UpdateNotes
-from accounts.accounts import Accounts
-from metrics.annualized_returns import AnnualizedReturns
 
 """
 This class handles all inserts and updates to the backend tracking database
@@ -130,44 +128,9 @@ class TrackingMetrics(Connect):
     #     note_ids = self.populate_list_from_single_column_sql_query(select_query)
     #     return note_ids
 
-    #TODO make its own class?
-    # This will bug if you deposit, and then after that, but before deposit has cleared (it takes a week) do an instant transfer deposit.
-    # This is because 'last_deposit_date' is not the date it clears but the date you initiate the transfer
-    def update_deposits_and_withdrawls_table(self):
-        account = Accounts(self.header)
-        account_response = account.get_account_response()
-        deposit_query = "select amount, transaction_date from deposits_and_withdrawls where id = (select max(id) from deposits_and_withdrawls where amount > 0);"
-        withdrawl_query = "select amount, transaction_date from deposits_and_withdrawls where id = (select max(id) from deposits_and_withdrawls where amount < 0);"
-        deposit_results = self.execute_select(deposit_query)
-        withdrawl_results = self.execute_select(withdrawl_query)
-        last_deposit_date_from_prosper = datetime.datetime.strptime(account_response['last_deposit_date'][0:10], "%Y-%m-%d").date()
-        last_deposit_amount = deposit_results[0][0]
-        last_deposit_date = deposit_results[0][1]
-
-        last_withdrawl_date_from_prosper = datetime.datetime.strptime(account_response['last_withdraw_date'][0:10], "%Y-%m-%d").date()
-        last_withdraw_amount = withdrawl_results[0][0]
-        last_withdrawl_date = withdrawl_results[0][1]
-
-        if float(last_deposit_amount) != account_response['last_deposit_amount'] or last_deposit_date != last_deposit_date_from_prosper:
-            self.logger.info("inserting new deposit record of {dep} on {date} ".format(dep=account_response['last_deposit_amount'], date=last_deposit_date_from_prosper))
-            self.execute_insert_or_update("insert into deposits_and_withdrawls (transaction_date, amount, created_ts, modified_ts) values ('{date}', {amt}, '{time}' ,null)"
-                                          .format(date=last_deposit_date_from_prosper, amt=account_response['last_deposit_amount'], time=datetime.datetime.today()))
-        else:
-            print("We good bro")
-
-        if last_withdraw_amount != (account_response['last_withdraw_amount'] * -1) or last_withdrawl_date != last_withdrawl_date_from_prosper:
-            self.logger.info("inserting new withdrawl record of {dep} on {date} ".format(dep=account_response['last_withdraw_amount'], date=last_withdrawl_date_from_prosper))
-            self.execute_insert_or_update("insert into deposits_and_withdrawls (transaction_date, amount, created_ts, modified_ts) values ('{date}', {amt}, '{time}' ,null)"
-                                          .format(date=account_response['last_withdraw_date'][0:10], amt=account_response['last_withdraw_amount'] * -1, time=datetime.datetime.today()))
-        else:
-            print("We good bro")
-
     #TODO add error handling!
     #TODO clean this stuff up
     def execute(self):
-        self.update_deposits_and_withdrawls_table() # updates deposits_and_withdrawls_table table KNOWN BUG, can only handle 1 daily withdrawl and 1 daily deposit KNOWN BUG if you transfer and its not instant, and then do another transfer and it is instant... it messes things up.
-        annual_returns = AnnualizedReturns(header=self.header)
-        annual_returns.update_annualized_returns_table() # calculates and updates the annualized_returns_table for today
 
         order_ids = self.build_order_ids_to_get() # list of order_ids that aren't complete
         listing_ids = self.build_pending_listing_ids() # list of pending listings

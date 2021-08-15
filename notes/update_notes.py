@@ -12,6 +12,7 @@ import notes.note_utils as note_util
 from utils import sql_query_utils
 import log.logging as log
 
+
 class UpdateNotes:
 
     def __init__(self):

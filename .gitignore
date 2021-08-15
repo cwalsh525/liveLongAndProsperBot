@@ -4,5 +4,4 @@ config/default_config.json
 .idea/*
 /.idea/*
 *.xml
-log/*.log
-log/*.png
+log/*

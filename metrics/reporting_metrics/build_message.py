@@ -9,11 +9,10 @@ from texttable import Texttable
 This class builds the message to be sent to an email for tracking purposes
 """
 class BuildMessage:
-    def __init__(self, accounts, listing):
+    def __init__(self, accounts):
         self.message = ""
         self.notes = NotesMetrics(datetime.today())
         self.accounts = accounts
-        self.listing = listing
 
     def display_default_rate_tracking(self):
         table = Texttable()

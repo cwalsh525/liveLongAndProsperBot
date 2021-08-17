@@ -68,7 +68,7 @@ class SearchAndDestroy:
                                                  query, prosper_rating)  # populates track_filters dict to be inserted into psql later
                             if listing_number not in already_invested_listings:
                                 listings_found.append({"listing_number": listing_number, "prosper_rating": prosper_rating})
-                                logging.log_it_info(self.logger, "filter {query} found listing: {listing} at {current_time}".format(query=query, listing=listing_number, current_time=datetime.now()))
+                                logging.log_it_info(self.logger, "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(query=query, listing=listing_number, prosper_rating=prosper_rating, current_time=datetime.now()))
 
                 i_got_throttled = False
             else:
@@ -206,6 +206,7 @@ class SearchAndDestroy:
         # Not enough for normal bids but more than $25 cash:
             # enough for at least $25 per bid and just total cash / num listings to invest in
             # Not Enough for at least $25 per bid and must drop bid/s
+        # BUG: If a listing gets submitted, but it comes back expired, it will not add that cash back to available cash
         investment_number = len(listings_list)
         if investment_number == 0:  # Handles no listings
             return listings_list, bid_amt, available_cash  # [], self.bid_amt, no cash used

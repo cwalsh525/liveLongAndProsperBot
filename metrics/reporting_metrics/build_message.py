@@ -266,16 +266,6 @@ class BuildMessage:
         self.message += table.draw()
         self.message += "\n"
 
-
-    def display_current_annualized_return(self):
-        query = "select annualized_return, annualized_return_late_equals_default from daily_annualized_returns where date in (select max(date) from daily_annualized_returns);"
-        results = Connect().execute_select(query)
-        for r in results:
-            self.message += """
-Current annualized_return: {annualized_return}%
-annualized_return_minus_late: {annualized_return_late_equals_default}%
-""".format(annualized_return=r[0], annualized_return_late_equals_default=r[1])
-
     def build_complete_message(self):
         self.display_bids_placed_today()
         self.display_bids_placed_today_by_rating()
@@ -285,7 +275,6 @@ annualized_return_minus_late: {annualized_return_late_equals_default}%
         self.display_note_count_by_rating("CURRENT")
         self.display_note_count_total()
         self.display_average_yield()
-        self.display_current_annualized_return()
         self.display_default_rate_tracking()
         self.display_late_info()
         self.display_available_cash_balance()

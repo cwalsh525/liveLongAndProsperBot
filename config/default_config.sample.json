@@ -22,16 +22,11 @@
     "local": "/Users/Username/Documents/Whatever/liveLongAndProsperFolder/liveLongAndProsperBot",
     "prod": "/home/username/liveLongAndProsperBot"
   },
-  "bid_size": {
-    "bid": 75,
-    "implement_increasing_recurring_bid": true,
-    "starting_bid_date": "2021-02-01",
-    "weekly_increase_amt": 1,
-    "prosper_rating": {
-      "B": 1,
-      "C": 1.8,
-      "D": 2,
-      "E": 1.6
-    }
+  "bid_amt" : {
+    "B": 30,
+    "C": 50,
+    "D": 120,
+    "E": 120,
+    "HR": 80
   }
 }

@@ -165,8 +165,14 @@ header = utils.http_header_build(access_token)
 #     print(n['note_status_description'])
 
 
-note_status_description_dict = NotesMetrics('2022-10-11').get_notes_by_rating_data()
-print(note_status_description_dict)
+# note_status_description_dict = NotesMetrics('2022-10-11').
+# print(note_status_description_dict)
+
+projected_default_dict, projected_default_dict_prosper, actual_default_dict, actual_late_dict = NotesMetrics('2022-10-11').default_rate_tracking()
+print(projected_default_dict)
+print(projected_default_dict_prosper)
+print(actual_default_dict)
+print(actual_late_dict)
 
 
 # current_date = datetime.today()

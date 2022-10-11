@@ -17,7 +17,7 @@ class BuildMessage:
     def display_default_rate_tracking(self):
         table = Texttable()
         table.add_row(["Rating", "Expected", "BL", "Actual", "% +/-", "Diff", "Diff BL", "Late"])
-        projected_default_dict, projected_default_dict_prosper, actual_default_dict, actual_default_rates_dict, actual_late_dict = self.notes.default_rate_tracking()
+        projected_default_dict, projected_default_dict_prosper, actual_default_dict, actual_late_dict = self.notes.default_rate_tracking()
         total_expected_defaulted_v1 = 0
         total_expected_defaulted_prosper = 0
         total_actual_num = 0
@@ -175,10 +175,10 @@ class BuildMessage:
         last_month_date = (current_date - timedelta(days=(current_date.day)))
 
         notes_today = NotesMetrics(current_date)
-        projected_default_dict_this_month, _, _, _, _ = notes_today.default_rate_tracking()
+        projected_default_dict_this_month, _, _, _ = notes_today.default_rate_tracking()
 
         notes_last_month = NotesMetrics(last_month_date)
-        projected_default_dict_last_month, _, _, _, _ = notes_last_month.default_rate_tracking()
+        projected_default_dict_last_month, _, _, _ = notes_last_month.default_rate_tracking()
 
         default_count_this_month = 0
         default_count_last_month = 0
@@ -274,8 +274,8 @@ class BuildMessage:
         self.display_notes_purchased_last_X_days_by_rating(30)
         self.display_note_count_by_rating("CURRENT")
         self.display_note_count_total()
-        # self.display_average_yield()
-        # self.display_default_rate_tracking()
+        self.display_average_yield()
+        self.display_default_rate_tracking()
         self.display_late_info()
         self.display_available_cash_balance()
         return self.message

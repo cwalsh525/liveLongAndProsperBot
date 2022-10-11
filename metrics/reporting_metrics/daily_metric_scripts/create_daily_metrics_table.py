@@ -44,7 +44,7 @@ class CreateDailyMetricsTable:
 
         for day in dates_to_run:
             notes = NotesMetrics(day)
-            projected_default_dict, projected_default_dict_prosper, actual_default_dict, _, _ = notes.default_rate_tracking()
+            projected_default_dict, projected_default_dict_prosper, actual_default_dict, _ = notes.default_rate_tracking()
             projected_default.append(total_defaults(projected_default_dict))
             projected_default_prosper.append(total_defaults(projected_default_dict_prosper))
             actual_default.append(total_defaults(actual_default_dict))

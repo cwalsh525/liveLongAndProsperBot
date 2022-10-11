@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="85a13f32-5688-4ba8-9899-7430de6ce586" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/metrics/reporting_metrics/build_message.py" beforeDir="false" afterPath="$PROJECT_DIR$/metrics/reporting_metrics/build_message.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metrics/reporting_metrics/daily_metric_scripts/create_daily_metrics_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/metrics/reporting_metrics/daily_metric_scripts/create_daily_metrics_table.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metrics/reporting_metrics/notes_metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/metrics/reporting_metrics/notes_metrics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_stuff_file.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_stuff_file.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metrics_email.py" beforeDir="false" afterPath="$PROJECT_DIR$/metrics_email.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

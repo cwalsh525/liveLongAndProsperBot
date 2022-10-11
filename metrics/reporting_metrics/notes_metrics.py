@@ -196,6 +196,8 @@ class NotesMetrics:
             actual_default_dict[k] += notes_data['CHARGEOFF'][k]['total_count']
         for k in notes_data['LATE']:
             actual_default_dict[k] += notes_data['LATE'][k]['total_count']
+        for k in notes_data['PROSPERBUYBACKBUG']:
+            actual_default_dict[k] += notes_data['PROSPERBUYBACKBUG'][k]['total_count']
         # Builds actual_late_dict
         for k in notes_data['LATE']:
             actual_late_dict[k] = notes_data['LATE'][k]['total_count']

@@ -40,9 +40,11 @@ class UpdateNotes:
                         or (n['note_status_description'] == "CHARGEOFF" and k == "days_past_due") \
                         or (n['note_status_description'] == "DEFAULTED" and k == "age_in_months") \
                         or (n['note_status_description'] == "DEFAULTED" and k == "days_past_due") \
+                        or (n['note_status_description'] == "PROSPERBUYBACKBUG") \
                         :
                     return False
                 # Ignore COMPLETED loans if its just updating the age_in_months
+                # Ignore PROSPERBUYBACKBUG as prosper bought those back and keeps chaning to CURRENT
                 else:
                     if k != "accrued_interest": # Ignore accrued_interest since it changes daily.
                         if str(api_record[k]) != str(n[k]):  # cast to string to make the same

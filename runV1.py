@@ -24,6 +24,10 @@ order_header = utils.http_header_build_orders(access_token)
 
 account = Accounts(header)
 cash_balance = math.floor(account.get_account_response()['available_cash_balance'])
+if cash_balance > 2000:
+    bid_amt = config["bid_amt_high"]
+else:
+    bid_amt = config["bid_amt_low"]
 
 # time.sleep(10) # Typically takes ~ 20, 25 seconds to post, but there are outliers. Running a loop seems more effective at getting the most amount of listings vs searhcing for new listings and then running.
 
@@ -43,7 +47,7 @@ SearchAndDestroy(order_header=order_header,
                  listing_header=header,
                  time_to_run_for=60 * 4,
                  filters_dict=filters.v2_filters_dict,
-                 bid_amt=config['bid_amt'],
+                 bid_amt=bid_amt,
                  available_cash=cash_balance,
                  min_run_time=(len(filters.v2_filters_dict) / 20) + .03
                  ).execute()

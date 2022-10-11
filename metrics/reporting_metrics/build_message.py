@@ -81,12 +81,12 @@ class BuildMessage:
         total_value = 0
         notes_data = self.notes.get_notes_by_rating_data()
         for k in sorted(notes_data[status]):
-            total_value += notes_data[status][k][1] # total principal_balance_pro_rata_share remaining
+            total_value += notes_data[status][k]['principal_owed'] # total principal_balance_pro_rata_share remaining
         self.message += "\n{status} Note Count By Rating:\n".format(status=status)
         for k in sorted(notes_data[status]):
-            table.add_row([k, notes_data[status][k][0], round(notes_data[status][k][1] / total_value * 100, 2), round(notes_data[status][k][1], 2), round(notes_data[status][k][4] / notes_data[status][k][0], 2)])
-            total_note_count += notes_data[status][k][0]
-            total_age_in_months += notes_data[status][k][4]
+            table.add_row([k, notes_data[status][k]['total_count'], round(notes_data[status][k]['principal_owed'] / total_value * 100, 2), round(notes_data[status][k]['principal_owed'], 2), round(notes_data[status][k]['age_in_months_sum'] / notes_data[status][k]['total_count'], 2)])
+            total_note_count += notes_data[status][k]['total_count']
+            total_age_in_months += notes_data[status][k]['age_in_months_sum']
         table.add_row(["Total", total_note_count, 100, round(total_value, 2), round(total_age_in_months / total_note_count, 2)])
         self.message += table.draw()
 
@@ -274,8 +274,8 @@ class BuildMessage:
         self.display_notes_purchased_last_X_days_by_rating(30)
         self.display_note_count_by_rating("CURRENT")
         self.display_note_count_total()
-        self.display_average_yield()
-        self.display_default_rate_tracking()
+        # self.display_average_yield()
+        # self.display_default_rate_tracking()
         self.display_late_info()
         self.display_available_cash_balance()
         return self.message

@@ -158,8 +158,15 @@ header = utils.http_header_build(access_token)
 # [10770601, 10640798, 10799967, 10850400, 10565312, 10835395]
 
 
-TrackingMetrics().pull_note_response("1564497-25")
+# TrackingMetrics().pull_note_response("1564497-25")
 
+# notes_data = NotesMetrics('2022-10-11').pull_notes_table()
+# for n in notes_data:
+#     print(n['note_status_description'])
+
+
+note_status_description_dict = NotesMetrics('2022-10-11').get_notes_by_rating_data()
+print(note_status_description_dict)
 
 
 # current_date = datetime.today()

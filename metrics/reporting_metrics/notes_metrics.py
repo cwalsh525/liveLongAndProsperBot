@@ -85,7 +85,7 @@ class NotesMetrics:
         start_date = datetime.strptime(str(ownership_start_date), "%Y-%m-%d")
         age_in_days = int((end_date - start_date).days)
         age_in_months = age_in_days / 30
-        if age_in_months > 36:
+        if age_in_months > 36: #TODO needs to change if term changes
             age_in_months = 36
         return math.floor(age_in_months)
 
@@ -100,11 +100,13 @@ class NotesMetrics:
         defaulted_notes_dict = {}
         chargeoff_notes_dict = {}
         late_notes_dict = {}
+        prosper_buy_back_bug_dict = {}
         note_status_description_dict = {"CURRENT": current__notes_dict,
                                         "COMPLETED": completed_notes_dict,
                                         "DEFAULTED": defaulted_notes_dict,
                                         "CHARGEOFF": chargeoff_notes_dict,
-                                        "LATE": late_notes_dict
+                                        "LATE": late_notes_dict,
+                                        "PROSPERBUYBACKBUG": prosper_buy_back_bug_dict
                                         }
         for k in note_status_description_dict:
             for note in self.notes_data:
@@ -189,6 +191,7 @@ class NotesMetrics:
         defaulted = notes_data['DEFAULTED']
         chargeoff = notes_data['CHARGEOFF']
         late = notes_data['LATE']
+        prosper_bug_buyback = notes_data["PROSPERBUYBACKBUG"]
 
         #TODO Make better
         # As of 20200801 we are using complete age in months not calc
@@ -213,6 +216,9 @@ class NotesMetrics:
             # chargeoff[k][4] = chargeoff[k][7] # Use calculated age_in_months instead of age_in_months
             for i in range(len(chargeoff[k])):
                 all_notes[k][i] += chargeoff[k][i]  # Add current and complete together
+        for k in prosper_bug_buyback:
+            for i in range(len(prosper_bug_buyback[k])):
+                all_notes[k][i] += prosper_bug_buyback[k][i]  # Add current and complete together
 
         projected_default_dict = {}
         projected_default_dict_prosper = {}

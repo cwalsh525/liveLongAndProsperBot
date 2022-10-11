@@ -9,17 +9,18 @@ import log.logging as log
 import config.default as default
 import utils.utils as utils
 from metrics.connect import Connect
-from listings.listing import Listing
 
-from orders.orders import Orders
+import requests
 
-from metrics.annualized_returns import AnnualizedReturns
 from metrics.tracking_metrics import TrackingMetrics
 from metrics.reporting_metrics.notes_metrics import NotesMetrics
 from metrics.reporting_metrics.daily_metric_scripts.create_daily_metrics_table import CreateDailyMetricsTable
 import logging
 
 from run_v1.search_and_destroy import SearchAndDestroy
+
+
+
 
 # update_notes = UpdateNotes()
 # update_notes.build_notes_to_update_query()
@@ -82,7 +83,25 @@ access_token = TokenGeneration(
 #
 header = utils.http_header_build(access_token)
 
+# offset = 0
+# limit = 20
+# def get_url_get_request_notes(offset, limit):
+#     return "{base_url}/notes/?offset={offset}&limit={limit}&sort_by=origination_date desc".format(
+#         base_url=config['prosper']['prosper_base_url'], offset=offset, limit=str(limit))
+#
+# data_not_received = True
+# while(data_not_received):
+#     response_object = requests.get(get_url_get_request_notes(offset, limit), headers=header, timeout=30.0).json()
+#     if 'total_count' in response_object:
+#         data_not_received = False
+#         total_objects = response_object['total_count']
+#
+# print(total_objects)
 
+
+
+
+# print(total_objects)
 
 
 # # #
@@ -139,7 +158,9 @@ header = utils.http_header_build(access_token)
 # [10770601, 10640798, 10799967, 10850400, 10565312, 10835395]
 
 
-TrackingMetrics().pull_note_response("1432468-80")
+TrackingMetrics().pull_note_response("1564497-25")
+
+
 
 # current_date = datetime.today()
 # last_month_date = (current_date - timedelta(days=(current_date.day)))

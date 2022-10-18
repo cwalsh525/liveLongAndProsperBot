@@ -60,7 +60,7 @@ class NotesMetrics:
         connect = Connect()
         cursor = connect.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)  # Pulling in extra muscle with DictCursor
         # cursor.execute("select * from notes where '{date}' between effective_start_date and effective_end_date;".format(date=self.date))
-        cursor.execute("select note_status_description, principal_balance_pro_rata_share, principal_paid_pro_rata_share, interest_paid_pro_rata_share, age_in_months, payment_received, note_ownership_amount, ownership_start_date, prosper_rating, note_ownership_amount, lender_yield, days_past_due "
+        cursor.execute("select note_status_description, principal_balance_pro_rata_share, principal_paid_pro_rata_share, interest_paid_pro_rata_share, age_in_months, payment_received, note_ownership_amount, ownership_start_date, prosper_rating, note_ownership_amount, lender_yield, days_past_due, term "
                        "from notes where '{date}' between effective_start_date and effective_end_date;".format(date=self.date))
         notes_data = cursor.fetchall()
         return notes_data
@@ -93,81 +93,73 @@ class NotesMetrics:
     Returns {STATUS: {"prosper_rating": [count, principal owed, principal paid, interest paid, age_in_months_sum, payment_received, note_ownership_amount, calculated_age_in_months]}
     """
     def get_notes_by_rating_data(self):
-        # notes_dict = {"prosper_rating": [count, principal owed, principal paid, interest paid, age_in_months_sum, payment_received, note_ownership_amount, calculated_age_in_months]}
-        # calculated age in months should be used for default rating. If a note or completes before term, its expected age_in_months should be used not the age_in_months it got closed at.
-        current__notes_dict = {}
-        completed_notes_dict = {}
-        defaulted_notes_dict = {}
-        chargeoff_notes_dict = {}
-        late_notes_dict = {}
-        prosper_buy_back_bug_dict = {}
-        note_status_description_dict = {"CURRENT": current__notes_dict,
-                                        "COMPLETED": completed_notes_dict,
-                                        "DEFAULTED": defaulted_notes_dict,
-                                        "CHARGEOFF": chargeoff_notes_dict,
-                                        "LATE": late_notes_dict,
-                                        "PROSPERBUYBACKBUG": prosper_buy_back_bug_dict
-                                        }
-        for k in note_status_description_dict:
-            for note in self.notes_data:
-                if note['note_status_description'] == k:
-                    if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 0:
-                        try: # TODO make all dicts
-                            get_list = note_status_description_dict["LATE"][note['prosper_rating']]
-                            get_list[0] += 1
-                            get_list[1] += note['principal_balance_pro_rata_share']
-                            get_list[2] += note['principal_paid_pro_rata_share']
-                            get_list[3] += note['interest_paid_pro_rata_share']
-                            get_list[4] += note['age_in_months']
-                            get_list[5] += note['payment_received']
-                            get_list[6] += note['note_ownership_amount']
-                            get_list[7] += note['age_in_months']
 
-                        except KeyError:
-                            note_status_description_dict["LATE"][note['prosper_rating']] = [1, note['principal_balance_pro_rata_share'], note['principal_paid_pro_rata_share'], note['interest_paid_pro_rata_share'], note['age_in_months'], note['payment_received'], note['note_ownership_amount'], note['age_in_months']]
-                        except Exception:
-                            raise
-                    else:
-                        try:
-                            get_list = note_status_description_dict[k][note['prosper_rating']]
-                            get_list[0] += 1
-                            get_list[1] += note['principal_balance_pro_rata_share']
-                            get_list[2] += note['principal_paid_pro_rata_share']
-                            get_list[3] += note['interest_paid_pro_rata_share']
-                            get_list[4] += note['age_in_months']
-                            get_list[5] += note['payment_received']
-                            get_list[6] += note['note_ownership_amount']
-                            get_list[7] += self.calculate_age_in_months(ownership_start_date=note['ownership_start_date'], actual_date=self.date)
+        metrics_to_track = ["total_count", "principal_owed", "principal_paid", "interest_paid", "age_in_months_sum", "payment_received", "note_ownership_amount", "calculated_age_in_months", "term_percent_complete_sum"]
+        note_statues = ["CURRENT", "COMPLETED", "DEFAULTED", "CHARGEOFF", "LATE", "PROSPERBUYBACKBUG", "CANCELLED"]
+        prosper_ratings = ["B", "C", "D", "E", "HR"]
+        note_status_description_dict = {}
+        # Build note_status_description_dict
+        for status in note_statues:
+            note_status_description_dict[status] = {}
+            for rating in prosper_ratings:
+                note_status_description_dict[status][rating] = {}
+                for metric in metrics_to_track:
+                    note_status_description_dict[status][rating][metric] = 0
 
-                        except KeyError:
-                            note_status_description_dict[k][note['prosper_rating']] = [1, note[
-                                'principal_balance_pro_rata_share'], note['principal_paid_pro_rata_share'], note[
-                                                                                           'interest_paid_pro_rata_share'],
-                                                                                       note['age_in_months'], note['payment_received'], note['note_ownership_amount'], self.calculate_age_in_months(ownership_start_date=note['ownership_start_date'], actual_date=self.date)]
-                        except Exception:
-                            raise
+        # Below is structure for note_status_description_dict
+        # note_status_description_dict = \
+        #     {
+        #     "CURRENT": {
+        #         "B": {"total_count": 0,
+        #               "principal_owed": 0,
+        #               "principal_paid": 0,
+        #               "interest_paid": 0,
+        #               "age_in_months_sum": 0,
+        #               "payment_received": 0,
+        #               "note_ownership_amount": 0,
+        #               "calculated_age_in_months": 0
+        #         },
+        #         "C": {"total_count": 0,
+        #               "principal_owed": 0,
+        #               "principal_paid": 0,
+        #               "interest_paid": 0,
+        #               "age_in_months_sum": 0,
+        #               "payment_received": 0,
+        #               "note_ownership_amount": 0,
+        #               "calculated_age_in_months": 0
+        #               }
+        #     },
+        #     "COMPLETED": {
+        #         "B": {"total_count": 0,
+        #               "principal_owed": 0,
+        #               "principal_paid": 0,
+        #               "interest_paid": 0,
+        #               "age_in_months_sum": 0,
+        #               "payment_received": 0,
+        #               "note_ownership_amount": 0,
+        #               "calculated_age_in_months": 0
+        #               }
+        #         }
+        #     }
+        # Create note_status_description_dict
+        for note in self.notes_data:
+            if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 0:
+                note_status_description = "LATE"
+            else:
+                note_status_description = note['note_status_description']
+            prosper_rating = note['prosper_rating']
+            note_status_description_dict[note_status_description][prosper_rating]["total_count"] += 1
+            note_status_description_dict[note_status_description][prosper_rating]["principal_owed"] += note['principal_balance_pro_rata_share']
+            note_status_description_dict[note_status_description][prosper_rating]["principal_paid"] += note['principal_paid_pro_rata_share']
+            note_status_description_dict[note_status_description][prosper_rating]["interest_paid"] += note['interest_paid_pro_rata_share']
+            note_status_description_dict[note_status_description][prosper_rating]["age_in_months_sum"] += note['age_in_months']
+            note_status_description_dict[note_status_description][prosper_rating]["payment_received"] += note['payment_received']
+            note_status_description_dict[note_status_description][prosper_rating]["note_ownership_amount"] += note['note_ownership_amount']
+            note_status_description_dict[note_status_description][prosper_rating]["calculated_age_in_months"] += self.calculate_age_in_months(ownership_start_date=note['ownership_start_date'], actual_date=self.date)
+            note_status_description_dict[note_status_description][prosper_rating]["term_percent_complete_sum"] += note['age_in_months'] / note['term']
 
         return note_status_description_dict
 
-    # Utility function for this class
-    def calculate_annual_return(self, sum_age_in_months, sum_payments_received, sum_note_ownership_amt, note_count):
-        avg_age_in_months = sum_age_in_months / note_count
-        exponent_value = 12 / avg_age_in_months
-        dollar_gain = sum_payments_received - sum_note_ownership_amt
-        percent_gain = float(dollar_gain) / float(sum_note_ownership_amt) + 1
-        weighted_percent_gain = (percent_gain ** exponent_value - 1) * 100
-        annual_return = round(weighted_percent_gain, 4)
-
-        # print("payments_received: {payments_received}".format(payments_received=sum_payments_received))
-        # print("note_ownership_amt: {note_ownership_amt}".format(note_ownership_amt=sum_note_ownership_amt))
-        # print("avg_age_in_months: {avg_age_in_months}".format(avg_age_in_months=avg_age_in_months))
-        # print("note_count: {note_count}".format(note_count=note_count))
-        # print("exponent_value: {exponent_value}".format(exponent_value=exponent_value))
-        # print("dollar_gain: {dollar_gain}".format(dollar_gain=dollar_gain))
-        # print("percent_gain: {percent_gain}".format(percent_gain=percent_gain))
-        # print("weighted_percent_gain: {weighted_percent_gain}".format(weighted_percent_gain=weighted_percent_gain))
-
-        return annual_return
 
     """
     Chance of defualt is hardcoded.
@@ -184,85 +176,45 @@ class NotesMetrics:
         # ME HR .00777777777 * age_in_months * cnt
         # Prosper HR .01078333333 * age_in_months * cnt
         notes_data = self.get_notes_by_rating_data()
-        # {STATUS: {"prosper_rating": [count, principal owed, principal paid, interest paid, age_in_months_sum]}}
-        all_notes = {}
-        current = notes_data['CURRENT']
-        complete = notes_data['COMPLETED']
-        defaulted = notes_data['DEFAULTED']
-        chargeoff = notes_data['CHARGEOFF']
-        late = notes_data['LATE']
-        prosper_bug_buyback = notes_data["PROSPERBUYBACKBUG"]
 
         #TODO Make better
         # As of 20200801 we are using complete age in months not calc
         # For default rates, we will use caluclated age_in_months for non current
         # calculated age in months should be used for default rating. If a note or completes before term, its expected age_in_months should be used not the age_in_months it got closed at.
 
-        # Adds all notes data together.
-        for k in current:
-            all_notes[k] = current[k]
-        for k in late:
-            for i in range(len(late[k])):
-                all_notes[k][i] += late[k][i]  # Add current and complete together
-        for k in complete:
-            # complete[k][4] = complete[k][7] # Use calculated age_in_months instead of age_in_months
-            for i in range(len(complete[k])):
-                all_notes[k][i] += complete[k][i]  # Add current and complete together
-        for k in defaulted:
-            # defaulted[k][4] = defaulted[k][7] # Use calculated age_in_months instead of age_in_months
-            for i in range(len(defaulted[k])):
-                all_notes[k][i] += defaulted[k][i]  # Add current and complete together
-        for k in chargeoff:
-            # chargeoff[k][4] = chargeoff[k][7] # Use calculated age_in_months instead of age_in_months
-            for i in range(len(chargeoff[k])):
-                all_notes[k][i] += chargeoff[k][i]  # Add current and complete together
-        for k in prosper_bug_buyback:
-            for i in range(len(prosper_bug_buyback[k])):
-                all_notes[k][i] += prosper_bug_buyback[k][i]  # Add current and complete together
-
         projected_default_dict = {}
         projected_default_dict_prosper = {}
         actual_default_dict = {}
-        actual_default_rates_dict = {}
         actual_late_dict = {}
 
         # Builds actual defaulted notes
-        for k in defaulted:
-            try:
-                actual_default_dict[k] += defaulted[k][0]
-            except KeyError:
-                actual_default_dict[k] = defaulted[k][0]
-        for k in chargeoff:
-            try:
-                actual_default_dict[k] += chargeoff[k][0]
-            except KeyError:
-                actual_default_dict[k] = chargeoff[k][0]
-        for k in late:
-            try:
-                actual_default_dict[k] += late[k][0]
-            except KeyError:
-                actual_default_dict[k] = late[k][0]
-        for k in late:
-            try:
-                actual_late_dict[k] += late[k][0]
-            except KeyError:
-                actual_late_dict[k] = late[k][0]
+        # Build a dict that is defaulted (chargeoff and default) as well as late notes to be counted as such for forcasting
 
+        for k in notes_data['DEFAULTED']:
+            actual_default_dict[k] = notes_data['DEFAULTED'][k]['total_count']
+        for k in notes_data['CHARGEOFF']:
+            actual_default_dict[k] += notes_data['CHARGEOFF'][k]['total_count']
+        for k in notes_data['LATE']:
+            actual_default_dict[k] += notes_data['LATE'][k]['total_count']
+        for k in notes_data['PROSPERBUYBACKBUG']:
+            actual_default_dict[k] += notes_data['PROSPERBUYBACKBUG'][k]['total_count']
+        # Builds actual_late_dict
+        for k in notes_data['LATE']:
+            actual_late_dict[k] = notes_data['LATE'][k]['total_count']
 
-        #TODO Should I calculate age_in_months for completed note (up to 36) to factor it into defualt rate chances? or keep the stale age_in_months?
-        for k in all_notes:       # all_notes = {STATUS: {"prosper_rating": [count, principal owed, principal paid, interest paid, age_in_months_sum]} }
-            average_ave = all_notes[k][4] / all_notes[k][0]
-            projected_default_dict[k] = all_notes[k][4] * self.total_chance_of_default_v2[k] / 36  # cnt of notes * avg_age_in_months * default chance per month. Gives number of nots that should be defaulted
-            projected_default_dict_prosper[k] = all_notes[k][4] * self.total_chance_of_default_prosper[k] / 36  # cnt of notes * avg_age_in_months * default chance per month. Gives number of nots that should be defaulted
-            try:
-                actual_default_rates_dict[k] = ((actual_default_dict[k] * 36 ) / all_notes[k][0]) / average_ave
-            except KeyError:
-                actual_default_rates_dict[k] = ((0 * 36) / all_notes[k][0]) / average_ave
-            # actual_default_rate = ((default_rate * 36) / total_count ) / average_ave
+        def get_total_value_from_notes_by_rating(prosper_rating, value_needed):
+            return_value = 0
+            for k in notes_data:
+                return_value += notes_data[k][prosper_rating][value_needed]
+            return return_value
 
+        # #TODO Should I calculate age_in_months for completed note (up to 36) to factor it into defualt rate chances? or keep the stale age_in_months?
+        ratings = ['B', 'C', 'D', 'E', 'HR']
+        for rating in ratings:
+            projected_default_dict[rating] = get_total_value_from_notes_by_rating(rating, "term_percent_complete_sum") * self.total_chance_of_default_v2[rating]
+            projected_default_dict_prosper[rating] = get_total_value_from_notes_by_rating(rating, "term_percent_complete_sum") * self.total_chance_of_default_prosper[rating]
 
-
-        return projected_default_dict, projected_default_dict_prosper, actual_default_dict, actual_default_rates_dict, actual_late_dict
+        return projected_default_dict, projected_default_dict_prosper, actual_default_dict, actual_late_dict
 
 
     def get_note_status_description(self):

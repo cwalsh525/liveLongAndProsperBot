@@ -63,7 +63,19 @@ class NotesMetrics:
         cursor.execute("select note_status_description, principal_balance_pro_rata_share, principal_paid_pro_rata_share, interest_paid_pro_rata_share, age_in_months, payment_received, note_ownership_amount, ownership_start_date, prosper_rating, note_ownership_amount, lender_yield, days_past_due, term "
                        "from notes where '{date}' between effective_start_date and effective_end_date;".format(date=self.date))
         notes_data = cursor.fetchall()
+        connect.close_connection()
         return notes_data
+
+    def pull_notes_note_status_description_list(self):
+        note_status_description_list = []
+        connect = Connect()
+        cursor = connect.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)  # Pulling in extra muscle with DictCursor
+        cursor.execute("select distinct note_status_description from notes;")
+        data = cursor.fetchall()
+        for row in data:
+            note_status_description_list.append(row['note_status_description'])
+        connect.close_connection()
+        return note_status_description_list
 
     def number_of_notes(self):
         return len(self.notes_data)
@@ -95,7 +107,7 @@ class NotesMetrics:
     def get_notes_by_rating_data(self):
 
         metrics_to_track = ["total_count", "principal_owed", "principal_paid", "interest_paid", "age_in_months_sum", "payment_received", "note_ownership_amount", "calculated_age_in_months", "term_percent_complete_sum"]
-        note_statues = ["CURRENT", "COMPLETED", "DEFAULTED", "CHARGEOFF", "LATE", "PROSPERBUYBACKBUG", "CANCELLED"]
+        note_statues = self.pull_notes_note_status_description_list()
         prosper_ratings = ["B", "C", "D", "E", "HR"]
         note_status_description_dict = {}
         # Build note_status_description_dict

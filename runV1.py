@@ -46,9 +46,9 @@ else:
 SearchAndDestroy(order_header=order_header,
                  listing_header=header,
                  time_to_run_for=60 * 4,
-                 filters_dict=filters.v2_filters_dict,
+                 filters_dict=filters.v1_filters_dict,
                  bid_amt=bid_amt,
                  available_cash=cash_balance,
-                 min_run_time=(len(filters.v2_filters_dict) / 20) + .03
+                 min_run_time=(len(filters.v1_filters_dict) / 20) + .03
                  ).execute()
 # Added query_v2_1 back into filters on 12/7. See if it gets anything and is worth it.

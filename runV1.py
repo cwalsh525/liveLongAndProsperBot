@@ -1,4 +1,5 @@
 import math
+import argparse
 
 import utils.utils as utils
 
@@ -43,12 +44,18 @@ else:
 # seemed to be working vwell. added diff prosper bif amt by rating on 2/2.
 # 3/31/21 turning back on HR. If i get more than 7 or 8 HR's per 2 months it's worth having the filters on?? I think so
 # Turning HR back off on 8/15/21 as no HR bids in past 30 days
+
+parser = argparse.ArgumentParser(description='Search and Destroy')
+parser.add_argument('--run_time', required=False, default=180, type=int, help="time to run program for")
+args = parser.parse_args()
+
 SearchAndDestroy(order_header=order_header,
                  listing_header=header,
-                 time_to_run_for=60 * 4,
+                 time_to_run_for=args.run_time,
                  filters_dict=filters.v1_filters_dict,
                  bid_amt=bid_amt,
                  available_cash=cash_balance,
-                 min_run_time=(len(filters.v1_filters_dict) / 20) + .03
+                 min_run_time=1 # Will never get throttled since max 20 requests per second.
+                 # min_run_time=(len(filters.v1_filters_dict) / 20) + .03 # API max is 20 per second. They are now enforcing this with a 1 hour timeout. Create code to max this or simply use max run?
                  ).execute()
 # Added query_v2_1 back into filters on 12/7. See if it gets anything and is worth it.

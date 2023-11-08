@@ -34,7 +34,7 @@ The "EXPIRED" listings are almost always very small loans (less than like $4000)
 class SearchAndDestroy:
 
 
-    def __init__(self, order_header, listing_header, time_to_run_for, filters_dict, bid_amt, available_cash, min_run_time):
+    def __init__(self, order_header, listing_header, time_to_run_for, filters_dict, bid_amt, available_cash, min_run_time, dry_run):
         self.order_header = order_header
         self.listing_header = listing_header
         self.filters_dict = filters_dict
@@ -46,6 +46,8 @@ class SearchAndDestroy:
         self.time_to_continuously_run_submit_orders = time.time() + time_to_run_for
         self.connect = Connect()
         self.start_sleep_time = 1 / (len(filters_dict) + 1)
+        # self.start_sleep_time = 0.50
+        self.dry_run = dry_run
 
     def listing_logic(self, query, query_get):
         already_invested_listings = self.connect.get_bid_listings() # Takes a fraction of a second, should be ok. Repetitive as submitted_order_listings will handle it, but perfer cutting the listing logic off if not needed
@@ -55,6 +57,14 @@ class SearchAndDestroy:
         i_got_throttled = True # Sometimes get throttled, will run again if throttled
         while i_got_throttled:
             r = requests.get(query_get, headers=self.listing_header, timeout=30.0)
+            print(f"{query} Hit API Listings")
+            header_json = r.headers
+            if 'Retry-After' in header_json:
+                # There is a bug in prosper API, it is supposed to allow 20 requests to listing api per second.
+                # But sometimes they mess this up and it throttles me even though i dont send more than 20 a second.
+                print("THROTTLED")
+                logging.log_it_info(self.logger, "I have been Throttled by prosper API bug")
+                raise Exception("Throttled by Listing API")
             query_listing = r.json()
             if 'result' in query_listing: # Can get throttled so only execute if get a result
                 # if 'result' may be slow
@@ -94,10 +104,28 @@ class SearchAndDestroy:
             request['bid_requests'].append({"listing_id": l['listing_number'], "bid_amount": bid_amount})
         # I think will get throttled if over 20 posts to api in one second (I'll never get this issue)
 
-        response = requests.post(default.config['prosper']['prosper_order_url'], json=request, headers=self.order_header).json()
-        logging.log_it_info(self.logger, "request = {request}".format(request=request))
-        logging.log_it_info(self.logger, "response = {response}".format(response=response))
-        self.handle_order_sql(response, filters_used)
+        try:
+            response = requests.post(default.config['prosper']['prosper_order_url'], json=request, headers=self.order_header, timeout=30)
+            response_json = response.json()
+            logging.log_it_info(self.logger, "request = {request}".format(request=request))
+            logging.log_it_info(self.logger, "response = {response}".format(response=response_json))
+            self.handle_order_sql(response_json, filters_used)
+        except:
+            # except requests.exceptions.Timeout:
+            e = sys.exc_info()[0]
+            logging.log_it_info("Order error hit")
+            logging.log_it_info(self.logger, e)
+            time.sleep(5) # Assuming its the timeout error and don't need this sleep
+            # Sleep for 5 seconds and post again...
+            #TODO clean this up
+            # For now see what kind of exceptions i get so i can properly address this
+            # The issue is prosper crashes or timesout or something, somtimes. May want to implement a loop instead of one except
+            logging.log_it_info("Trying order again")
+            response = requests.post(default.config['prosper']['prosper_order_url'], json=request, headers=self.order_header, timeout=30)
+            response_json = response.json()
+            logging.log_it_info(self.logger, "request = {request}".format(request=request))
+            logging.log_it_info(self.logger, "response = {response}".format(response=response_json))
+            self.handle_order_sql(response_json, filters_used)
 
     def thread_worker(self, query, query_get, submitted_order_listings):
         logging.log_it_info(self.logger, "Started running {query} at {time}".format(query=query, time=datetime.now()))
@@ -122,8 +150,17 @@ class SearchAndDestroy:
 
                 if len(listings_to_invest) > 0:
                     logging.log_it_info(self.logger, "Listings to invest at {current_time}: {listings}".format(listings=listings_to_invest, current_time=datetime.now()))
-                    self.order_logic(listing_list=listings_to_invest, bid_amt=new_bid_amt, filters_used=filters_used) # Put in order, no need to sleep if order placed since that takes time
-                    logging.log_it_info(self.logger, "Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
+                    if self.dry_run:
+                        logging.log_it_info(self.logger, "DRY RUN IS ON. No order being placed, sleeping for 1 second...")
+                        logging.log_it_info(self.logger, "DRYRUN. This msg just for show: Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
+                        logging.log_it_info(self.logger, "wait start")
+                        self.wait_for_throttle_cap(start_time, self.min_run_time)
+                        logging.log_it_info(self.logger, "wait end")
+                    else:
+                        self.order_logic(listing_list=listings_to_invest, bid_amt=new_bid_amt, filters_used=filters_used) # Put in order, no need to sleep if order placed since that takes time
+                        logging.log_it_info(self.logger, "Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
+                        # Bug, if listing found there is no wait time until next listing request. This causes too many requests and results in getting throttled for a full day...
+                        self.wait_for_throttle_cap(start_time, self.min_run_time)
         #             # BUG Only inserting filters used if order placed... I prefer to have filters inserted if filter found something but overlaps with a previous filter will not insert... This was not a problem with run.py
                     order_pings += 1
                 else:

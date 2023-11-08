@@ -25,7 +25,7 @@ order_header = utils.http_header_build_orders(access_token)
 
 account = Accounts(header)
 cash_balance = math.floor(account.get_account_response()['available_cash_balance'])
-if cash_balance > 2000:
+if cash_balance > 500:
     bid_amt = config["bid_amt_high"]
 else:
     bid_amt = config["bid_amt_low"]
@@ -46,7 +46,8 @@ else:
 # Turning HR back off on 8/15/21 as no HR bids in past 30 days
 
 parser = argparse.ArgumentParser(description='Search and Destroy')
-parser.add_argument('--run_time', required=False, default=180, type=int, help="time to run program for")
+parser.add_argument('--run_time', required=False, default=220, type=int, help="time to run program for")
+parser.add_argument('--dry-run', required=False, default=False, type=bool, help="Set to True if locally testing. Will not submit orders.")
 args = parser.parse_args()
 
 SearchAndDestroy(order_header=order_header,
@@ -55,7 +56,8 @@ SearchAndDestroy(order_header=order_header,
                  filters_dict=filters.v1_filters_dict,
                  bid_amt=bid_amt,
                  available_cash=cash_balance,
-                 min_run_time=1 # Will never get throttled since max 20 requests per second.
+                 min_run_time=1.01,  # Bandaid fix to max 20 requests per second allowed to listing api. Anything over 1 second min run time will force max num(filters_used) per min run time.
                  # min_run_time=(len(filters.v1_filters_dict) / 20) + .03 # API max is 20 per second. They are now enforcing this with a 1 hour timeout. Create code to max this or simply use max run?
+                 dry_run=args.dry_run
                  ).execute()
 # Added query_v2_1 back into filters on 12/7. See if it gets anything and is worth it.

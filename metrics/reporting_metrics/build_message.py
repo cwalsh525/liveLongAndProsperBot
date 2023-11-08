@@ -13,6 +13,7 @@ class BuildMessage:
         self.message = ""
         self.notes = NotesMetrics(datetime.today())
         self.accounts = accounts
+        self.estimated_monthly_interest = 0  # Placeholder so i can use in different functions
 
     def display_default_rate_tracking(self):
         table = Texttable()
@@ -170,6 +171,8 @@ class BuildMessage:
         interest_minus_cost = estimated_interest - float(total_principal_91_20_late)
         estimated_annualized_return = round(((((interest_minus_cost / float(total_principal)) + 1) ** 12) - 1) * 100, 2)
 
+        self.estimated_monthly_interest = estimated_interest
+
         # This is for IF defaults what %
         current_date = datetime.today()
         last_month_date = (current_date - timedelta(days=(current_date.day)))
@@ -213,6 +216,16 @@ class BuildMessage:
     # weight the yield on prinpical balance outstanding.
 
     def display_late_info(self):
+        # For now just hardcode these based on my analysis
+        # This is chance of defaulting based on number of days late.
+        # Analysis last done on 10/12/23
+        forecasted_default_rate = {
+            "1 - 15": 0.3258,
+            "16 - 30": 0.547,
+            "31 - 60": 0.677,
+            "61 - 90": .83,
+            "91 - 120": 0.95
+        }
         late_cats = ["1 - 15", "16 - 30", "31 - 60", "61 - 90", "91 - 120"]
         # create dict
         late_dict = {}
@@ -221,50 +234,82 @@ class BuildMessage:
         for cat in late_cats:
             late_dict[cat] = {"count": 0,
                               "outstanding principal": 0,
-                              "ratings": []}
+                              "ratings": [],
+                              "return": "",
+                              "forecasted return": ""}
         # {'1 - 15': {'count': 0, 'outstanding principal': 0, 'ratings': []},
         #  '16 - 30': {'count': 0, 'outstanding principal': 0, 'ratings': []},
         #  '31 - 60': {'count': 0, 'outstanding principal': 0, 'ratings': []},
         #  '61 - 90': {'count': 0, 'outstanding principal': 0, 'ratings': []},
         #  '91 - 120': {'count': 0, 'outstanding principal': 0, 'ratings': []}}
+        # Removed showing the comprised notes, aka the array of late ratings.
 
         notes_data = self.notes.pull_notes_table()
+        total_outstanding_principal = 0
         for note in notes_data:
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] == 0:
                 current_count += 1
+                total_outstanding_principal += note['principal_balance_pro_rata_share']
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 0 and note['days_past_due'] < 16:
                 late_dict["1 - 15"]["count"] += 1
                 late_dict["1 - 15"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["1 - 15"]["ratings"].append(note['prosper_rating'])
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 15  and note['days_past_due'] < 31:
                 late_dict["16 - 30"]["count"] += 1
                 late_dict["16 - 30"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["16 - 30"]["ratings"].append(note['prosper_rating'])
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 30 and note['days_past_due'] < 61:
                 late_dict["31 - 60"]["count"] += 1
                 late_dict["31 - 60"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["31 - 60"]["ratings"].append(note['prosper_rating'])
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 60 and  note['days_past_due'] < 91:
                 late_dict["61 - 90"]["count"] += 1
                 late_dict["61 - 90"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["61 - 90"]["ratings"].append(note['prosper_rating'])
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 90:
                 late_dict["91 - 120"]["count"] += 1
                 late_dict["91 - 120"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["91 - 120"]["ratings"].append(note['prosper_rating'])
+        # calculate return and forecasted return for each late category
+        for cat in late_cats:
+            # cat is each late category ie 91-120, 61-90, etc.
+            percent_change_of_default = float(forecasted_default_rate[cat])
+            outstanding_late_principal = float(late_dict[cat]["outstanding principal"])
+            monthly_interest = float(self.estimated_monthly_interest)
+            total_principal = float(total_outstanding_principal)
+            if cat == "1 - 15" or cat == "16 - 30": # Need to account for it being half a month.
+                the_return = (((((monthly_interest / 2 ) - outstanding_late_principal) / total_principal ) + 1 ) ** 24 ) - 1
+                forecasted_return = (((((monthly_interest / 2 ) - (outstanding_late_principal * percent_change_of_default)) / total_principal ) + 1 ) ** 24 ) - 1
+
+            else:
+                the_return = ((((monthly_interest - outstanding_late_principal) / total_principal ) + 1 ) ** 12 ) - 1
+                forecasted_return = ((((monthly_interest - (outstanding_late_principal * percent_change_of_default)) / total_principal ) + 1 ) ** 12 ) - 1
+            late_dict[cat]['return'] = self.format_percent(the_return)
+            late_dict[cat]['forecasted return'] = self.format_percent(forecasted_return)
+
         table = Texttable()
-        table.add_row(["Late Category", "Count", "Outstanding Principal", "Comprised Notes"])
+        table.add_row(["Late Category", "Count", "Outstanding Principal", "Return", "Forecasted Return"])
         for d in late_dict:
             table.add_row([d,
                            late_dict[d]["count"],
                            late_dict[d]["outstanding principal"],
-                           late_dict[d]["ratings"]
+                           late_dict[d]['return'],
+                           late_dict[d]['forecasted return']
                            ])
             total_late_count += late_dict[d]["count"]
         self.message += "\nLate Note Data:"
         self.message += "\nCurrent notes late is {num}% of all notes\n".format(num=round((total_late_count / (total_late_count + current_count) * 100), 2))
         self.message += table.draw()
         self.message += "\n"
+
+    @staticmethod
+    def format_percent(non_formatted_percent):
+        return f"{round(non_formatted_percent * 100, 2)}%"
 
     def build_complete_message(self):
         self.display_bids_placed_today()

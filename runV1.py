@@ -56,9 +56,7 @@ SearchAndDestroy(order_header=order_header,
                  filters_dict=filters.v1_filters_dict,
                  bid_amt=bid_amt,
                  available_cash=cash_balance,
-                 # min_run_time=0.75 # Seems to never get a throttle with 11 filters
-                 min_run_time=1.01, # Tried 1.01, go to 2.01. 2.33 failed. 3.33 failed
-                 # min_run_time=1.01,  # Bandaid fix to max 20 requests per second allowed to listing api. Anything over 1 second min run time will force max num(filters_used) per min run time.
+                 min_run_time=1.01,  # Bandaid fix to max 20 requests per second allowed to listing api. Anything over 1 second min run time will force max num(filters_used) per min run time.
                  # min_run_time=(len(filters.v1_filters_dict) / 20) + .03 # API max is 20 per second. They are now enforcing this with a 1 hour timeout. Create code to max this or simply use max run?
                  dry_run=args.dry_run
                  ).execute()

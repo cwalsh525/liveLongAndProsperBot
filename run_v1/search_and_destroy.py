@@ -10,6 +10,7 @@ import config.default as default
 
 from metrics.sql_metrics import SQLMetrics
 from metrics.connect import Connect
+from run_v1.max_requests_queue import MaxRequestsQueue
 
 """
 This class is to create a single thread per filter that will connect to listing's API AND submit the order via the API when a listing is found
@@ -34,30 +35,32 @@ The "EXPIRED" listings are almost always very small loans (less than like $4000)
 class SearchAndDestroy:
 
 
-    def __init__(self, order_header, listing_header, time_to_run_for, filters_dict, bid_amt, available_cash, min_run_time, dry_run):
+    def __init__(self, order_header, listing_header, time_to_run_for, max_request_per_second, filters_dict, bid_amt, available_cash, dry_run):
         self.order_header = order_header
         self.listing_header = listing_header
         self.filters_dict = filters_dict
         self.bid_amt = bid_amt
         self.available_cash = available_cash
         self.lock = threading.Lock()
-        self.min_run_time = min_run_time
         self.logger = logging.create_logger(logger_name="search_and_destroy", log_name="app_run")
+        self.time_to_run_for = time_to_run_for
         self.time_to_continuously_run_submit_orders = time.time() + time_to_run_for
         self.connect = Connect()
-        self.start_sleep_time = 1 / (len(filters_dict) + 1)
-        # self.start_sleep_time = 0.50
+        self.max_request_per_second = max_request_per_second # Prosper says its 20, but they have a bug sometimes
+        self.wait_time_between_runs = 1 / max_request_per_second # To allow for equal sending over the second
         self.dry_run = dry_run
+        self.wait_time_between_runs = 1 / self.max_request_per_second
 
     def listing_logic(self, query, query_get):
         already_invested_listings = self.connect.get_bid_listings() # Takes a fraction of a second, should be ok. Repetitive as submitted_order_listings will handle it, but perfer cutting the listing logic off if not needed
         listings_found = []
-        throttled_count = 0
+        throttled_count = 0 # Bad variable name, should be like error count. (sometimes prosper API errors and i want to ignore and re-run)
         track_filters = {} # For tracking of what filters are finding notes
         i_got_throttled = True # Sometimes get throttled, will run again if throttled
         while i_got_throttled:
+            the_time = time.time()
             r = requests.get(query_get, headers=self.listing_header, timeout=30.0)
-            print(f"{query} Hit API Listings")
+            print(f"{query} Hit API Listings at {the_time}") # For Testing
             header_json = r.headers
             if 'Retry-After' in header_json:
                 # There is a bug in prosper API, it is supposed to allow 20 requests to listing api per second.
@@ -83,7 +86,7 @@ class SearchAndDestroy:
                 i_got_throttled = False
             else:
                 if 'errors' in query_listing:
-                    # logging.log_it_info(self.logger, "query {query} got an error, error is: {error}".format(query=query, error=query_listing))
+                    logging.log_it_info(self.logger, "query {query} got an error, error is: {error}".format(query=query, error=query_listing))
                     throttled_count += 1
                 else:
                     logging.log_it_info(self.logger, "not an errors in response, response is: {response}".format(response=query_listing))
@@ -127,65 +130,67 @@ class SearchAndDestroy:
             logging.log_it_info(self.logger, "response = {response}".format(response=response_json))
             self.handle_order_sql(response_json, filters_used)
 
-    def thread_worker(self, query, query_get, submitted_order_listings):
+    def thread_worker(self, query, query_get, submitted_order_listings, run_dict, filter_queue):
         logging.log_it_info(self.logger, "Started running {query} at {time}".format(query=query, time=datetime.now()))
         listing_pings = 0
         order_pings = 0
         total_throttle_count = 0
         while time.time() < self.time_to_continuously_run_submit_orders:
-            start_time = time.time()
-            listings_found, filters_used, throttle_count = self.listing_logic(query=query, query_get=query_get)
+            # This lock enforces max amount of listing requests that can be sent per second
+            run_listing = False
+            with self.lock:
+                current_time_in_milli = time.time()
+                current_time_in_seconds = int(current_time_in_milli)
+                if run_dict[current_time_in_seconds]["allowed_remaining_runs"] > 0 and current_time_in_milli > run_dict[current_time_in_seconds]["latest_run_time"] and query == filter_queue[0]:
+                    run_dict[current_time_in_seconds]["allowed_remaining_runs"] -= 1
+                    run_dict[current_time_in_seconds]["latest_run_time"] = current_time_in_milli + self.wait_time_between_runs  # + wait_time_between_runs to allow for equal running
+                    filter_queue.pop(0) # Remove from the first position
+                    filter_queue.append(query) # Add to the back of the queue
+                    run_listing = True
 
-            listing_pings += 1
-            total_throttle_count += throttle_count
-            if len(listings_found) > 0:
-                with self.lock:
-                    unique_listings = []
-                    for listing in listings_found:
-                        if listing['listing_number'] not in submitted_order_listings:
-                            submitted_order_listings.append(listing['listing_number'])
-                            unique_listings.append(listing)
-                    listings_to_invest, new_bid_amt, new_remaining_cash = self.handle_cash_balance(logger=self.logger,available_cash=self.available_cash, bid_amt=self.bid_amt, listings_list=unique_listings)
-                    self.available_cash = new_remaining_cash
+            if run_listing:
+                # Submit listing request
+                listings_found, filters_used, throttle_count = self.listing_logic(query=query, query_get=query_get)
 
-                if len(listings_to_invest) > 0:
-                    logging.log_it_info(self.logger, "Listings to invest at {current_time}: {listings}".format(listings=listings_to_invest, current_time=datetime.now()))
-                    if self.dry_run:
-                        logging.log_it_info(self.logger, "DRY RUN IS ON. No order being placed, sleeping for 1 second...")
-                        logging.log_it_info(self.logger, "DRYRUN. This msg just for show: Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
-                        logging.log_it_info(self.logger, "wait start")
-                        self.wait_for_throttle_cap(start_time, self.min_run_time)
-                        logging.log_it_info(self.logger, "wait end")
-                    else:
-                        self.order_logic(listing_list=listings_to_invest, bid_amt=new_bid_amt, filters_used=filters_used) # Put in order, no need to sleep if order placed since that takes time
-                        logging.log_it_info(self.logger, "Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
-                        # Bug, if listing found there is no wait time until next listing request. This causes too many requests and results in getting throttled for a full day...
-                        self.wait_for_throttle_cap(start_time, self.min_run_time)
-        #             # BUG Only inserting filters used if order placed... I prefer to have filters inserted if filter found something but overlaps with a previous filter will not insert... This was not a problem with run.py
-                    order_pings += 1
-                else:
-                    self.wait_for_throttle_cap(start_time, self.min_run_time)
-            else:
-                self.wait_for_throttle_cap(start_time, self.min_run_time)
+                listing_pings += 1
+                total_throttle_count += throttle_count
+                if len(listings_found) > 0:
+                    # This lock enforces no duplication on ordering when a listing is found, and aval cash is updated amongst all workers
+                    with self.lock:
+                        unique_listings = []
+                        for listing in listings_found:
+                            if listing['listing_number'] not in submitted_order_listings:
+                                submitted_order_listings.append(listing['listing_number'])
+                                unique_listings.append(listing)
+                        listings_to_invest, new_bid_amt, new_remaining_cash = self.handle_cash_balance(logger=self.logger,available_cash=self.available_cash, bid_amt=self.bid_amt, listings_list=unique_listings)
+                        self.available_cash = new_remaining_cash
+
+                    if len(listings_to_invest) > 0:
+                        logging.log_it_info(self.logger, "Listings to invest at {current_time}: {listings}".format(listings=listings_to_invest, current_time=datetime.now()))
+                        if self.dry_run:
+                            logging.log_it_info(self.logger, "DRY RUN IS ON. No order being placed")
+                            logging.log_it_info(self.logger, "DRYRUN. This msg just for show: Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
+
+                        else:
+                            self.order_logic(listing_list=listings_to_invest, bid_amt=new_bid_amt, filters_used=filters_used) # Put in order, no need to sleep if order placed since that takes time
+                            logging.log_it_info(self.logger, "Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
+            #             # BUG (acceptable bug) Only inserting filters used if order placed... I prefer to have filters inserted if filter found something but overlaps with a previous filter will not insert...
+                        order_pings += 1
 
         self.connect.close_connection()
         logging.log_it_info(self.logger, "Ended running {query} at {time}, with {pings} pings to the listing api, and {order_ping} order pings to the order api, and ignored {throttle_count} throttles from api".format(query=query, time=datetime.now(), pings=listing_pings, order_ping=order_pings, throttle_count=total_throttle_count))
 
-    @staticmethod
-    def wait_for_throttle_cap(start_time, min_run_time):
-        diff = time.time() - start_time
-        if diff < min_run_time:
-            time.sleep(min_run_time - diff)
-
     def execute(self):
         threads = []
         submitted_order_listings = []
+        m = MaxRequestsQueue(max_request_per_second=self.max_request_per_second, filter_dict=self.filters_dict, time_to_run_for=self.time_to_run_for)
+        run_allowance_dict = m.build_allowed_run_dict()
+        run_list_queue = m.build_starting_filter_queue()
 
         for query in self.filters_dict:
-            t = threading.Thread(target=self.thread_worker, args=(query, self.filters_dict[query], submitted_order_listings))
+            t = threading.Thread(target=self.thread_worker, args=(query, self.filters_dict[query], submitted_order_listings, run_allowance_dict, run_list_queue))
             threads.append(t)
             t.start()
-            time.sleep(self.start_sleep_time) # Start threads over ~ 1 second to space out threads, hopefully increasing chance of hitting a note fi multiple filters can find it. filters +1 / 1
         for thread in threads:
             thread.join()
 
@@ -234,16 +239,18 @@ class SearchAndDestroy:
 
     """
     RETURNS possibly modified listings_list if cash is not enough for all bid submissions, along with a modified bid_amt dict
-    """
-    @staticmethod
-    def handle_cash_balance(logger, available_cash, bid_amt, listings_list):
-        # Possible situations
-        # Less than $25, cant do anything
+        Possible situations
+        # Less than $25, cant do anything (min $25 bid per note)
         # More than total desired bid amt in cash; operate as normal
         # Not enough for normal bids but more than $25 cash:
             # enough for at least $25 per bid and just total cash / num listings to invest in
             # Not Enough for at least $25 per bid and must drop bid/s
-        # BUG: If a listing gets submitted, but it comes back expired, it will not add that cash back to available cash
+        # BUG (Acceptable Bug): If a listing gets submitted, but it comes back expired, it will not add that cash back to available cash.
+        # The result of this bug is the available_cash variable created per run can be incorrectly lower like a bid was placed when it wasn't
+        # Sparknotes: It doesn't invest all of the cash, but its not a big deal. It will do so on next run
+    """
+    @staticmethod
+    def handle_cash_balance(logger, available_cash, bid_amt, listings_list):
         investment_number = len(listings_list)
         if investment_number == 0:  # Handles no listings
             return listings_list, bid_amt, available_cash  # [], self.bid_amt, no cash used

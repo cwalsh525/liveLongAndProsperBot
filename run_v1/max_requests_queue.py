@@ -2,6 +2,12 @@ import time
 
 
 class MaxRequestsQueue:
+    """
+    Simply queue that allows for max amount of requests to be sent to Prosper's Listing API.
+    This is needed as they only allow 20 per second.
+    BUT, this is really needed because they have a bug that allows for significantly less than 20 per second.
+    I have this parameterized for easy changing if needed.
+    """
 
     def __init__(self, max_request_per_second, filter_dict, time_to_run_for):
         self.max_request_per_second = max_request_per_second

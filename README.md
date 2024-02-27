@@ -46,6 +46,7 @@ I use crontab scheduler to run the program (run.py) at noon and 6 pm EST weekday
 
 #### Future Enhancements
 ##### Priority
+* Add max listings requests per second via a proper Queue. There is a bug on Prosper's side. They are throttling me even if i do not go near their max 20 per second listings api limit. Add a param that will properly replace max hit per second (current code), and this way i can test their api and just set very low as opposed to 20. But when they fix their api i can set to 20. COMPLETE in max_requests_queue.py
 * Add Testing Suite. Will probably have to break down functions slightly to do so. include code cleanup
 * Will need to create logic to not invest more than 10% of total note amount when bid amount reaches $200 (as $2000 is min loan amount for a borrower)
 ##### Lesser Prioirty

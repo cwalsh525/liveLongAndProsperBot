@@ -80,7 +80,7 @@ class NotesMetrics:
     def number_of_notes(self):
         return len(self.notes_data)
 
-    def calculate_age_in_months(self, ownership_start_date, actual_date):
+    def calculate_age_in_months(self, ownership_start_date, actual_date, term):
         # start_date_datetime = datetime.strptime(start_date, "%Y-%m-%d")
         # end_date_datetime = datetime.strptime(end_date, "%Y-%m-%d")
         # days_to_run = int((end_date_datetime - start_date_datetime).days)
@@ -97,8 +97,8 @@ class NotesMetrics:
         start_date = datetime.strptime(str(ownership_start_date), "%Y-%m-%d")
         age_in_days = int((end_date - start_date).days)
         age_in_months = age_in_days / 30
-        if age_in_months > 36: #TODO needs to change if term changes
-            age_in_months = 36
+        if age_in_months > term:
+            age_in_months = term
         return math.floor(age_in_months)
 
     """
@@ -168,7 +168,7 @@ class NotesMetrics:
             note_status_description_dict[note_status_description][prosper_rating]["age_in_months_sum"] += note['age_in_months']
             note_status_description_dict[note_status_description][prosper_rating]["payment_received"] += note['payment_received']
             note_status_description_dict[note_status_description][prosper_rating]["note_ownership_amount"] += note['note_ownership_amount']
-            note_status_description_dict[note_status_description][prosper_rating]["calculated_age_in_months"] += self.calculate_age_in_months(ownership_start_date=note['ownership_start_date'], actual_date=self.date)
+            note_status_description_dict[note_status_description][prosper_rating]["calculated_age_in_months"] += self.calculate_age_in_months(ownership_start_date=note['ownership_start_date'], actual_date=self.date, term=note['term'])
             note_status_description_dict[note_status_description][prosper_rating]["term_percent_complete_sum"] += note['age_in_months'] / note['term']
 
         return note_status_description_dict

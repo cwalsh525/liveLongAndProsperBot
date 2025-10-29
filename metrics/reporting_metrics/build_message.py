@@ -4,6 +4,8 @@ from metrics.connect import Connect
 
 from datetime import datetime, timedelta
 from texttable import Texttable
+from decimal import Decimal
+
 
 """
 This class builds the message to be sent to an email for tracking purposes
@@ -215,6 +217,7 @@ class BuildMessage:
         self.message += "\n"
     # weight the yield on prinpical balance outstanding.
 
+    #TODO This is so sloppy, this needs to be cleaned up, just being lazy.
     def display_late_info(self):
         # For now just hardcode these based on my analysis
         # This is chance of defaulting based on number of days late.
@@ -226,14 +229,34 @@ class BuildMessage:
             "61 - 90": .83,
             "91 - 120": 0.95
         }
+
+        forecasted_default_rate_all = {
+            "1 - 15": 0.4725,
+            "16 - 30": 0.7038,
+            "31 - 60": 0.8115,
+            "61 - 90": .9352,
+            "91 - 120": 0.98
+        }
         late_cats = ["1 - 15", "16 - 30", "31 - 60", "61 - 90", "91 - 120"]
         # create dict
         late_dict = {}
+        late_dict_non_loan_settlement = {}
         current_count = 0
         total_late_count = 0
+        total_late_count_over30 = 0
+        total_late_principal = Decimal(0)
+        total_late_principal_non_settle = Decimal(0)
+        total_late_principal_over30 = Decimal(0)
+        total_late_principal_non_settle_over30 = Decimal(0)
+
         for cat in late_cats:
             late_dict[cat] = {"count": 0,
-                              "outstanding principal": 0,
+                              "outstanding principal": Decimal(0),
+                              "ratings": [],
+                              "return": "",
+                              "forecasted return": ""}
+            late_dict_non_loan_settlement[cat] = {"count": 0,
+                              "outstanding principal": Decimal(0),
                               "ratings": [],
                               "return": "",
                               "forecasted return": ""}
@@ -245,7 +268,8 @@ class BuildMessage:
         # Removed showing the comprised notes, aka the array of late ratings.
 
         notes_data = self.notes.pull_notes_table()
-        total_outstanding_principal = 0
+        total_outstanding_principal = Decimal(0)
+        total_outstanding_principal_non_settlement = 0
         for note in notes_data:
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] == 0:
                 current_count += 1
@@ -255,45 +279,81 @@ class BuildMessage:
                 late_dict["1 - 15"]["outstanding principal"] += note['principal_balance_pro_rata_share']
                 total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["1 - 15"]["ratings"].append(note['prosper_rating'])
+                if note['loan_settlement_status'] != "Enrolled":
+                    late_dict_non_loan_settlement["1 - 15"]["count"] += 1
+                    late_dict_non_loan_settlement["1 - 15"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                    total_outstanding_principal_non_settlement += note['principal_balance_pro_rata_share']
+                    late_dict_non_loan_settlement["1 - 15"]["ratings"].append(note['prosper_rating'])
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 15  and note['days_past_due'] < 31:
                 late_dict["16 - 30"]["count"] += 1
                 late_dict["16 - 30"]["outstanding principal"] += note['principal_balance_pro_rata_share']
                 total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["16 - 30"]["ratings"].append(note['prosper_rating'])
+                if note['loan_settlement_status'] != "Enrolled":
+                    late_dict_non_loan_settlement["16 - 30"]["count"] += 1
+                    late_dict_non_loan_settlement["16 - 30"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                    total_outstanding_principal_non_settlement += note['principal_balance_pro_rata_share']
+                    late_dict_non_loan_settlement["16 - 30"]["ratings"].append(note['prosper_rating'])
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 30 and note['days_past_due'] < 61:
                 late_dict["31 - 60"]["count"] += 1
                 late_dict["31 - 60"]["outstanding principal"] += note['principal_balance_pro_rata_share']
                 total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["31 - 60"]["ratings"].append(note['prosper_rating'])
+                if note['loan_settlement_status'] != "Enrolled":
+                    late_dict_non_loan_settlement["31 - 60"]["count"] += 1
+                    late_dict_non_loan_settlement["31 - 60"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                    total_outstanding_principal_non_settlement += note['principal_balance_pro_rata_share']
+                    late_dict_non_loan_settlement["31 - 60"]["ratings"].append(note['prosper_rating'])
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 60 and  note['days_past_due'] < 91:
                 late_dict["61 - 90"]["count"] += 1
                 late_dict["61 - 90"]["outstanding principal"] += note['principal_balance_pro_rata_share']
                 total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["61 - 90"]["ratings"].append(note['prosper_rating'])
+                if note['loan_settlement_status'] != "Enrolled":
+                    late_dict_non_loan_settlement["61 - 90"]["count"] += 1
+                    late_dict_non_loan_settlement["61 - 90"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                    total_outstanding_principal_non_settlement += note['principal_balance_pro_rata_share']
+                    late_dict_non_loan_settlement["61 - 90"]["ratings"].append(note['prosper_rating'])
             if note['note_status_description'] == "CURRENT" and note['days_past_due'] > 90:
                 late_dict["91 - 120"]["count"] += 1
                 late_dict["91 - 120"]["outstanding principal"] += note['principal_balance_pro_rata_share']
                 total_outstanding_principal += note['principal_balance_pro_rata_share']
                 late_dict["91 - 120"]["ratings"].append(note['prosper_rating'])
+                if note['loan_settlement_status'] != "Enrolled":
+                    late_dict_non_loan_settlement["91 - 120"]["count"] += 1
+                    late_dict_non_loan_settlement["91 - 120"]["outstanding principal"] += note['principal_balance_pro_rata_share']
+                    total_outstanding_principal_non_settlement += note['principal_balance_pro_rata_share']
+                    late_dict_non_loan_settlement["91 - 120"]["ratings"].append(note['prosper_rating'])
         # calculate return and forecasted return for each late category
         for cat in late_cats:
             # cat is each late category ie 91-120, 61-90, etc.
             percent_change_of_default = float(forecasted_default_rate[cat])
+            percent_change_of_default_non_settle = float(forecasted_default_rate_all[cat])
             outstanding_late_principal = float(late_dict[cat]["outstanding principal"])
+            outstanding_late_principal_non_settle = float(late_dict_non_loan_settlement[cat]["outstanding principal"])
             monthly_interest = float(self.estimated_monthly_interest)
             total_principal = float(total_outstanding_principal)
+            total_principal_non_settle = float(total_outstanding_principal_non_settlement)
             if cat == "1 - 15" or cat == "16 - 30": # Need to account for it being half a month.
                 the_return = (((((monthly_interest / 2 ) - outstanding_late_principal) / total_principal ) + 1 ) ** 24 ) - 1
                 forecasted_return = (((((monthly_interest / 2 ) - (outstanding_late_principal * percent_change_of_default)) / total_principal ) + 1 ) ** 24 ) - 1
+                the_return_non_settle = (((((monthly_interest / 2 ) - outstanding_late_principal_non_settle) / total_principal ) + 1 ) ** 24 ) - 1
+                forecasted_return_non_settle = (((((monthly_interest / 2 ) - (outstanding_late_principal_non_settle * percent_change_of_default_non_settle)) / total_principal ) + 1 ) ** 24 ) - 1
 
             else:
                 the_return = ((((monthly_interest - outstanding_late_principal) / total_principal ) + 1 ) ** 12 ) - 1
                 forecasted_return = ((((monthly_interest - (outstanding_late_principal * percent_change_of_default)) / total_principal ) + 1 ) ** 12 ) - 1
+                the_return_non_settle = ((((monthly_interest - outstanding_late_principal_non_settle) / total_principal ) + 1 ) ** 12 ) - 1
+                forecasted_return_non_settle = ((((monthly_interest - (outstanding_late_principal_non_settle * percent_change_of_default_non_settle)) / total_principal ) + 1 ) ** 12 ) - 1
             late_dict[cat]['return'] = self.format_percent(the_return)
             late_dict[cat]['forecasted return'] = self.format_percent(forecasted_return)
+            late_dict_non_loan_settlement[cat]['return'] = self.format_percent(the_return_non_settle)
+            late_dict_non_loan_settlement[cat]['forecasted return'] = self.format_percent(forecasted_return_non_settle)
 
         table = Texttable()
         table.add_row(["Late Category", "Count", "Outstanding Principal", "Return", "Forecasted Return"])
+        table_non_settle = Texttable()
+        table_non_settle.add_row(["Late Category", "Count", "Outstanding Principal", "Return", "Forecasted Return"])
         for d in late_dict:
             table.add_row([d,
                            late_dict[d]["count"],
@@ -302,9 +362,30 @@ class BuildMessage:
                            late_dict[d]['forecasted return']
                            ])
             total_late_count += late_dict[d]["count"]
+            total_late_principal += late_dict[d]["outstanding principal"]
+            if d not in ("1 - 15", "16 - 30"):
+                total_late_principal_over30 += late_dict[d]["outstanding principal"]
+                total_late_count_over30 += late_dict[d]["count"]
+            table_non_settle.add_row([d,
+                           late_dict_non_loan_settlement[d]["count"],
+                           late_dict_non_loan_settlement[d]["outstanding principal"],
+                           late_dict_non_loan_settlement[d]['return'],
+                           late_dict_non_loan_settlement[d]['forecasted return']
+                           ])
+            total_late_principal_non_settle += late_dict_non_loan_settlement[d]["outstanding principal"]
+            if d not in ("1 - 15", "16 - 30"):
+                total_late_principal_non_settle_over30 += late_dict_non_loan_settlement[d]["outstanding principal"]
+
         self.message += "\nLate Note Data:"
-        self.message += "\nCurrent notes late is {num}% of all notes\n".format(num=round((total_late_count / (total_late_count + current_count) * 100), 2))
+        self.message += "\nCurrent notes late is {num}% of all notes".format(num=round((total_late_count / (total_late_count + current_count) * 100), 2))
+        self.message += "\nCurrent notes late OVER 30 is {num}% of all notes\n".format(num=round((total_late_count_over30 / (total_late_count + current_count) * 100), 2))
+        self.message += "\nCurrent notes principal late is {num}% of all notes".format(num=round((total_late_principal / (total_late_principal + total_outstanding_principal) * 100), 2))
+        self.message += "\nCurrent notes principal late OVER 30 days is {num}% of all notes\n".format(num=round((total_late_principal_over30 / (total_late_principal + total_outstanding_principal) * 100), 2))
         self.message += table.draw()
+        self.message += "\nTable Metrics of Non Settlement Only"
+        self.message += "\nCurrent notes principal late NOT ON A SETTLEMENT is {num}% of all notes".format(num=round((total_late_principal_non_settle / (total_late_principal + total_outstanding_principal) * 100), 2))
+        self.message += "\nCurrent notes principal late OVER 30 days NOT ON A SETTLEMENT is {num}% of all notes\n".format(num=round((total_late_principal_non_settle_over30 / (total_late_principal + total_outstanding_principal) * 100), 2))
+        self.message += table_non_settle.draw()
         self.message += "\n"
 
     @staticmethod

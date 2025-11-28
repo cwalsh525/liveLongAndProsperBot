@@ -22,13 +22,12 @@ access_token = TokenGeneration(
 
 header = utils.http_header_build(access_token)
 order_header = utils.http_header_build_orders(access_token)
-
-account = Accounts(header)
-cash_balance = math.floor(account.get_account_response()['available_cash_balance'])
-if cash_balance > 500:
-    bid_amt = config["bid_amt_high"]
-else:
-    bid_amt = config["bid_amt_low"]
+try:
+    account = Accounts(header)
+    cash_balance = math.floor(account.get_account_response()['available_cash_balance'])
+except KeyError:
+    print("Key Error, Part or all of Accounts API likely down.")
+    cash_balance = 1000 # Arbitrary amt
 
 # time.sleep(10) # Typically takes ~ 20, 25 seconds to post, but there are outliers. Running a loop seems more effective at getting the most amount of listings vs searhcing for new listings and then running.
 
@@ -56,7 +55,7 @@ SearchAndDestroy(order_header=order_header,
                  time_to_run_for=args.run_time,
                  max_request_per_second=args.max_requests_per_second,
                  filters_dict=filters.v1_filters_dict,
-                 bid_amt=bid_amt,
+                 bid_amt=config['bid_amt_by_filter'],
                  available_cash=cash_balance,
                  dry_run=args.dry_run
                  ).execute()

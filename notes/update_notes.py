@@ -31,8 +31,23 @@ class UpdateNotes:
     This function checks if any value in the database for a note differs from api
     """
     def check_if_note_needs_update(self, api_record, database_record):
+        #Sloppy and inefficient, but gets the job done.
+        # If the db record shows note has been sold...
+        # Never update the record again. It's done, over.
+        for d in database_record:
+            if (d['is_sold']
+            # Bug, i think Propser updates their notes before payment verifciation, so if final payment for COMPLETED doesn't go through this record would get locked incorrectly. This would be a very small amt to be fair though, most likely.
+            #         or d['note_status_description'] == "COMPLETED"
+                    or d['note_status_description'] == "DEFAULTED"
+                #TODO Add in something like ( d['note_status_description'] == "COMPLETED" and current_date > effective_start_date - 10 )
+            ):
+                return False
+        # final_return = False
         for k in api_record:
             for n in database_record: # Still need to loop even though only one record
+                # Sometimes a record will update months or years later because of one col.
+                # if n['is_sold']:
+                #     return False
                 # This every value!
                 # Create a locked column so the record for sure never gets updated again once the note is completed or charged off?
                 if (n['note_status_description'] == "COMPLETED" and k == "age_in_months")\
@@ -52,13 +67,17 @@ class UpdateNotes:
                                 .format(key=k, r_val=api_record[k], db_val=n[k], loan_note_id=api_record['loan_note_id'])
                             # print(msg)
                             # self.logger.debug(msg)
+                            # final_return = True
+                            # Cannot use return True here bc it loops through each column and this return true will get hit before the other cols return False if farther down the column line.
                             return True # If database value does not equal prosper api value return True to flag for update
+        # return final_return
         return False
 
     """
     builds list of notes that differ in the database compared to the api
     This notes need to be updated
     """
+    #TODO, this seems inefficeint, instead of pulling all notes via api and checking to DB to see if update is needed, perhaps do it the other way.
     def build_notes_to_update_query(self):
         list_of_notes_to_update = []
         insert_query = ""
@@ -67,7 +86,10 @@ class UpdateNotes:
         limit = 25
         response = ""
         while response != None:
-            response = requests.get(note_util.get_url_get_request_notes_by_date(offset, "2019-11-25", limit), headers=self.header, timeout=30.0).json()['result']
+            #TODO Update this min_date at least. Check DB to see most recent still active note.
+            #TODO Update this min_date at least. Check DB to see most recent still active note. As of 11/5/25 this min date is 2022-07-05, but used jun 1 to be safe. This failed??
+            # response = requests.get(note_util.get_url_get_request_notes_by_date(offset, "2019-11-25", limit), headers=self.header, timeout=30.0).json()['result']
+            response = requests.get(note_util.get_url_get_request_notes_by_date(offset, "2021-12-31", limit), headers=self.header, timeout=30.0).json()['result']
             if response != None:
                 # print(response)
                 for r in response:

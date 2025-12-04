@@ -67,8 +67,6 @@ class UpdateNotes:
                                 .format(key=k, r_val=api_record[k], db_val=n[k], loan_note_id=api_record['loan_note_id'])
                             # print(msg)
                             # self.logger.debug(msg)
-                            # final_return = True
-                            # Cannot use return True here bc it loops through each column and this return true will get hit before the other cols return False if farther down the column line.
                             return True # If database value does not equal prosper api value return True to flag for update
         # return final_return
         return False

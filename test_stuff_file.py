@@ -168,11 +168,11 @@ header = utils.http_header_build(access_token)
 # note_status_description_dict = NotesMetrics('2022-10-11').
 # print(note_status_description_dict)
 
-projected_default_dict, projected_default_dict_prosper, actual_default_dict, actual_late_dict = NotesMetrics('2022-10-11').default_rate_tracking()
-print(projected_default_dict)
-print(projected_default_dict_prosper)
-print(actual_default_dict)
-print(actual_late_dict)
+# projected_default_dict, projected_default_dict_prosper, actual_default_dict, actual_late_dict = NotesMetrics('2022-10-11').default_rate_tracking()
+# print(projected_default_dict)
+# print(projected_default_dict_prosper)
+# print(actual_default_dict)
+# print(actual_late_dict)
 
 
 # current_date = datetime.today()
@@ -195,3 +195,4 @@ print(actual_late_dict)
 #     default_count_last_month += projected_default_dict_last_month[k]
 # print(default_count_last_month)
 
+r = requests.get(query_get, headers=self.listing_header, timeout=30.0)

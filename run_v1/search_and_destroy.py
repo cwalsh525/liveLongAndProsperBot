@@ -185,7 +185,6 @@ class SearchAndDestroy:
                     with self.lock:
                         unique_listings = []
                         for listing in listings_found:
-                            print(listings_found)
                             if listing['listing_number'] not in submitted_order_listings:
                                 submitted_order_listings.append(listing['listing_number'])
                                 unique_listings.append(listing)

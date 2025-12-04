@@ -76,16 +76,15 @@ class SearchAndDestroy:
                 if result_length > 0:
                     # Handle normal non-looking further into credit_bureau_values_transunion
                     if query not in filters.transunion_add_on_filters:
-                        if result_length > 0:
-                            for i in range(result_length):
-                                listing_number = query_listing['result'][i]['listing_number']
-                                prosper_rating = query_listing['result'][i]['prosper_rating']
+                        for i in range(result_length):
+                            listing_number = query_listing['result'][i]['listing_number']
+                            prosper_rating = query_listing['result'][i]['prosper_rating']
+                            if listing_number not in already_invested_listings:
+                                self.track_filter(track_filters, listing_number,
+                                                     query, prosper_rating)  # populates track_filters dict to be inserted into psql later
                                 if listing_number not in already_invested_listings:
-                                    self.track_filter(track_filters, listing_number,
-                                                         query, prosper_rating)  # populates track_filters dict to be inserted into psql later
-                                    if listing_number not in already_invested_listings:
-                                        listings_found.append({"listing_number": listing_number, "prosper_rating": prosper_rating, "query": query})
-                                        logging.log_it_info(self.logger, "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(query=query, listing=listing_number, prosper_rating=prosper_rating, current_time=datetime.now()))
+                                    listings_found.append({"listing_number": listing_number, "prosper_rating": prosper_rating, "query": query})
+                                    logging.log_it_info(self.logger, "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(query=query, listing=listing_number, prosper_rating=prosper_rating, current_time=datetime.now()))
 
                     # i_got_throttled = False
                     # Logic for credit_bureau_values_transunion data only

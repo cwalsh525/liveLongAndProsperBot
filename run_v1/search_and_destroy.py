@@ -127,8 +127,10 @@ class SearchAndDestroy:
         }
 
         for l in listing_list:
-            # bid_amount = bid_amt[prosper_rating][query]
-            request['bid_requests'].append({"listing_id": l['listing_number'], "bid_amount": bid_amt})
+            prosper_rating = l['prosper_rating']
+            query = l['query']
+            bid_amount = bid_amt[prosper_rating][query]
+            request['bid_requests'].append({"listing_id": l['listing_number'], "bid_amount": bid_amount})
         # I think will get throttled if over 20 posts to api in one second (I'll never get this issue)
 
         try:
@@ -196,7 +198,7 @@ class SearchAndDestroy:
                             logging.log_it_info(self.logger, "DRYRUN. This msg just for show: Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
 
                         else:
-                            self.order_logic(listing_list=listings_to_invest, bid_amt=100, filters_used=filters_used) # Put in order, no need to sleep if order placed since that takes time
+                            self.order_logic(listing_list=listings_to_invest, bid_amt=new_bid_amt, filters_used=filters_used) # Put in order, no need to sleep if order placed since that takes time
                             logging.log_it_info(self.logger, "Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
             #             # BUG (acceptable bug) Only inserting filters used if order placed... I prefer to have filters inserted if filter found something but overlaps with a previous filter will not insert...
                         order_pings += 1
@@ -283,7 +285,7 @@ class SearchAndDestroy:
             desired_total_bid_amt = 0
             for l in listings_list:
                 prosper_rating = l['prosper_rating']
-                query = l['query'] #TODO Verify the other possiblites still work. Somehow my PR with this was lost and lost on local. Did this quickly, may have missed something.
+                query = l['query']
                 desired_total_bid_amt += bid_amt[prosper_rating][query]
         if available_cash < 25:
             logging.log_it_info(logger,
@@ -299,8 +301,9 @@ class SearchAndDestroy:
             available_per_bid = round(available_cash / investment_number, 2)
             new_total_bid_amt = available_per_bid * investment_number
             if available_per_bid >= 25:
-                for v in bid_amt:
-                    bid_amt[v] = available_per_bid
+                for k, v in bid_amt.items():
+                    for i in v:
+                        bid_amt[k][i] = available_per_bid
                 situation_one_msg = "Current cash of {cash} is not enough available cash for desired bid amount, for {investment_number} listings, but enough for submit bids on all listings, modifying to {new_amt}".format(
                                                     cash=available_cash, investment_number=investment_number, new_amt=bid_amt)
                 logging.log_it_info(logger, situation_one_msg)
@@ -313,10 +316,10 @@ class SearchAndDestroy:
                     listings_list.pop(0)
                     available_per_bid = round(available_cash / len(listings_list), 2)
                 new_total_bid_amt = available_per_bid * len(listings_list)
-                for v in bid_amt:
-                    bid_amt[v] = available_per_bid
-                print(bid_amt)
-                print(desired_total_bid_amt)
+                for k, v in bid_amt.items():
+                    for i in v:
+                        bid_amt[k][i] = available_per_bid
+
                 return listings_list, bid_amt, available_cash - new_total_bid_amt
 
     """

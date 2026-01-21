@@ -7,6 +7,7 @@ from datetime import datetime
 
 import log.logging as logging
 import config.default as default
+import filters.filters as filters
 
 from metrics.sql_metrics import SQLMetrics
 from metrics.connect import Connect
@@ -73,17 +74,42 @@ class SearchAndDestroy:
                 # if 'result' may be slow
                 result_length = len(query_listing['result'])
                 if result_length > 0:
-                    for i in range(result_length):
-                        listing_number = query_listing['result'][i]['listing_number']
-                        prosper_rating = query_listing['result'][i]['prosper_rating']
-                        if listing_number not in already_invested_listings:
-                            self.track_filter(track_filters, listing_number,
-                                                 query, prosper_rating)  # populates track_filters dict to be inserted into psql later
+                    # Handle normal non-looking further into credit_bureau_values_transunion
+                    if query not in filters.transunion_add_on_filters:
+                        for i in range(result_length):
+                            listing_number = query_listing['result'][i]['listing_number']
+                            prosper_rating = query_listing['result'][i]['prosper_rating']
                             if listing_number not in already_invested_listings:
-                                listings_found.append({"listing_number": listing_number, "prosper_rating": prosper_rating})
-                                logging.log_it_info(self.logger, "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(query=query, listing=listing_number, prosper_rating=prosper_rating, current_time=datetime.now()))
+                                self.track_filter(track_filters, listing_number,
+                                                     query, prosper_rating)  # populates track_filters dict to be inserted into psql later
+                                if listing_number not in already_invested_listings:
+                                    listings_found.append({"listing_number": listing_number, "prosper_rating": prosper_rating, "query": query})
+                                    logging.log_it_info(self.logger, "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(query=query, listing=listing_number, prosper_rating=prosper_rating, current_time=datetime.now()))
+
+                    # i_got_throttled = False
+                    # Logic for credit_bureau_values_transunion data only
+                    # if query in filters.transunion_add_on_filters key
+                    elif query in filters.transunion_add_on_filters:
+                        # logging.log_it_info(self.logger, "include transunion hit")  # Testing
+                        listings_found_dict = self.handle_creditdata_query(query_listing, query)
+                        if len(listings_found_dict) > 0:
+                            for k, v in listings_found_dict.items():
+                                listing_number = k
+                                prosper_rating = v
+                                if listing_number not in already_invested_listings:
+                                    self.track_filter(track_filters, listing_number,
+                                                      query,
+                                                      prosper_rating)  # populates track_filters dict to be inserted into psql later
+                                    if listing_number not in already_invested_listings:
+                                        listings_found.append(
+                                            {"listing_number": listing_number, "prosper_rating": prosper_rating, "query": query})
+                                        logging.log_it_info(self.logger,
+                                                            "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(
+                                                                query=query, listing=listing_number,
+                                                                prosper_rating=prosper_rating, current_time=datetime.now()))
 
                 i_got_throttled = False
+
             else:
                 if 'errors' in query_listing:
                     logging.log_it_info(self.logger, "query {query} got an error, error is: {error}".format(query=query, error=query_listing))
@@ -102,8 +128,9 @@ class SearchAndDestroy:
         }
 
         for l in listing_list:
-            # lookup bid amt by rating
-            bid_amount = bid_amt[l['prosper_rating']]
+            prosper_rating = l['prosper_rating']
+            query = l['query']
+            bid_amount = bid_amt[prosper_rating][query]
             request['bid_requests'].append({"listing_id": l['listing_number'], "bid_amount": bid_amount})
         # I think will get throttled if over 20 posts to api in one second (I'll never get this issue)
 
@@ -258,7 +285,9 @@ class SearchAndDestroy:
         else:
             desired_total_bid_amt = 0
             for l in listings_list:
-                desired_total_bid_amt += bid_amt[l['prosper_rating']]
+                prosper_rating = l['prosper_rating']
+                query = l['query']
+                desired_total_bid_amt += bid_amt[prosper_rating][query]
         if available_cash < 25:
             logging.log_it_info(logger,
                                 f"Current cash of {available_cash} not enough cash for any bids... LOSER")
@@ -273,8 +302,9 @@ class SearchAndDestroy:
             available_per_bid = round(available_cash / investment_number, 2)
             new_total_bid_amt = available_per_bid * investment_number
             if available_per_bid >= 25:
-                for v in bid_amt:
-                    bid_amt[v] = available_per_bid
+                for k, v in bid_amt.items():
+                    for i in v:
+                        bid_amt[k][i] = available_per_bid
                 situation_one_msg = "Current cash of {cash} is not enough available cash for desired bid amount, for {investment_number} listings, but enough for submit bids on all listings, modifying to {new_amt}".format(
                                                     cash=available_cash, investment_number=investment_number, new_amt=bid_amt)
                 logging.log_it_info(logger, situation_one_msg)
@@ -287,6 +317,61 @@ class SearchAndDestroy:
                     listings_list.pop(0)
                     available_per_bid = round(available_cash / len(listings_list), 2)
                 new_total_bid_amt = available_per_bid * len(listings_list)
-                for v in bid_amt:
-                    bid_amt[v] = available_per_bid
+                for k, v in bid_amt.items():
+                    for i in v:
+                        bid_amt[k][i] = available_per_bid
+
                 return listings_list, bid_amt, available_cash - new_total_bid_amt
+
+    """
+    Alright, now we get confusing. Today is 12/3/25. I'm adding in the ability to query in depth Transunion data. Some Transunion data is indexed and included in the API response.
+    But most of the Transunion data is not.
+    This is kind of a bandaid fix to allow for this type of querying, I dont love it; but i dont want to do a full rewrite.
+    This will require a dict in the filters/filter.py that adds in the additional filtering not doable straight in the API request. 
+    query_listing looks like 
+    {}
+    """
+    @staticmethod
+    def handle_creditdata_query(query_listing, query):
+        result_length = len(query_listing['result'])
+        listings_found_dict = {}
+        criteria_count = len(filters.transunion_add_on_filters[query])
+        for i in range(result_length):
+            criteria_hit = 0
+            for x in filters.transunion_add_on_filters[query]:
+                credit_bureau_value = x['credit_bureau_value']
+                if x['min_or_max'] == 'min':
+                    min_or_max_value = x['min_or_max_value']
+                    if query_listing['result'][i]['credit_bureau_values_transunion'][
+                        credit_bureau_value] >= min_or_max_value:
+                        criteria_hit += 1
+                        listing_number = query_listing['result'][i]['listing_number']
+                        prosper_rating = query_listing['result'][i]['prosper_rating']
+                        if criteria_hit == criteria_count:
+                            listings_found_dict[listing_number] = prosper_rating
+                elif x['min_or_max'] == 'max':
+                    min_or_max_value = x['min_or_max_value']
+                    if query_listing['result'][i]['credit_bureau_values_transunion'][
+                        credit_bureau_value] <= min_or_max_value:
+                        criteria_hit += 1
+                        listing_number = query_listing['result'][i]['listing_number']
+                        prosper_rating = query_listing['result'][i]['prosper_rating']
+                        if criteria_hit == criteria_count:
+                            listings_found_dict[listing_number] = prosper_rating
+                elif x['min_or_max'] == 'between':
+                    min_value = x['min_value']
+                    max_value = x['max_value']
+                    if query_listing['result'][i]['credit_bureau_values_transunion'][
+                        credit_bureau_value] >= min_value and \
+                            query_listing['result'][i]['credit_bureau_values_transunion'][
+                                credit_bureau_value] <= max_value:
+                        print("true")
+                        criteria_hit += 1
+                        listing_number = query_listing['result'][i]['listing_number']
+                        prosper_rating = query_listing['result'][i]['prosper_rating']
+                        if criteria_hit == criteria_count:
+                            listings_found_dict[listing_number] = prosper_rating
+        return listings_found_dict
+
+
+

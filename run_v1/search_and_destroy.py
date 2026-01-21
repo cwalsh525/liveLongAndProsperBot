@@ -90,6 +90,7 @@ class SearchAndDestroy:
                     # Logic for credit_bureau_values_transunion data only
                     # if query in filters.transunion_add_on_filters key
                     elif query in filters.transunion_add_on_filters:
+                        # logging.log_it_info(self.logger, "include transunion hit")  # Testing
                         listings_found_dict = self.handle_creditdata_query(query_listing, query)
                         if len(listings_found_dict) > 0:
                             for k, v in listings_found_dict.items():
@@ -339,10 +340,8 @@ class SearchAndDestroy:
             criteria_hit = 0
             for x in filters.transunion_add_on_filters[query]:
                 credit_bureau_value = x['credit_bureau_value']
-                min_or_max_value = x['min_or_max_value']
-                # credit_bureau_value = transunion_add_on_filters[query]['credit_bureau_value']
-                # min_or_max_value = transunion_add_on_filters[query]['min_or_max_value']
                 if x['min_or_max'] == 'min':
+                    min_or_max_value = x['min_or_max_value']
                     if query_listing['result'][i]['credit_bureau_values_transunion'][
                         credit_bureau_value] >= min_or_max_value:
                         criteria_hit += 1
@@ -351,8 +350,22 @@ class SearchAndDestroy:
                         if criteria_hit == criteria_count:
                             listings_found_dict[listing_number] = prosper_rating
                 elif x['min_or_max'] == 'max':
+                    min_or_max_value = x['min_or_max_value']
                     if query_listing['result'][i]['credit_bureau_values_transunion'][
                         credit_bureau_value] <= min_or_max_value:
+                        criteria_hit += 1
+                        listing_number = query_listing['result'][i]['listing_number']
+                        prosper_rating = query_listing['result'][i]['prosper_rating']
+                        if criteria_hit == criteria_count:
+                            listings_found_dict[listing_number] = prosper_rating
+                elif x['min_or_max'] == 'between':
+                    min_value = x['min_value']
+                    max_value = x['max_value']
+                    if query_listing['result'][i]['credit_bureau_values_transunion'][
+                        credit_bureau_value] >= min_value and \
+                            query_listing['result'][i]['credit_bureau_values_transunion'][
+                                credit_bureau_value] <= max_value:
+                        print("true")
                         criteria_hit += 1
                         listing_number = query_listing['result'][i]['listing_number']
                         prosper_rating = query_listing['result'][i]['prosper_rating']

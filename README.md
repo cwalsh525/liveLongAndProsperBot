@@ -45,6 +45,15 @@ I use crontab scheduler to run the program (run.py) at noon and 6 pm EST weekday
 * Has metric tracking that tracks return on investment, note default tracking as compared to prosper baseline and my own filters
 
 #### Future Enhancements
+
+##### V2+ Major Rework
+* Need a major rewrite as a V2 or whatever. Since I am now using many many filters (45). A few things have come up.
+  * A lot of overlap with filters, need to solve for when a low amt bid filter finds a listing vs high amount, should add in new order with diff if needed.
+  * Prosper seems to only allow like ~4 listings to api per second. I think would rather use "base" filters (minimum criteria to get the loans and then do the filters on my side.)
+  * This way i could multi thread say 4 base filters, get that data and then filterout the loans i want myself and submit the requests. 
+  * With 40+ Criteria, and using the API to filter instead, and only allowing 4 listing requests per second, in theory i could have 10 seconds or so of not submitting an order request, and we've learned that timing is everything with small bid amt.
+  * Also check for 10% of listing_amount to allow for more than $200 bids.
+
 ##### Priority
 * Add max listings requests per second via a proper Queue. There is a bug on Prosper's side. They are throttling me even if i do not go near their max 20 per second listings api limit. Add a param that will properly replace max hit per second (current code), and this way i can test their api and just set very low as opposed to 20. But when they fix their api i can set to 20. COMPLETE in max_requests_queue.py
 * Add Testing Suite. Will probably have to break down functions slightly to do so. include code cleanup

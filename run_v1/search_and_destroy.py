@@ -69,7 +69,12 @@ class SearchAndDestroy:
                 print("THROTTLED")
                 logging.log_it_info(self.logger, "I have been Throttled by prosper API bug")
                 raise Exception("Throttled by Listing API")
-            query_listing = r.json()
+            try:
+                query_listing = r.json()
+            except ValueError as e:
+                print(e)
+                logging.log_it_info(self.logger, e)
+                # This is where it seems we get hit if the API throttles.
             if 'result' in query_listing: # Can get throttled so only execute if get a result
                 # if 'result' may be slow
                 result_length = len(query_listing['result'])
@@ -79,6 +84,9 @@ class SearchAndDestroy:
                         for i in range(result_length):
                             listing_number = query_listing['result'][i]['listing_number']
                             prosper_rating = query_listing['result'][i]['prosper_rating']
+                            # Checks to verify this listing wasn't already invested in.
+                            # With a lot of overlap between filters, it would be nice to check to see if when a listing was already invested,
+                            # if it was a smaller bid_amt to add another order to the amt of this filter since many times it can be larger. This would require a good amount of re-work though.
                             if listing_number not in already_invested_listings:
                                 self.track_filter(track_filters, listing_number,
                                                      query, prosper_rating)  # populates track_filters dict to be inserted into psql later

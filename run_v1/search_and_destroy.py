@@ -61,69 +61,80 @@ class SearchAndDestroy:
         while i_got_throttled:
             the_time = time.time()
             r = requests.get(query_get, headers=self.listing_header, timeout=30.0)
-            print(f"{query} Hit API Listings at {the_time}") # For Testing
-            header_json = r.headers
-            if 'Retry-After' in header_json:
-                # There is a bug in prosper API, it is supposed to allow 20 requests to listing api per second.
-                # But sometimes they mess this up and it throttles me even though i dont send more than 20 a second.
-                print("THROTTLED")
-                logging.log_it_info(self.logger, "I have been Throttled by prosper API bug")
-                raise Exception("Throttled by Listing API")
-            try:
-                query_listing = r.json()
-            except ValueError as e:
-                print(e)
-                logging.log_it_info(self.logger, e)
-                # This is where it seems we get hit if the API throttles.
-            if 'result' in query_listing: # Can get throttled so only execute if get a result
-                # if 'result' may be slow
-                result_length = len(query_listing['result'])
-                if result_length > 0:
-                    # Handle normal non-looking further into credit_bureau_values_transunion
-                    if query not in filters.transunion_add_on_filters:
-                        for i in range(result_length):
-                            listing_number = query_listing['result'][i]['listing_number']
-                            prosper_rating = query_listing['result'][i]['prosper_rating']
-                            # Checks to verify this listing wasn't already invested in.
-                            # With a lot of overlap between filters, it would be nice to check to see if when a listing was already invested,
-                            # if it was a smaller bid_amt to add another order to the amt of this filter since many times it can be larger. This would require a good amount of re-work though.
-                            if listing_number not in already_invested_listings:
-                                self.track_filter(track_filters, listing_number,
-                                                     query, prosper_rating)  # populates track_filters dict to be inserted into psql later
-                                if listing_number not in already_invested_listings:
-                                    listings_found.append({"listing_number": listing_number, "prosper_rating": prosper_rating, "query": query})
-                                    logging.log_it_info(self.logger, "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(query=query, listing=listing_number, prosper_rating=prosper_rating, current_time=datetime.now()))
-
-                    # i_got_throttled = False
-                    # Logic for credit_bureau_values_transunion data only
-                    # if query in filters.transunion_add_on_filters key
-                    elif query in filters.transunion_add_on_filters:
-                        # logging.log_it_info(self.logger, "include transunion hit")  # Testing
-                        listings_found_dict = self.handle_creditdata_query(query_listing, query)
-                        if len(listings_found_dict) > 0:
-                            for k, v in listings_found_dict.items():
-                                listing_number = k
-                                prosper_rating = v
+            print(f"{query} Hit API Listings at {datetime.now()}") # For Testing
+            # logging.log_it_info(self.logger, f"{query} Hit API Listings at {datetime.now()}") # For testing
+            status_code = r.status_code
+            # Entering the valley of if statements...Clean this up.
+            # Check for a valid 200 status code.
+            if status_code == 200:
+                # logging.log_it_info(self.logger, f"{query} Hit API Listings at {the_time}")
+                header_json = r.headers
+                if 'Retry-After' in header_json:
+                    # There is a bug in prosper API, it is supposed to allow 20 requests to listing api per second.
+                    # But sometimes they mess this up and it throttles me even though i dont send more than 20 a second.
+                    print("THROTTLED")
+                    logging.log_it_info(self.logger, "I have been Throttled by prosper API bug")
+                    raise Exception("Throttled by Listing API")
+                try:
+                    query_listing = r.json()
+                except ValueError as e:
+                    print(e)
+                    # print(r.status_code)
+                    logging.log_it_info(self.logger, f"VALUE ERROR: {e}")
+                    # This is where it seems we get hit if the API throttles.
+                if 'result' in query_listing: # Can get throttled so only execute if get a result
+                    # if 'result' may be slow
+                    result_length = len(query_listing['result'])
+                    if result_length > 0:
+                        # Handle normal non-looking further into credit_bureau_values_transunion
+                        if query not in filters.transunion_add_on_filters:
+                            for i in range(result_length):
+                                listing_number = query_listing['result'][i]['listing_number']
+                                prosper_rating = query_listing['result'][i]['prosper_rating']
+                                # Checks to verify this listing wasn't already invested in.
+                                # With a lot of overlap between filters, it would be nice to check to see if when a listing was already invested,
+                                # if it was a smaller bid_amt to add another order to the amt of this filter since many times it can be larger. This would require a good amount of re-work though.
                                 if listing_number not in already_invested_listings:
                                     self.track_filter(track_filters, listing_number,
-                                                      query,
-                                                      prosper_rating)  # populates track_filters dict to be inserted into psql later
+                                                         query, prosper_rating)  # populates track_filters dict to be inserted into psql later
                                     if listing_number not in already_invested_listings:
-                                        listings_found.append(
-                                            {"listing_number": listing_number, "prosper_rating": prosper_rating, "query": query})
-                                        logging.log_it_info(self.logger,
-                                                            "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(
-                                                                query=query, listing=listing_number,
-                                                                prosper_rating=prosper_rating, current_time=datetime.now()))
+                                        listings_found.append({"listing_number": listing_number, "prosper_rating": prosper_rating, "query": query})
+                                        logging.log_it_info(self.logger, "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(query=query, listing=listing_number, prosper_rating=prosper_rating, current_time=datetime.now()))
 
-                i_got_throttled = False
+                        # i_got_throttled = False
+                        # Logic for credit_bureau_values_transunion data only
+                        # if query in filters.transunion_add_on_filters key
+                        elif query in filters.transunion_add_on_filters:
+                            # logging.log_it_info(self.logger, "include transunion hit")  # Testing
+                            listings_found_dict = self.handle_creditdata_query(query_listing, query)
+                            if len(listings_found_dict) > 0:
+                                for k, v in listings_found_dict.items():
+                                    listing_number = k
+                                    prosper_rating = v
+                                    if listing_number not in already_invested_listings:
+                                        self.track_filter(track_filters, listing_number,
+                                                          query,
+                                                          prosper_rating)  # populates track_filters dict to be inserted into psql later
+                                        if listing_number not in already_invested_listings:
+                                            listings_found.append(
+                                                {"listing_number": listing_number, "prosper_rating": prosper_rating, "query": query})
+                                            logging.log_it_info(self.logger,
+                                                                "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(
+                                                                    query=query, listing=listing_number,
+                                                                    prosper_rating=prosper_rating, current_time=datetime.now()))
 
-            else:
-                if 'errors' in query_listing:
-                    logging.log_it_info(self.logger, "query {query} got an error, error is: {error}".format(query=query, error=query_listing))
-                    throttled_count += 1
+                    i_got_throttled = False
+
                 else:
-                    logging.log_it_info(self.logger, "not an errors in response, response is: {response}".format(response=query_listing))
+                    if 'errors' in query_listing:
+                        logging.log_it_info(self.logger, "query {query} got an error, error is: {error}".format(query=query, error=query_listing))
+                        throttled_count += 1
+                    else:
+                        logging.log_it_info(self.logger, "not an errors in response, response is: {response}".format(response=query_listing))
+            else:
+                print(f"status code is {status_code}, not 200. Sleeping for 5 seconds.")
+                logging.log_it_info(self.logger, f"status code is {status_code}, not 200. Sleeping for 5 seconds.")
+                time.sleep(5)
         return listings_found, track_filters, throttled_count
 
     """
@@ -339,8 +350,8 @@ class SearchAndDestroy:
     query_listing looks like 
     {}
     """
-    @staticmethod
-    def handle_creditdata_query(query_listing, query):
+
+    def handle_creditdata_query(self, query_listing, query):
         result_length = len(query_listing['result'])
         listings_found_dict = {}
         criteria_count = len(filters.transunion_add_on_filters[query])
@@ -350,35 +361,48 @@ class SearchAndDestroy:
                 credit_bureau_value = x['credit_bureau_value']
                 if x['min_or_max'] == 'min':
                     min_or_max_value = x['min_or_max_value']
-                    if query_listing['result'][i]['credit_bureau_values_transunion'][
-                        credit_bureau_value] >= min_or_max_value:
-                        criteria_hit += 1
-                        listing_number = query_listing['result'][i]['listing_number']
-                        prosper_rating = query_listing['result'][i]['prosper_rating']
-                        if criteria_hit == criteria_count:
-                            listings_found_dict[listing_number] = prosper_rating
+                    try:
+                        if query_listing['result'][i]['credit_bureau_values_transunion'][
+                            credit_bureau_value] >= min_or_max_value:
+                            criteria_hit += 1
+                            listing_number = query_listing['result'][i]['listing_number']
+                            prosper_rating = query_listing['result'][i]['prosper_rating']
+                            if criteria_hit == criteria_count:
+                                listings_found_dict[listing_number] = prosper_rating
+                    except KeyError as e:
+                        logging.log_it_info(self.logger, f"key error for transunion data: {e}")
+                        return listings_found_dict
                 elif x['min_or_max'] == 'max':
                     min_or_max_value = x['min_or_max_value']
-                    if query_listing['result'][i]['credit_bureau_values_transunion'][
-                        credit_bureau_value] <= min_or_max_value:
-                        criteria_hit += 1
-                        listing_number = query_listing['result'][i]['listing_number']
-                        prosper_rating = query_listing['result'][i]['prosper_rating']
-                        if criteria_hit == criteria_count:
-                            listings_found_dict[listing_number] = prosper_rating
+                    try:
+                        if query_listing['result'][i]['credit_bureau_values_transunion'][
+                            credit_bureau_value] <= min_or_max_value:
+                            criteria_hit += 1
+                            listing_number = query_listing['result'][i]['listing_number']
+                            prosper_rating = query_listing['result'][i]['prosper_rating']
+                            if criteria_hit == criteria_count:
+                                listings_found_dict[listing_number] = prosper_rating
+                    except KeyError as e:
+                        logging.log_it_info(self.logger, f"key error for transunion data: {e}")
+                        return listings_found_dict
                 elif x['min_or_max'] == 'between':
                     min_value = x['min_value']
                     max_value = x['max_value']
-                    if query_listing['result'][i]['credit_bureau_values_transunion'][
-                        credit_bureau_value] >= min_value and \
-                            query_listing['result'][i]['credit_bureau_values_transunion'][
-                                credit_bureau_value] <= max_value:
-                        print("true")
-                        criteria_hit += 1
-                        listing_number = query_listing['result'][i]['listing_number']
-                        prosper_rating = query_listing['result'][i]['prosper_rating']
-                        if criteria_hit == criteria_count:
-                            listings_found_dict[listing_number] = prosper_rating
+                    try:
+                        if query_listing['result'][i]['credit_bureau_values_transunion'][
+                            credit_bureau_value] >= min_value and \
+                                query_listing['result'][i]['credit_bureau_values_transunion'][
+                                    credit_bureau_value] <= max_value:
+                            # print("true")
+                            criteria_hit += 1
+                            listing_number = query_listing['result'][i]['listing_number']
+                            prosper_rating = query_listing['result'][i]['prosper_rating']
+                            if criteria_hit == criteria_count:
+                                listings_found_dict[listing_number] = prosper_rating
+                    except KeyError as e:
+                        logging.log_it_info(self.logger, f"key error for transunion data: {e}")
+                        return listings_found_dict
+
         return listings_found_dict
 
 

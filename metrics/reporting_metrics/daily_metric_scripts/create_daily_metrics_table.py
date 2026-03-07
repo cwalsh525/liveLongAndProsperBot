@@ -1,4 +1,3 @@
-from metrics.connect import Connect
 from metrics.reporting_metrics.notes_metrics import NotesMetrics
 
 from datetime import datetime, timedelta
@@ -8,7 +7,6 @@ import matplotlib.pyplot as plt
 class CreateDailyMetricsTable:
 
     def __init__(self, start_date, path_to_save_defaults):
-        self.connect = Connect()
         self.today = datetime.today().strftime("%Y-%m-%d")
         self.table_name = "daily_notes_metrics_{date}".format(date=datetime.today().strftime("%Y-%m-%d").replace("-", "_"))
         self.start_date = start_date
@@ -43,6 +41,7 @@ class CreateDailyMetricsTable:
             return defaults
 
         for day in dates_to_run:
+            print(day) #Testing
             notes = NotesMetrics(day)
             projected_default_dict, projected_default_dict_prosper, actual_default_dict, _ = notes.default_rate_tracking()
             projected_default.append(total_defaults(projected_default_dict))

@@ -49,10 +49,12 @@ def create_email_message(from_address, to_address, subject, body, file_location_
 accounts = Accounts(header)
 
 path_to_save_defaults = default.base_path + '/log/daily_defaults.png'
-path_to_save_annualized_returns = default.base_path + '/log/daily_annualized_returns.png'
+#TODO Commenting out these graphs as i dont really use them anymore, and it takes forever.
+
+# path_to_save_annualized_returns = default.base_path + '/log/daily_annualized_returns.png'
 # c = CreateDailyMetricsTable(start_date="2020-03-02", path_to_save_defaults=path_to_save_defaults)
-c = CreateDailyMetricsTable(start_date="2023-03-02", path_to_save_defaults=path_to_save_defaults)
-c.create_default_tracking_line_graph_png()
+# c = CreateDailyMetricsTable(start_date="2023-03-02", path_to_save_defaults=path_to_save_defaults)
+# c.create_default_tracking_line_graph_png()
 
 msg = create_email_message(
     from_address=default.config['email']['send_from_email'],

@@ -16,6 +16,7 @@ class BuildMessage:
         self.notes = NotesMetrics(datetime.today())
         self.accounts = accounts
         self.estimated_monthly_interest = 0  # Placeholder so i can use in different functions
+        self.connect = Connect()
 
     def display_default_rate_tracking(self):
         table = Texttable()
@@ -101,7 +102,7 @@ class BuildMessage:
 
     def display_average_notes_purchased_last_X_days(self, days_to_query):
         query = "select count(*) from notes where ownership_start_date between current_date - {days_to_query} AND current_date AND latest_record_flag='t'".format(days_to_query=days_to_query)
-        number_of_new_loans = Connect().execute_select(query)[0][0]
+        number_of_new_loans = self.connect.execute_select(query)[0][0]
         if number_of_new_loans != 0:
             avg_daily_notes_purchased = round(number_of_new_loans / days_to_query, 2)
         else:
@@ -110,7 +111,7 @@ class BuildMessage:
 
     def display_notes_purchased_last_X_days_by_rating(self, days_to_query):
         query = "select prosper_rating,count(*) from notes where ownership_start_date > current_date - {days_to_query} and latest_record_flag = 't' group by 1 order by 1 asc;".format(days_to_query=days_to_query)
-        loans = Connect().execute_select(query)
+        loans = self.connect.execute_select(query)
         msg = "Notes purchased over the past {days} days:\n".format(days=days_to_query)
         for r in loans:
             msg += "{prosper_rating}: {count}\n".format(prosper_rating=r[0], count=r[1])
@@ -126,7 +127,7 @@ class BuildMessage:
         group by 1;
         """.format(date=datetime.today())
         msg = "Bids placed today by prosper rating:\n"
-        bids = Connect().execute_select(query)
+        bids = self.connect.execute_select(query)
         for b in bids:
             msg += "{prosper_rating}: {count}\n".format(prosper_rating=b[0], count=b[1])
         self.message += "\n{bids}".format(bids=msg)
@@ -404,4 +405,5 @@ class BuildMessage:
         self.display_default_rate_tracking()
         self.display_late_info()
         self.display_available_cash_balance()
+        self.connect.close_connection()
         return self.message

@@ -1,4 +1,5 @@
 import datetime
+import log.logging as logging
 
 def update_note_query(loan_note_id):
     return """
@@ -33,8 +34,10 @@ def check_for_api_response_value(response_object, key):
                 return_value = "null"
         return return_value
 
-def insert_notes_query(response_object, effective_start_date):
-        return """
+def insert_notes_query(response_object, effective_start_date, logger):
+        # print(response_object)
+        try:
+                return """
         INSERT INTO notes
         (principal_balance_pro_rata_share, service_fees_paid_pro_rata_share, principal_paid_pro_rata_share, interest_paid_pro_rata_share, prosper_fees_paid_pro_rata_share, late_fees_paid_pro_rata_share, collection_fees_paid_pro_rata_share, debt_sale_proceeds_received_pro_rata_share, platform_proceeds_net_received, next_payment_due_amount_pro_rata_share, note_ownership_amount, note_sale_gross_amount_received, note_sale_fees_paid, loan_note_id, listing_number, note_status, note_status_description, is_sold, is_sold_folio, loan_number, amount_borrowed, borrower_rate, lender_yield, prosper_rating, term, age_in_months, accrued_interest, payment_received, loan_settlement_status, loan_extension_status, loan_extension_term, is_in_bankruptcy, co_borrower_application, origination_date, days_past_due, next_payment_due_date, ownership_start_date, effective_start_date, effective_end_date, created_ts, modified_ts, latest_record_flag, note_default_reason, note_default_reason_description)
         VALUES({principal_balance_pro_rata_share},
@@ -88,8 +91,8 @@ def insert_notes_query(response_object, effective_start_date):
         prosper_fees_paid_pro_rata_share=response_object['prosper_fees_paid_pro_rata_share'],
         late_fees_paid_pro_rata_share=response_object['late_fees_paid_pro_rata_share'],
         collection_fees_paid_pro_rata_share=response_object['collection_fees_paid_pro_rata_share'],
-        debt_sale_proceeds_received_pro_rata_share=response_object['debt_sale_proceeds_received_pro_rata_share'],
-        platform_proceeds_net_received=response_object['platform_proceeds_net_received'],
+        debt_sale_proceeds_received_pro_rata_share=response_object.get('debt_sale_proceeds_received_pro_rata_share'),
+        platform_proceeds_net_received=response_object.get('platform_proceeds_net_received'),
         next_payment_due_amount_pro_rata_share=response_object['next_payment_due_amount_pro_rata_share'],
         note_ownership_amount=response_object['note_ownership_amount'],
         note_sale_gross_amount_received=response_object['note_sale_gross_amount_received'],
@@ -99,7 +102,7 @@ def insert_notes_query(response_object, effective_start_date):
         note_status=response_object['note_status'],
         note_status_description=response_object['note_status_description'],
         is_sold=response_object['is_sold'],
-        is_sold_folio=response_object['is_sold_folio'],
+        is_sold_folio=response_object.get('is_sold_folio'),
         loan_number=response_object['loan_number'],
         amount_borrowed=response_object['amount_borrowed'],
         borrower_rate=response_object['borrower_rate'],
@@ -107,12 +110,12 @@ def insert_notes_query(response_object, effective_start_date):
         prosper_rating=response_object['prosper_rating'],
         term=response_object['term'],
         age_in_months=response_object['age_in_months'],
-        accrued_interest=response_object['accrued_interest'],
+        accrued_interest=response_object.get('accrued_interest'),
         payment_received=response_object['payment_received'],
-        loan_settlement_status=response_object['loan_settlement_status'],
-        loan_extension_status=response_object['loan_extension_status'],
-        loan_extension_term=response_object['loan_extension_term'],
-        is_in_bankruptcy=response_object['is_in_bankruptcy'],
+        loan_settlement_status=response_object.get('loan_settlement_status'),
+        loan_extension_status=response_object.get('loan_extension_status'),
+        loan_extension_term=response_object.get('loan_extension_term'),
+        is_in_bankruptcy=response_object.get('is_in_bankruptcy'),
         co_borrower_application=response_object['co_borrower_application'],
         origination_date=response_object['origination_date'],
         days_past_due=response_object['days_past_due'],
@@ -125,10 +128,15 @@ def insert_notes_query(response_object, effective_start_date):
         latest_record_flag='t',
         note_default_reason=check_for_api_response_value(response_object=response_object, key="note_default_reason"),
         note_default_reason_description=check_for_api_response_value(response_object=response_object, key="note_default_reason_description")
-        )
+        ).replace("'None'", "null").replace("None", "null")
+        except KeyError as e:
+                logging.log_it_info(logger, f"Key error from API response: {e}. Response object is: {response_object}") # For testing
 
-def insert_notes_addational_value(response_object, effective_start_date):
-    return """,({principal_balance_pro_rata_share},
+
+def insert_notes_addational_value(response_object, effective_start_date, logger):
+    # print(response_object)
+    try:
+        return """,({principal_balance_pro_rata_share},
     {service_fees_paid_pro_rata_share},
     {principal_paid_pro_rata_share},
     {interest_paid_pro_rata_share},
@@ -179,8 +187,8 @@ def insert_notes_addational_value(response_object, effective_start_date):
             prosper_fees_paid_pro_rata_share=response_object['prosper_fees_paid_pro_rata_share'],
             late_fees_paid_pro_rata_share=response_object['late_fees_paid_pro_rata_share'],
             collection_fees_paid_pro_rata_share=response_object['collection_fees_paid_pro_rata_share'],
-            debt_sale_proceeds_received_pro_rata_share=response_object['debt_sale_proceeds_received_pro_rata_share'],
-            platform_proceeds_net_received=response_object['platform_proceeds_net_received'],
+            debt_sale_proceeds_received_pro_rata_share=response_object.get('debt_sale_proceeds_received_pro_rata_share'),
+            platform_proceeds_net_received=response_object.get('platform_proceeds_net_received'),
             next_payment_due_amount_pro_rata_share=response_object['next_payment_due_amount_pro_rata_share'],
             note_ownership_amount=response_object['note_ownership_amount'],
             note_sale_gross_amount_received=response_object['note_sale_gross_amount_received'],
@@ -190,7 +198,7 @@ def insert_notes_addational_value(response_object, effective_start_date):
             note_status=response_object['note_status'],
             note_status_description=response_object['note_status_description'],
             is_sold=response_object['is_sold'],
-            is_sold_folio=response_object['is_sold_folio'],
+            is_sold_folio=response_object.get('is_sold_folio'),
             loan_number=response_object['loan_number'],
             amount_borrowed=response_object['amount_borrowed'],
             borrower_rate=response_object['borrower_rate'],
@@ -198,12 +206,12 @@ def insert_notes_addational_value(response_object, effective_start_date):
             prosper_rating=response_object['prosper_rating'],
             term=response_object['term'],
             age_in_months=response_object['age_in_months'],
-            accrued_interest=response_object['accrued_interest'],
+            accrued_interest=response_object.get('accrued_interest'),
             payment_received=response_object['payment_received'],
-            loan_settlement_status=response_object['loan_settlement_status'],
-            loan_extension_status=response_object['loan_extension_status'],
-            loan_extension_term=response_object['loan_extension_term'],
-            is_in_bankruptcy=response_object['is_in_bankruptcy'],
+            loan_settlement_status=response_object.get('loan_settlement_status'),
+            loan_extension_status=response_object.get('loan_extension_status'),
+            loan_extension_term=response_object.get('loan_extension_term'),
+            is_in_bankruptcy=response_object.get('is_in_bankruptcy'),
             co_borrower_application=response_object['co_borrower_application'],
             origination_date=response_object['origination_date'],
             days_past_due=response_object['days_past_due'],
@@ -216,4 +224,8 @@ def insert_notes_addational_value(response_object, effective_start_date):
             latest_record_flag='t',
                                     note_default_reason=check_for_api_response_value(response_object=response_object, key="note_default_reason"),
                                     note_default_reason_description=check_for_api_response_value(response_object=response_object, key="note_default_reason_description")
-                                       )
+                                       ).replace("'None'", "null").replace("None", "null")
+    except KeyError as e:
+        logging.log_it_info(logger,
+                    f"Key error from API response: {e}. Response object is: {response_object}")  # For testing
+

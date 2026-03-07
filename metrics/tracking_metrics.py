@@ -66,6 +66,7 @@ class TrackingMetrics(Connect):
     def update_order_table(self, response_object):
         if len(response_object) > 0:
             if response_object['order_status'] != "IN_PROGRESS":
+                print(response_object['order_status'])
                 self.execute_insert_or_update(self.update_order_table_query(response_object['order_id'], response_object['order_status']))
 
     def update_bid_requests_query(self, listing_id, bid_status, bid_result):
@@ -88,30 +89,38 @@ class TrackingMetrics(Connect):
         return listing_ids
 
     def get_url_get_request_notes(self, offset, limit):
-        return "{base_url}/notes/?offset={offset}&limit={limit}&sort_by=origination_date desc".format(base_url=self.config['prosper']['prosper_base_url'], offset=offset, limit=str(limit))
+        status_code = 0
+        # Re hit api if bad request.
+        while status_code != 200:
+            response = requests.get("{base_url}/notes/?offset={offset}&limit={limit}&sort_by=origination_date desc".format(base_url=self.config['prosper']['prosper_base_url'], offset=offset, limit=str(limit)), headers=self.header, timeout=30.0)
+            status_code = response.status_code
+        return response.json()
 
     def get_response_note(self, https_request):
         response = requests.get(https_request, headers=self.header, timeout=30.0)
         return response
 
     def insert_note_record(self, response_object, effective_start_date):
-        self.execute_insert_or_update(sql_query_utils.insert_notes_query(response_object, effective_start_date))
+        self.execute_insert_or_update(sql_query_utils.insert_notes_query(response_object, effective_start_date, self.logger))
 
     def insert_new_note_records(self, listing_ids, limit):
         listing_ids.sort(reverse=True)
         offset = 0
-        response_object = requests.get(self.get_url_get_request_notes(offset, limit), headers=self.header, timeout=30.0).json()
+        response_object = self.get_url_get_request_notes(offset, limit)
         total_objects = response_object['total_count']
         while len(listing_ids) > 0:
+            print(listing_ids)
             for l in response_object['result']:
                 listing_number = l['listing_number']
                 if listing_number in listing_ids:
                     self.insert_note_record(l, l['origination_date'])
                     listing_ids.remove(listing_number)
             offset += limit # Preparing for next get request
-            response_object = requests.get(self.get_url_get_request_notes(offset, limit), headers=self.header, timeout=30.0).json()
-            if response_object['result'] is None:
-                break
+            response_object = self.get_url_get_request_notes(offset, limit)
+            # response_object = requests.get(self.get_url_get_request_notes(offset, limit), headers=self.header, timeout=30.0).json()
+            print(response_object)
+            # if response_object['result'] is None:
+            #     break
 
     # DEPRECATED.Prosper updates frequently, this is not enough. Using Update_notes class now
     # def build_note_ids_to_update_list(self):
@@ -131,13 +140,20 @@ class TrackingMetrics(Connect):
     #TODO add error handling!
     #TODO clean this stuff up
     def execute(self):
-
+        #TODO Change to a transaction as opposed to individual sql statemnets to avoid issues
         order_ids = self.build_order_ids_to_get() # list of order_ids that aren't complete
+        print(order_ids)
         listing_ids = self.build_pending_listing_ids() # list of pending listings
         new_listings_to_insert_note_records = [] # New records to insert to notes table
         for order in order_ids:
-            order_response = self.get_order_response_by_order_id(order)
+            status_code = 0
+            while status_code != 200:
+                # To handle for a problem w/ prosper api.
+                order_response = self.get_order_response_by_order_id(order)  #TODO If this fails it messes up my DB and notes will be missing. w/ prosper API bug it happens.
+                status_code = order_response.status_code
+                print(status_code)
             order_response_object = order_response.json()
+            print(order_response_object)
             self.update_order_table(order_response_object)
             self.logger.debug("order being updated: {order}".format(order=order))
             listing_ids_updated = self.update_bid_requests_table(order_response_object)
@@ -150,7 +166,7 @@ class TrackingMetrics(Connect):
         self.insert_new_note_records(new_listings_to_insert_note_records, 20)
 
         # This updates existing note records and inserts a new record for those existing records (type 2 dim)
-        UpdateNotes().execute()
+        UpdateNotes().execute() #TODO For testing! This needs to be ran for prod.
         self.logger.debug("tracking metrics ran at {time}".format(time=datetime.datetime.now()))
 
     """util function to pull a note for testing and ad-hoc analysis

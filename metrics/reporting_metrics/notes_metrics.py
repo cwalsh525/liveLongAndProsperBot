@@ -63,6 +63,7 @@ class NotesMetrics:
         cursor.execute("select note_status_description, principal_balance_pro_rata_share, principal_paid_pro_rata_share, interest_paid_pro_rata_share, age_in_months, payment_received, note_ownership_amount, ownership_start_date, prosper_rating, note_ownership_amount, lender_yield, days_past_due, term, loan_settlement_status "
                        "from notes where '{date}' between effective_start_date and effective_end_date;".format(date=self.date))
         notes_data = cursor.fetchall()
+        cursor.close()
         connect.close_connection()
         return notes_data
 

@@ -157,11 +157,15 @@ class TrackingMetrics(Connect):
             self.update_order_table(order_response_object)
             self.logger.debug("order being updated: {order}".format(order=order))
             listing_ids_updated = self.update_bid_requests_table(order_response_object)
-            self.logger.debug("lising_ids updated: {listings}".format(listings=listing_ids_updated)) #TODO Check this for error if ran more than once daily
-            for l in listing_ids_updated:
+            self.logger.debug("lising_ids updated: {listings}".format(listings=listing_ids_updated))
+            # Dedupe listing_ids_updated as i now can have multiple orders on same listing.
+            listing_ids_updated_deduped = list(set(listing_ids_updated))
+            self.logger.debug("lising_ids deduped, now:{listings}".format(listings=listing_ids_updated_deduped))
+            for l in listing_ids_updated_deduped:
                 if l in listing_ids:
                     new_listings_to_insert_note_records.append(l)
-                    self.logger.debug("listings that need to be inserted to notes {listings}".format(listings=new_listings_to_insert_note_records))
+                    if len(listing_ids_updated) > len(listing_ids_updated_deduped):
+                        self.logger.debug("listings that need to be inserted to notes {listings}".format(listings=new_listings_to_insert_note_records))
         # This inserts new note records to notes table that have never existed in the notes table
         self.insert_new_note_records(new_listings_to_insert_note_records, 20)
 

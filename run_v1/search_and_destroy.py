@@ -246,7 +246,7 @@ class SearchAndDestroy:
                 if run_dict[current_time_in_seconds]["allowed_remaining_runs"] > 0 and current_time_in_milli > run_dict[current_time_in_seconds]["latest_run_time"] and query == filter_queue[0]:
                     run_dict[current_time_in_seconds]["allowed_remaining_runs"] -= 1
                     run_dict[current_time_in_seconds]["latest_run_time"] = current_time_in_milli + self.wait_time_between_runs  # + wait_time_between_runs to allow for equal running
-                    filter_queue.pop(0) # Remove from the first position
+                    filter_queue.pop(0) # Remove from the first position #TODO Change to deque?
                     filter_queue.append(query) # Add to the back of the queue
                     run_listing = True
 
@@ -270,7 +270,6 @@ class SearchAndDestroy:
                                 logging.log_it_info(self.logger, f"listing {listing_number} with filter {query} is too large for listing, changed to max of {max_bid_allowed}")
                             # Find if the dictionary with this key already exists in the list
                             existing = next((d for d in submitted_order_listings if listing_number in d), None)
-
                             if existing:
                                 bid_amt_diff = deseried_bid_amt - existing[listing_number]
                                 logging.log_it_info(self.logger, f"listing {listing_number} already ordered on")
@@ -448,7 +447,7 @@ class SearchAndDestroy:
                                     'listing_amount']
                     except KeyError as e:
                         logging.log_it_info(self.logger, f"key error for transunion data: {e}")
-                        return listings_found_dict
+                        return listings_found_dict, listings_found_dict_listing_amt
                 elif x['min_or_max'] == 'max':
                     min_or_max_value = x['min_or_max_value']
                     try:
@@ -463,7 +462,7 @@ class SearchAndDestroy:
                                     'listing_amount']
                     except KeyError as e:
                         logging.log_it_info(self.logger, f"key error for transunion data: {e}")
-                        return listings_found_dict
+                        return listings_found_dict, listings_found_dict_listing_amt
                 elif x['min_or_max'] == 'between':
                     min_value = x['min_value']
                     max_value = x['max_value']
@@ -482,7 +481,7 @@ class SearchAndDestroy:
                                     'listing_amount']
                     except KeyError as e:
                         logging.log_it_info(self.logger, f"key error for transunion data: {e}")
-                        return listings_found_dict
+                        return listings_found_dict, listings_found_dict_listing_amt
 
         return listings_found_dict, listings_found_dict_listing_amt
 

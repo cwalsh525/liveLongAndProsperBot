@@ -1,6 +1,6 @@
 import time
 
-
+#TODO I believe this is signficiatly slowing my process, make performant.
 class MaxRequestsQueue:
     """
     Simply queue that allows for max amount of requests to be sent to Prosper's Listing API.

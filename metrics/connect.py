@@ -42,11 +42,7 @@ class Connect:
         #TODO have bid requests table be sorted
         listings = [{}]
         result = self.execute_select("select listing_id, sum(bid_amount) as total_bid_amount from bid_requests where created_timestamp > current_date - 7 group by 1;")
-        # for l in result:
-        #     listings.append(l[0] = l[1])
-        #     # listings.append(l[0])
         return [{"listing_number": row[0], "bidded_amount": row[1]} for row in result]
-        # return [{row[0]: row[1]} for row in result]
 
     def populate_list_from_single_column_sql_query(self, query):
         list_to_return = []

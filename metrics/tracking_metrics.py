@@ -69,21 +69,21 @@ class TrackingMetrics(Connect):
                 print(response_object['order_status'])
                 self.execute_insert_or_update(self.update_order_table_query(response_object['order_id'], response_object['order_status']))
 
-    def update_bid_requests_query(self, listing_id, bid_status, bid_result):
+    def update_bid_requests_query(self, order_id, listing_id, bid_status, bid_result):
         return """
         update bid_requests
             set 
                 bid_status = '{bid_status}',
                 bid_result = '{bid_result}',
                 modified_timestamp = '{modified_timestamp}'
-            where listing_id = {listing_id};
-        """.format(bid_status=bid_status, bid_result=bid_result, listing_id=listing_id, modified_timestamp=datetime.datetime.now())
+            where listing_id = {listing_id} and order_id = '{order_id}';
+        """.format(order_id=order_id, bid_status=bid_status, bid_result=bid_result, listing_id=listing_id, modified_timestamp=datetime.datetime.now())
 
-    def update_bid_requests_table(self, response_object):
+    def update_bid_requests_table(self, order_id, response_object):
         listing_ids = []
         for l in response_object['bid_requests']:
             if l['bid_status'] != 'PENDING':
-                self.execute_insert_or_update(self.update_bid_requests_query(l['listing_id'], l['bid_status'], l['bid_result']))
+                self.execute_insert_or_update(self.update_bid_requests_query(order_id, l['listing_id'], l['bid_status'], l['bid_result']))
                 if l['bid_status'] == 'INVESTED':
                     listing_ids.append(l['listing_id'])
         return listing_ids
@@ -118,9 +118,9 @@ class TrackingMetrics(Connect):
             offset += limit # Preparing for next get request
             response_object = self.get_url_get_request_notes(offset, limit)
             # response_object = requests.get(self.get_url_get_request_notes(offset, limit), headers=self.header, timeout=30.0).json()
-            print(response_object)
-            # if response_object['result'] is None:
-            #     break
+            # print(response_object)
+            if response_object['result'] is None:
+                break
 
     # DEPRECATED.Prosper updates frequently, this is not enough. Using Update_notes class now
     # def build_note_ids_to_update_list(self):
@@ -144,6 +144,7 @@ class TrackingMetrics(Connect):
         order_ids = self.build_order_ids_to_get() # list of order_ids that aren't complete
         print(order_ids)
         listing_ids = self.build_pending_listing_ids() # list of pending listings
+        listing_ids_deduped = list(set(listing_ids)) # Dedupe as i now can have multiple bid requests with same listing.
         new_listings_to_insert_note_records = [] # New records to insert to notes table
         for order in order_ids:
             status_code = 0
@@ -156,21 +157,21 @@ class TrackingMetrics(Connect):
             print(order_response_object)
             self.update_order_table(order_response_object)
             self.logger.debug("order being updated: {order}".format(order=order))
-            listing_ids_updated = self.update_bid_requests_table(order_response_object)
+            listing_ids_updated = self.update_bid_requests_table(order, order_response_object) #TODO Verify this order_id add works.
             self.logger.debug("lising_ids updated: {listings}".format(listings=listing_ids_updated))
             # Dedupe listing_ids_updated as i now can have multiple orders on same listing.
             listing_ids_updated_deduped = list(set(listing_ids_updated))
             self.logger.debug("lising_ids deduped, now:{listings}".format(listings=listing_ids_updated_deduped))
             for l in listing_ids_updated_deduped:
-                if l in listing_ids:
+                if l in listing_ids_deduped:
                     new_listings_to_insert_note_records.append(l)
                     if len(listing_ids_updated) > len(listing_ids_updated_deduped):
                         self.logger.debug("listings that need to be inserted to notes {listings}".format(listings=new_listings_to_insert_note_records))
         # This inserts new note records to notes table that have never existed in the notes table
-        self.insert_new_note_records(new_listings_to_insert_note_records, 20)
+        self.insert_new_note_records(list(set(new_listings_to_insert_note_records)), 20)
 
         # This updates existing note records and inserts a new record for those existing records (type 2 dim)
-        UpdateNotes().execute() #TODO For testing! This needs to be ran for prod.
+        UpdateNotes().execute()
         self.logger.debug("tracking metrics ran at {time}".format(time=datetime.datetime.now()))
 
     """util function to pull a note for testing and ad-hoc analysis

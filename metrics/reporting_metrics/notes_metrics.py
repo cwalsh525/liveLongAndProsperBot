@@ -110,7 +110,7 @@ class NotesMetrics:
         metrics_to_track = ["total_count", "principal_owed", "principal_paid", "interest_paid", "age_in_months_sum", "payment_received", "note_ownership_amount", "calculated_age_in_months", "term_percent_complete_sum"]
         note_statues = self.pull_notes_note_status_description_list()
         note_statues.append("LATE")  # I add LATE as a note_status_description, but it doesn't exist as one.
-        prosper_ratings = ["B", "C", "D", "E", "HR"]
+        prosper_ratings = ["A", "B", "C", "D", "E", "HR"]
         note_status_description_dict = {}
         # Build note_status_description_dict
         for status in note_statues:

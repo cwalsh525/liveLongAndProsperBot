@@ -119,9 +119,9 @@ class BuildMessage:
 
     def display_bids_placed_today_by_prosper_rating(self):
         query = """
-        select lfu.prosper_rating, count(distinct br.listing_id) -- distinct to account for multiple filters finding same listing
+        select lfu.prosper_rating, count(distinct br.listing_id), sum(bid_amount) -- distinct to account for multiple filters finding same listing
         from bid_requests br
-        join listings_filters_used lfu
+        join (select distinct listing_id, prosper_rating from listings_filters_used) lfu
         on br.listing_id = lfu.listing_id
         where br.created_timestamp::date = '{date}'
         group by 1;
@@ -129,7 +129,7 @@ class BuildMessage:
         msg = "Bids placed today by prosper rating:\n"
         bids = self.connect.execute_select(query)
         for b in bids:
-            msg += "{prosper_rating}: {count}\n".format(prosper_rating=b[0], count=b[1])
+            msg += "{prosper_rating}: {count}: {amount}\n".format(prosper_rating=b[0], count=b[1], amount=b[2])
         self.message += "\n{bids}".format(bids=msg)
 
     def display_bids_placed_today_by_rating(self):
@@ -224,13 +224,13 @@ class BuildMessage:
         # This is chance of defaulting based on number of days late.
         # Analysis last done on 10/12/23
         forecasted_default_rate = {
-            "1 - 15": 0.3258,
-            "16 - 30": 0.547,
-            "31 - 60": 0.677,
-            "61 - 90": .83,
-            "91 - 120": 0.95
+            "1 - 15": 0.37,
+            "16 - 30": 0.65,
+            "31 - 60": 0.42,
+            "61 - 90": .67,
+            "91 - 120": 1.025
         }
-
+        # This is the table to ignore settlements.
         forecasted_default_rate_all = {
             "1 - 15": 0.4725,
             "16 - 30": 0.7038,
@@ -334,18 +334,11 @@ class BuildMessage:
             outstanding_late_principal_non_settle = float(late_dict_non_loan_settlement[cat]["outstanding principal"])
             monthly_interest = float(self.estimated_monthly_interest)
             total_principal = float(total_outstanding_principal)
-            total_principal_non_settle = float(total_outstanding_principal_non_settlement)
-            if cat == "1 - 15" or cat == "16 - 30": # Need to account for it being half a month.
-                the_return = (((((monthly_interest / 2 ) - outstanding_late_principal) / total_principal ) + 1 ) ** 24 ) - 1
-                forecasted_return = (((((monthly_interest / 2 ) - (outstanding_late_principal * percent_change_of_default)) / total_principal ) + 1 ) ** 24 ) - 1
-                the_return_non_settle = (((((monthly_interest / 2 ) - outstanding_late_principal_non_settle) / total_principal ) + 1 ) ** 24 ) - 1
-                forecasted_return_non_settle = (((((monthly_interest / 2 ) - (outstanding_late_principal_non_settle * percent_change_of_default_non_settle)) / total_principal ) + 1 ) ** 24 ) - 1
 
-            else:
-                the_return = ((((monthly_interest - outstanding_late_principal) / total_principal ) + 1 ) ** 12 ) - 1
-                forecasted_return = ((((monthly_interest - (outstanding_late_principal * percent_change_of_default)) / total_principal ) + 1 ) ** 12 ) - 1
-                the_return_non_settle = ((((monthly_interest - outstanding_late_principal_non_settle) / total_principal ) + 1 ) ** 12 ) - 1
-                forecasted_return_non_settle = ((((monthly_interest - (outstanding_late_principal_non_settle * percent_change_of_default_non_settle)) / total_principal ) + 1 ) ** 12 ) - 1
+            the_return = ((((monthly_interest - outstanding_late_principal) / total_principal ) + 1 ) ** 12 ) - 1
+            forecasted_return = ((((monthly_interest - (outstanding_late_principal * percent_change_of_default)) / total_principal ) + 1 ) ** 12 ) - 1
+            the_return_non_settle = ((((monthly_interest - outstanding_late_principal_non_settle) / total_principal ) + 1 ) ** 12 ) - 1
+            forecasted_return_non_settle = ((((monthly_interest - (outstanding_late_principal_non_settle * percent_change_of_default_non_settle)) / total_principal ) + 1 ) ** 12 ) - 1
             late_dict[cat]['return'] = self.format_percent(the_return)
             late_dict[cat]['forecasted return'] = self.format_percent(forecasted_return)
             late_dict_non_loan_settlement[cat]['return'] = self.format_percent(the_return_non_settle)
@@ -367,12 +360,12 @@ class BuildMessage:
             if d not in ("1 - 15", "16 - 30"):
                 total_late_principal_over30 += late_dict[d]["outstanding principal"]
                 total_late_count_over30 += late_dict[d]["count"]
-            table_non_settle.add_row([d,
-                           late_dict_non_loan_settlement[d]["count"],
-                           late_dict_non_loan_settlement[d]["outstanding principal"],
-                           late_dict_non_loan_settlement[d]['return'],
-                           late_dict_non_loan_settlement[d]['forecasted return']
-                           ])
+            # table_non_settle.add_row([d,
+            #                late_dict_non_loan_settlement[d]["count"],
+            #                late_dict_non_loan_settlement[d]["outstanding principal"],
+            #                late_dict_non_loan_settlement[d]['return'],
+            #                late_dict_non_loan_settlement[d]['forecasted return']
+            #                ])
             total_late_principal_non_settle += late_dict_non_loan_settlement[d]["outstanding principal"]
             if d not in ("1 - 15", "16 - 30"):
                 total_late_principal_non_settle_over30 += late_dict_non_loan_settlement[d]["outstanding principal"]
@@ -383,10 +376,10 @@ class BuildMessage:
         self.message += "\nCurrent notes principal late is {num}% of all notes".format(num=round((total_late_principal / (total_late_principal + total_outstanding_principal) * 100), 2))
         self.message += "\nCurrent notes principal late OVER 30 days is {num}% of all notes\n".format(num=round((total_late_principal_over30 / (total_late_principal + total_outstanding_principal) * 100), 2))
         self.message += table.draw()
-        self.message += "\nTable Metrics of Non Settlement Only"
-        self.message += "\nCurrent notes principal late NOT ON A SETTLEMENT is {num}% of all notes".format(num=round((total_late_principal_non_settle / (total_late_principal + total_outstanding_principal) * 100), 2))
-        self.message += "\nCurrent notes principal late OVER 30 days NOT ON A SETTLEMENT is {num}% of all notes\n".format(num=round((total_late_principal_non_settle_over30 / (total_late_principal + total_outstanding_principal) * 100), 2))
-        self.message += table_non_settle.draw()
+        # self.message += "\nTable Metrics of Non Settlement Only"
+        # self.message += "\nCurrent notes principal late NOT ON A SETTLEMENT is {num}% of all notes".format(num=round((total_late_principal_non_settle / (total_late_principal + total_outstanding_principal) * 100), 2))
+        # self.message += "\nCurrent notes principal late OVER 30 days NOT ON A SETTLEMENT is {num}% of all notes\n".format(num=round((total_late_principal_non_settle_over30 / (total_late_principal + total_outstanding_principal) * 100), 2))
+        # self.message += table_non_settle.draw()
         self.message += "\n"
 
     @staticmethod

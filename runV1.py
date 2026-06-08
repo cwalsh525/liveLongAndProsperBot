@@ -57,5 +57,6 @@ SearchAndDestroy(order_header=order_header,
                  filters_dict=filters.v1_filters_dict,
                  bid_amt=config['bid_amt_by_filter'],
                  available_cash=cash_balance,
-                 dry_run=args.dry_run
+                 dry_run=args.dry_run,
+                 overlap_extra_bid_amt=100
                  ).execute()

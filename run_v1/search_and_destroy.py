@@ -1,3 +1,4 @@
+import math
 import time
 import threading
 import requests
@@ -35,8 +36,7 @@ The "EXPIRED" listings are almost always very small loans (less than like $4000)
 
 class SearchAndDestroy:
 
-
-    def __init__(self, order_header, listing_header, time_to_run_for, max_request_per_second, filters_dict, bid_amt, available_cash, dry_run):
+    def __init__(self, order_header, listing_header, time_to_run_for, max_request_per_second, filters_dict, bid_amt, available_cash, dry_run, overlap_extra_bid_amt):
         self.order_header = order_header
         self.listing_header = listing_header
         self.filters_dict = filters_dict
@@ -50,6 +50,7 @@ class SearchAndDestroy:
         self.max_request_per_second = max_request_per_second # Prosper says its 20, but they have a bug sometimes
         self.wait_time_between_runs = 1 / max_request_per_second # To allow for equal sending over the second
         self.dry_run = dry_run
+        self.overlap_extra_bid_amt = overlap_extra_bid_amt
         self.wait_time_between_runs = 1 / self.max_request_per_second
 
     def listing_logic(self, query, query_get, bid_amt):
@@ -58,7 +59,6 @@ class SearchAndDestroy:
         throttled_count = 0 # Bad variable name, should be like error count. (sometimes prosper API errors and i want to ignore and re-run)
         track_filters = {} # For tracking of what filters are finding notes
         i_got_throttled = True # Sometimes get throttled, will run again if throttled
-        amt_to_bid = 25 # This should only return as 25 if empty; DQ this.
         while i_got_throttled:
             the_time = time.time()
             r = requests.get(query_get, headers=self.listing_header, timeout=30.0)
@@ -90,38 +90,40 @@ class SearchAndDestroy:
                         # Handle normal non-looking further into credit_bureau_values_transunion
                         if query not in filters.transunion_add_on_filters:
                             for i in range(result_length):
+                                #TODO Add in error logic for key error.
                                 listing_number = query_listing['result'][i]['listing_number']
                                 prosper_rating = query_listing['result'][i]['prosper_rating']
                                 listing_amount = query_listing['result'][i]['listing_amount']
-                                desired_bid_amount = bid_amt[prosper_rating][query]
-                                if desired_bid_amount > listing_amount * .1:
-                                    amt_to_bid = listing_amount * .1
-                                    self.logger(
-                                        f"desired_bid_amount of {desired_bid_amount} is greater than 10% of listing amount of {listing_amount}, new bid amt is {amt_to_bid}")
-                                else:
-                                    amt_to_bid = bid_amt[prosper_rating][query]
+                                max_bid_amt = math.floor(listing_amount * .1)
+                                amt_to_bid = bid_amt[prosper_rating][query]
+                                if max_bid_amt < amt_to_bid:
+                                    amt_to_bid = max_bid_amt
+
                                 # Checks to verify this listing wasn't already invested in.
                                 # With a lot of overlap between filters, it would be nice to check to see if when a listing was already invested,
                                 # if it was a smaller bid_amt to add another order to the amt of this filter since many times it can be larger. This would require a good amount of re-work though.
 
-                                if all(listing_number not in d for d in already_invested_listings):
+                                invested_ids = {d["listing_number"] for d in already_invested_listings}
+                                if listing_number not in invested_ids:
                                     self.track_filter(track_filters, listing_number,
                                                          query, prosper_rating)  # populates track_filters dict to be inserted into psql later
                                     listings_found.append(
                                         {"listing_number": listing_number, "prosper_rating": prosper_rating,
-                                         "query": query})
+                                         "query": query, "max_bid_amt": max_bid_amt})
                                     logging.log_it_info(self.logger, "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(query=query, listing=listing_number, prosper_rating=prosper_rating, current_time=datetime.now()))
-                                elif any(listing_number in d for d in already_invested_listings): # if listing_number has already been bidded.
-                                    already_invested_amount = next((d[listing_number] for d in already_invested_listings if listing_number in d), None)
+                                elif listing_number in invested_ids:  # if listing_number has already been bidded.
+                                    already_invested_amount = next(
+                                        (d["bidded_amount"] for d in already_invested_listings if
+                                         d["listing_number"] == listing_number), None)
 
                                     if amt_to_bid - already_invested_amount >= 25: # 25 is min to bid.
-                                        logging.log_it_info(self.logger, f"Another filter: {query} found listing: {listing_number}, has more in bid; with bid amt of {amt_to_bid} being larger than {already_invested_amount}")
+                                        logging.log_it_info(self.logger, f"*Listing Logic Method* Another filter: {query} found listing: {listing_number}, has more in bid; with bid amt of {amt_to_bid} being larger than {already_invested_amount}")
                                         self.track_filter(track_filters, listing_number,
                                                           query,
                                                           prosper_rating)  # populates track_filters dict to be inserted into psql later
                                         listings_found.append(
                                             {"listing_number": listing_number, "prosper_rating": prosper_rating,
-                                             "query": query})
+                                             "query": query, "max_bid_amt": max_bid_amt})
                                         logging.log_it_info(self.logger,
                                                             "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(
                                                                 query=query, listing=listing_number,
@@ -140,39 +142,37 @@ class SearchAndDestroy:
                                     listing_number = k
                                     prosper_rating = v
                                     listing_amount = listings_found_dict_listing_amt[listing_number]
-                                    desired_bid_amount = bid_amt[prosper_rating][query]
-                                    if desired_bid_amount > listing_amount * .1:
-                                        amt_to_bid = listing_amount * .1
-                                        logging.log_it_info(self.logger, (f"desired_bid_amount of {desired_bid_amount} is greater than 10% of listing amount of {listing_amount}, new bid amt is {amt_to_bid}"))
-                                    else:
-                                        amt_to_bid = bid_amt[prosper_rating][query]
+                                    max_bid_amt = math.floor(listing_amount * .1)
+                                    amt_to_bid = bid_amt[prosper_rating][query]
+                                    if max_bid_amt < amt_to_bid:
+                                        amt_to_bid = max_bid_amt
 
-                                    if all(listing_number not in d for d in already_invested_listings):
+                                    invested_ids = {d["listing_number"] for d in already_invested_listings}
+                                    if listing_number not in invested_ids:
                                         self.track_filter(track_filters, listing_number,
                                                           query,
                                                           prosper_rating)  # populates track_filters dict to be inserted into psql later
                                         listings_found.append(
                                             {"listing_number": listing_number, "prosper_rating": prosper_rating,
-                                             "query": query})
+                                             "query": query, "max_bid_amt": max_bid_amt})
                                         logging.log_it_info(self.logger,
                                                             "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(
                                                                 query=query, listing=listing_number,
                                                                 prosper_rating=prosper_rating, current_time=datetime.now()))
-                                    elif any(listing_number in d for d in
-                                             already_invested_listings):  # if listing_number has already been bidded.
+                                    elif listing_number in invested_ids:  # if listing_number has already been bidded.
                                         already_invested_amount = next(
-                                            (d[listing_number] for d in already_invested_listings if
-                                             listing_number in d), None)
+                                            (d["bidded_amount"] for d in already_invested_listings if
+                                             d["listing_number"] == listing_number), None)
 
                                         if amt_to_bid - already_invested_amount >= 25:  # 25 is min to bid.
                                             logging.log_it_info(self.logger,
-                                                                f"Another filter: {query} found listing: {listing_number}, has more in bid; with bid amt of {amt_to_bid} being larger than {already_invested_amount}")
+                                                                f"LISTINGS Another filter: {query} found listing: {listing_number}, has more in bid; with bid amt of {amt_to_bid} being larger than {already_invested_amount}")
                                             self.track_filter(track_filters, listing_number,
                                                               query,
                                                               prosper_rating)  # populates track_filters dict to be inserted into psql later
                                             listings_found.append(
                                                 {"listing_number": listing_number, "prosper_rating": prosper_rating,
-                                                 "query": query})
+                                                 "query": query, "max_bid_amt": max_bid_amt})
                                             logging.log_it_info(self.logger,
                                                                 "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(
                                                                     query=query, listing=listing_number,
@@ -188,10 +188,10 @@ class SearchAndDestroy:
                     else:
                         logging.log_it_info(self.logger, "not an errors in response, response is: {response}".format(response=query_listing))
             else:
-                print(f"status code is {status_code}, not 200. Sleeping for 5 seconds.")
-                logging.log_it_info(self.logger, f"status code is {status_code}, not 200. Sleeping for 5 seconds.")
-                time.sleep(5)
-        return listings_found, track_filters, throttled_count, amt_to_bid
+                print(f"status code is {status_code}, not 200. Sleeping for 2 seconds.")
+                logging.log_it_info(self.logger, f"status code is {status_code}, not 200. Sleeping for 2 seconds.")
+                time.sleep(2)
+        return listings_found, track_filters, throttled_count
 
     """
     listings_list = [{"listing_number": 12470793, "prosper_rating": 'A'}, {"listing_number": 12259421, "prosper_rating": 'A'}]
@@ -243,16 +243,19 @@ class SearchAndDestroy:
             with self.lock:
                 current_time_in_milli = time.time()
                 current_time_in_seconds = int(current_time_in_milli)
-                if run_dict[current_time_in_seconds]["allowed_remaining_runs"] > 0 and current_time_in_milli > run_dict[current_time_in_seconds]["latest_run_time"] and query == filter_queue[0]:
-                    run_dict[current_time_in_seconds]["allowed_remaining_runs"] -= 1
-                    run_dict[current_time_in_seconds]["latest_run_time"] = current_time_in_milli + self.wait_time_between_runs  # + wait_time_between_runs to allow for equal running
-                    filter_queue.pop(0) # Remove from the first position #TODO Change to deque?
-                    filter_queue.append(query) # Add to the back of the queue
-                    run_listing = True
+                # Check if this filter is next in queue and we have capacity this second
+                if run_dict[current_time_in_seconds]["allowed_remaining_runs"] > 0 and query == filter_queue[0]:
+                    # Only check latest_run_time if it's been set (not 0)
+                    if run_dict[current_time_in_seconds]["latest_run_time"] == 0 or current_time_in_milli >= run_dict[current_time_in_seconds]["latest_run_time"]:
+                        run_dict[current_time_in_seconds]["allowed_remaining_runs"] -= 1
+                        run_dict[current_time_in_seconds]["latest_run_time"] = current_time_in_milli + self.wait_time_between_runs  # + wait_time_between_runs to allow for equal running
+                        filter_queue.popleft()  # O(1) operation with deque
+                        filter_queue.append(query)  # Add to the back of the queue
+                        run_listing = True
 
             if run_listing:
                 # Submit listing request
-                listings_found, filters_used, throttle_count, max_bid_allowed = self.listing_logic(query=query, query_get=query_get, bid_amt=self.bid_amt) # pass back max bid amt
+                listings_found, filters_used, throttle_count = self.listing_logic(query=query, query_get=query_get, bid_amt=self.bid_amt) # pass back max bid amt
 
                 listing_pings += 1
                 total_throttle_count += throttle_count
@@ -264,22 +267,43 @@ class SearchAndDestroy:
                         for listing in listings_found:
                             listing_number = listing['listing_number']
                             rating = listing['prosper_rating']
-                            deseried_bid_amt = overlap_bid_amt[rating][query]
-                            if deseried_bid_amt > max_bid_allowed: # if my bid is more than 10% of listing amount.
+                            max_bid_allowed = listing['max_bid_amt']
+                            desired_bid_amt = overlap_bid_amt[rating][query]
+                            if desired_bid_amt > max_bid_allowed: # if my bid is more than 10% of listing amount.
                                 overlap_bid_amt[rating][query] = max_bid_allowed
-                                logging.log_it_info(self.logger, f"listing {listing_number} with filter {query} is too large for listing, changed to max of {max_bid_allowed}")
+                                desired_bid_amt = max_bid_allowed
+                                logging.log_it_info(self.logger, f"listing {listing_number} with filter {query}, with bid amt of: {desired_bid_amt}, is too large for listing, changed to max of {max_bid_allowed}")
                             # Find if the dictionary with this key already exists in the list
                             existing = next((d for d in submitted_order_listings if listing_number in d), None)
                             if existing:
-                                bid_amt_diff = deseried_bid_amt - existing[listing_number]
+                                bid_amt_diff = desired_bid_amt - existing[listing_number]
+                                max_bid_amt_diff = max_bid_allowed - existing[listing_number]
                                 logging.log_it_info(self.logger, f"listing {listing_number} already ordered on")
                                 if bid_amt_diff >= 25:  # 25 min order amt.
-                                    logging.log_it_info(self.logger, f"listing {listing_number} already ordered on, but more bid amt wanted: {bid_amt_diff} diff between amt bidded and this filter")
+                                    if desired_bid_amt != max_bid_allowed:  # Check if already using max bid.
+                                        """
+                                        This is done after the if bid_amt_diff >= 25: to avoid double bids on same filter
+                                        If a filter is overlapped w/ another filter that means all those criteria apply.
+                                        We know these filters have a much lower default rate, ie; an average filter with another slighty better filter is now much stronger and deserves a larger bid amt higher than simply the better filter that found it.
+                                        To avoid pre calculating all the different possibilities, and the expensive search that would require when time is of the essence.
+                                        Simply add a pre determined extra bid amt to add.
+                                        TODO this will create a bug where if there is a third filter that finds a listing,
+                                        the listing_logic() will not return unless there was a $125 larger (the $25 min bid + the $100 added here.
+                                        Not sure how to solve for that since adding the below logic to listings() will not be able to diferente between a listing that i have already invested in (the same filter will constantly ignore already invited in loans based on the bid_amt)
+                                        For the time being, I am ok with this, as i'd rather have the auto + 100 if an overlap on the 2nd request to a listing since this is the overwhelmingly majority of overlap situations
+                                        """
+                                        if bid_amt_diff + self.overlap_extra_bid_amt <= max_bid_amt_diff:
+                                            bid_amt_diff += self.overlap_extra_bid_amt
+                                        elif (bid_amt_diff + self.overlap_extra_bid_amt) > max_bid_amt_diff >= 25:
+                                            bid_amt_diff = max_bid_amt_diff
+
+                                    logging.log_it_info(self.logger, f"OVERLAP; listing {listing_number} already ordered on, but more bid amt wanted: {bid_amt_diff} diff between amt bidded and this filter")
                                     existing[listing_number] += bid_amt_diff # Handle cash balance can introude bug..
                                     overlap_bid_amt[rating][query] = bid_amt_diff # Replaces existing bid_amt dict with the new amount to bid based on overlap
                                     unique_listings.append(listing)
+
                             else:
-                                submitted_order_listings.append({listing_number: deseried_bid_amt})  # Add if new
+                                submitted_order_listings.append({listing_number: desired_bid_amt})  # Add if new
                                 unique_listings.append(listing)
                         listings_to_invest, new_bid_amt, new_remaining_cash = self.handle_cash_balance(logger=self.logger,available_cash=self.available_cash, bid_amt=overlap_bid_amt, listings_list=unique_listings)
                         self.available_cash = new_remaining_cash
@@ -295,10 +319,28 @@ class SearchAndDestroy:
                             logging.log_it_info(self.logger, "Listings invested at {current_time}: {listings}".format(current_time=datetime.now(), listings=listings_to_invest))
             #             # BUG (acceptable bug) Only inserting filters used if order placed... I prefer to have filters inserted if filter found something but overlaps with a previous filter will not insert...
                         order_pings += 1
+            else:
+                # Reduce lock contention by sleeping briefly when we can't run
+                # This prevents busy-waiting and allows other threads to acquire the lock
+                time.sleep(0.001)  # 1ms sleep - small enough to not impact throughput
 
         self.connect.close_connection()
         logging.log_it_info(self.logger, "Ended running {query} at {time}, with {pings} pings to the listing api, and {order_ping} order pings to the order api, and ignored {throttle_count} throttles from api".format(query=query, time=datetime.now(), pings=listing_pings, order_ping=order_pings, throttle_count=total_throttle_count))
 
+    """
+    If a filter is overlapped w/ another filter that means all those criteria apply.
+    We know these filters have a much lower default rate, ie; an average filter with another slighty better filter is now much stronger and deserves a larger bid amt higher than simply the better filter that found it.
+    To avoid pre calculating all the different possibilities, and the expensive search that would require when time is of the essence.
+    Simply add a pre determined extra bid amt to add.
+    """
+    def determine_overlap(self, bid_amt, max_bid_amt):
+        if bid_amt != max_bid_amt:  # Check if already using max bid.
+            bid_amt += self.overlap_extra_bid_amt
+            if bid_amt > max_bid_amt and (max_bid_amt - bid_amt) < 25:
+                bid_amt = max_bid_amt
+            else:
+                bid_amt = max_bid_amt - bid_amt
+        return bid_amt
     def execute(self):
         threads = []
         submitted_order_listings = []
@@ -332,7 +374,7 @@ class SearchAndDestroy:
             try:
                 sql = SQLMetrics()
                 sql.run_listing_filters_used(filters_used_dict)  # inserts the filters used into listings_filters_used for tracking
-                sql.run_insert_bid_request(response)  # TODO add error handling. Print the error and continue
+                sql.run_insert_bid_request(response)  # This is giving me error bc listing_id is the primary key and now i can have multipe bids for same listing, need to fix this.
                 sql.run_insert_orders(response)
                 sql.close_connection()
             except:  # TODO make specific for now catch all errors
@@ -425,6 +467,7 @@ class SearchAndDestroy:
     """
 
     def handle_creditdata_query(self, query_listing, query):
+        #TODO Add in key error logic if prosper sends back garbage.
         result_length = len(query_listing['result'])
         listings_found_dict = {}
         listings_found_dict_listing_amt = {}
@@ -484,8 +527,3 @@ class SearchAndDestroy:
                         return listings_found_dict, listings_found_dict_listing_amt
 
         return listings_found_dict, listings_found_dict_listing_amt
-
-
-
-
-

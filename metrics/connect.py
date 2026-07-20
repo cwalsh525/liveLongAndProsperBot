@@ -28,6 +28,13 @@ class Connect:
         cursor.close()
         return result
 
+    def execute_single_result_select(self, select_query):
+        cursor = self.connection.cursor()
+        cursor.execute(select_query)
+        result = cursor.fetchone()
+        cursor.close()
+        return result
+
     def get_bid_listings(self):
         # This takes 0.0009644031524658203 seconds
         #TODO have bid requests table be sorted
@@ -43,6 +50,18 @@ class Connect:
         listings = [{}]
         result = self.execute_select("select listing_id, sum(bid_amount) as total_bid_amount from bid_requests where created_timestamp > current_date - 7 group by 1;")
         return [{"listing_number": row[0], "bidded_amount": row[1]} for row in result]
+
+    def get_count_of_filter(self, filter, listing_id):
+        result = self.execute_select(
+            f"""select cnt, sum_bid_amt
+                from 
+                (select count(*) as cnt from listings_filters_used where filter = '{filter}' and listing_id = {listing_id} ) t1 
+                cross join
+                (select sum(bid_amount) as sum_bid_amt from bid_requests where listing_id = {listing_id}) t2
+                ;
+            """)
+
+        return {"filter_count": result[0][0], "total_bid_amt": result[0][1]}
 
     def populate_list_from_single_column_sql_query(self, query):
         list_to_return = []

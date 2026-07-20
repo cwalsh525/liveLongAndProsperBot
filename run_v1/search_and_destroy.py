@@ -116,7 +116,11 @@ class SearchAndDestroy:
                                         (d["bidded_amount"] for d in already_invested_listings if
                                          d["listing_number"] == listing_number), None)
 
-                                    if amt_to_bid - already_invested_amount >= 25: # 25 is min to bid.
+                                    filter_check_dict = self.connect.get_count_of_filter(query, listing_number)
+                                    if amt_to_bid - already_invested_amount + self.overlap_extra_bid_amt >= 25 and already_invested_amount != max_bid_amt \
+                                            and (filter_check_dict['filter_count'] == 0 or (
+                                            filter_check_dict['filter_count'] > 0 and filter_check_dict[
+                                        'total_bid_amt'] < amt_to_bid)):  # verify existing filter hasnt already bidded.
                                         logging.log_it_info(self.logger, f"*Listing Logic Method* Another filter: {query} found listing: {listing_number}, has more in bid; with bid amt of {amt_to_bid} being larger than {already_invested_amount}")
                                         self.track_filter(track_filters, listing_number,
                                                           query,
@@ -164,9 +168,11 @@ class SearchAndDestroy:
                                             (d["bidded_amount"] for d in already_invested_listings if
                                              d["listing_number"] == listing_number), None)
 
-                                        if amt_to_bid - already_invested_amount >= 25:  # 25 is min to bid.
+                                        filter_check_dict = self.connect.get_count_of_filter(query, listing_number)
+                                        if amt_to_bid - already_invested_amount + self.overlap_extra_bid_amt >= 25 and already_invested_amount != max_bid_amt\
+                                                and (filter_check_dict['filter_count'] == 0 or (filter_check_dict['filter_count'] > 0 and filter_check_dict['total_bid_amt'] < amt_to_bid)):  # verify existing filter hasnt already bidded.
                                             logging.log_it_info(self.logger,
-                                                                f"LISTINGS Another filter: {query} found listing: {listing_number}, has more in bid; with bid amt of {amt_to_bid} being larger than {already_invested_amount}")
+                                                                f"*Listing Logic Method* Another filter: {query} found listing: {listing_number}, has more in bid; with bid amt of {amt_to_bid} being larger than {already_invested_amount}")
                                             self.track_filter(track_filters, listing_number,
                                                               query,
                                                               prosper_rating)  # populates track_filters dict to be inserted into psql later
@@ -232,7 +238,7 @@ class SearchAndDestroy:
             logging.log_it_info(self.logger, "response = {response}".format(response=response_json))
             self.handle_order_sql(response_json, filters_used)
 
-    def thread_worker(self, query, query_get, submitted_order_listings, run_dict, filter_queue):
+    def thread_worker(self, query, query_get, submitted_order_listings, submitted_order_listings_filters, run_dict, filter_queue):
         logging.log_it_info(self.logger, "Started running {query} at {time}".format(query=query, time=datetime.now()))
         listing_pings = 0
         order_pings = 0
@@ -276,34 +282,58 @@ class SearchAndDestroy:
                             # Find if the dictionary with this key already exists in the list
                             existing = next((d for d in submitted_order_listings if listing_number in d), None)
                             if existing:
-                                bid_amt_diff = desired_bid_amt - existing[listing_number]
-                                max_bid_amt_diff = max_bid_allowed - existing[listing_number]
-                                logging.log_it_info(self.logger, f"listing {listing_number} already ordered on")
-                                if bid_amt_diff >= 25:  # 25 min order amt.
-                                    if desired_bid_amt != max_bid_allowed:  # Check if already using max bid.
-                                        """
-                                        This is done after the if bid_amt_diff >= 25: to avoid double bids on same filter
-                                        If a filter is overlapped w/ another filter that means all those criteria apply.
-                                        We know these filters have a much lower default rate, ie; an average filter with another slighty better filter is now much stronger and deserves a larger bid amt higher than simply the better filter that found it.
-                                        To avoid pre calculating all the different possibilities, and the expensive search that would require when time is of the essence.
-                                        Simply add a pre determined extra bid amt to add.
-                                        TODO this will create a bug where if there is a third filter that finds a listing,
-                                        the listing_logic() will not return unless there was a $125 larger (the $25 min bid + the $100 added here.
-                                        Not sure how to solve for that since adding the below logic to listings() will not be able to diferente between a listing that i have already invested in (the same filter will constantly ignore already invited in loans based on the bid_amt)
-                                        For the time being, I am ok with this, as i'd rather have the auto + 100 if an overlap on the 2nd request to a listing since this is the overwhelmingly majority of overlap situations
-                                        """
-                                        if bid_amt_diff + self.overlap_extra_bid_amt <= max_bid_amt_diff:
-                                            bid_amt_diff += self.overlap_extra_bid_amt
-                                        elif (bid_amt_diff + self.overlap_extra_bid_amt) > max_bid_amt_diff >= 25:
-                                            bid_amt_diff = max_bid_amt_diff
+                                # bid_amt_diff = desired_bid_amt - existing[listing_number]
+                                bid_amt_diff = overlap_bid_amt[rating][query] - existing[listing_number] # No desired_bid_amt for existing, everything changes.
+                                if query not in submitted_order_listings_filters[listing_number] or (query in submitted_order_listings_filters[listing_number] and bid_amt_diff > 0): # Checks to see if same filter already invested. (The same filter can bid again only if max_bid_amt (10% of list) was hit.
+                                    # max_bid_amt_diff = max_bid_allowed - existing[listing_number] # Dont need max_bid_amt_diff since 10% rule is on specific bid only.
+                                    logging.log_it_info(self.logger, f"listing {listing_number} already ordered on")
+                                    if len(submitted_order_listings_filters[listing_number]) >= 2:
+                                        if bid_amt_diff + self.overlap_extra_bid_amt >= 25:  # 25 min order amt. # Check this, this blocks addational orders where we actually want them.
+                                            # if desired_bid_amt != max_bid_allowed:  # Check if already using max bid.
+                                            """
+                                            This is done after the if bid_amt_diff >= 25: to avoid double bids on same filter
+                                            If a filter is overlapped w/ another filter that means all those criteria apply.
+                                            We know these filters have a much lower default rate, ie; an average filter with another slighty better filter is now much stronger and deserves a larger bid amt higher than simply the better filter that found it.
+                                            To avoid pre calculating all the different possibilities, and the expensive search that would require when time is of the essence.
+                                            Simply add a pre determined extra bid amt to add.
+                                            TODO this will create a bug where if there is a third filter that finds a listing,
+                                            the listing_logic() will not return unless there was a $125 larger (the $25 min bid + the $100 added here.
+                                            Not sure how to solve for that since adding the below logic to listings() will not be able to diferente between a listing that i have already invested in (the same filter will constantly ignore already invited in loans based on the bid_amt)
+                                            For the time being, I am ok with this, as i'd rather have the auto + 100 if an overlap on the 2nd request to a listing since this is the overwhelmingly majority of overlap situations
+                                            """
+                                            if bid_amt_diff + self.overlap_extra_bid_amt <= max_bid_allowed:
+                                                bid_amt_diff += self.overlap_extra_bid_amt
+                                            elif (bid_amt_diff + self.overlap_extra_bid_amt) > max_bid_allowed >= 25:
+                                                bid_amt_diff = max_bid_allowed
 
-                                    logging.log_it_info(self.logger, f"OVERLAP; listing {listing_number} already ordered on, but more bid amt wanted: {bid_amt_diff} diff between amt bidded and this filter")
-                                    existing[listing_number] += bid_amt_diff # Handle cash balance can introude bug..
-                                    overlap_bid_amt[rating][query] = bid_amt_diff # Replaces existing bid_amt dict with the new amount to bid based on overlap
-                                    unique_listings.append(listing)
+                                            logging.log_it_info(self.logger,
+                                                                f"OVERLAP1; listing {listing_number} already ordered on, but more bid amt wanted: {bid_amt_diff} diff between amt bidded and this filter")
+                                            existing[listing_number] += bid_amt_diff  # Handle cash balance can introude bug..
+                                            overlap_bid_amt[rating][query] = bid_amt_diff  # Replaces existing bid_amt dict with the new amount to bid based on overlap
+                                            unique_listings.append(listing)
+                                            submitted_order_listings_filters[listing_number].append(query)
+                                            # End if already bidded follow conventinal way, only do the blanket + self.overlap_extra_bid_amt if first overlap.
+                                    # if bid_amt_diff >= 25:  # 25 min order amt.
+                                    else: # essentially if len(submitted_order_listings_filters[listing_number]) == 1
+                                        # if desired_bid_amt != max_bid_allowed:  # Check if already using max bid.
+                                        if bid_amt_diff <= 0:
+                                            bid_amt_diff = 0  # This is weird, but its because a smaller bid_amt can be found and we do not want a negative number here. Assign 0 and let the + self.overlap_extra_bid_amt do the rest.
+                                        if bid_amt_diff + self.overlap_extra_bid_amt <= max_bid_allowed:
+                                            bid_amt_diff += self.overlap_extra_bid_amt
+                                        elif (bid_amt_diff + self.overlap_extra_bid_amt) > max_bid_allowed >= 25:
+                                            bid_amt_diff = max_bid_allowed
+                                        #TODO need to solve for bid_amt_diff between 1 and 24. For now will submit a request for less than 25 which will get rejected, but this is error and wont crash my process.
+
+                                        if bid_amt_diff >= 25:
+                                            logging.log_it_info(self.logger, f"OVERLAP2; listing {listing_number} already ordered on, but more bid amt wanted: {bid_amt_diff} diff between amt bidded and this filter")
+                                            existing[listing_number] += bid_amt_diff # Handle cash balance can introude bug..
+                                            submitted_order_listings_filters[listing_number].append(query) # This is a dict with listing_number as key, value is a List of filters.
+                                            overlap_bid_amt[rating][query] = bid_amt_diff # Replaces existing bid_amt dict with the new amount to bid based on overlap
+                                            unique_listings.append(listing)
 
                             else:
                                 submitted_order_listings.append({listing_number: desired_bid_amt})  # Add if new
+                                submitted_order_listings_filters[listing_number] = [query] # Add if new, this is a dict, List for filter tracking since multiple.
                                 unique_listings.append(listing)
                         listings_to_invest, new_bid_amt, new_remaining_cash = self.handle_cash_balance(logger=self.logger,available_cash=self.available_cash, bid_amt=overlap_bid_amt, listings_list=unique_listings)
                         self.available_cash = new_remaining_cash
@@ -344,12 +374,13 @@ class SearchAndDestroy:
     def execute(self):
         threads = []
         submitted_order_listings = []
+        submitted_order_listings_filters = {} # To track just filters
         m = MaxRequestsQueue(max_request_per_second=self.max_request_per_second, filter_dict=self.filters_dict, time_to_run_for=self.time_to_run_for)
         run_allowance_dict = m.build_allowed_run_dict()
         run_list_queue = m.build_starting_filter_queue()
 
         for query in self.filters_dict:
-            t = threading.Thread(target=self.thread_worker, args=(query, self.filters_dict[query], submitted_order_listings, run_allowance_dict, run_list_queue))
+            t = threading.Thread(target=self.thread_worker, args=(query, self.filters_dict[query], submitted_order_listings, submitted_order_listings_filters, run_allowance_dict, run_list_queue))
             threads.append(t)
             t.start()
         for thread in threads:

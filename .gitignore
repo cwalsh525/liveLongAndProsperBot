@@ -1,7 +1,10 @@
 filters/filters.py
+filters/filters_bk_072726.py
 config/default_config.json
+config/config/default_config bk.json
 *.pyc
 .idea/*
 /.idea/*
-*.xml
+*.xml*
 log/*
+analyze*

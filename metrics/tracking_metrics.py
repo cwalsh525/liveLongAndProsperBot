@@ -109,7 +109,7 @@ class TrackingMetrics(Connect):
         response_object = self.get_url_get_request_notes(offset, limit)
         total_objects = response_object['total_count']
         while len(listing_ids) > 0:
-            print(listing_ids)
+            # print(listing_ids)
             for l in response_object['result']:
                 listing_number = l['listing_number']
                 if listing_number in listing_ids:
@@ -120,6 +120,13 @@ class TrackingMetrics(Connect):
             # response_object = requests.get(self.get_url_get_request_notes(offset, limit), headers=self.header, timeout=30.0).json()
             # print(response_object)
             if response_object['result'] is None:
+                if len(listing_ids) > 0:
+                    self.logger.debug(
+                        f"WARNING: these listing_ids were never found in notes API and not inserted: {listing_ids}")
+                    #TODO I think there is a bug on Prosper's side where the note does not exist yet even though bid request is "INVESTED"
+                    # Testing this here. If it doesn't find it, i should not update the bid_request to invested, need to solve for it.
+                    # The bid request and order table updates really should be a transaction included with the notes table stuff and done at the same time,
+                    # This way i can check the notes API and not update the orders and bids if the note does not exist yet.
                 break
 
     # DEPRECATED.Prosper updates frequently, this is not enough. Using Update_notes class now

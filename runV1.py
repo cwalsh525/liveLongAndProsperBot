@@ -1,5 +1,6 @@
 import math
 import argparse
+import random
 
 import utils.utils as utils
 
@@ -50,11 +51,17 @@ parser.add_argument('--dry-run', required=False, default=False, type=bool, help=
 parser.add_argument('--max_requests_per_second', required=False, default=10, type=int, help="max amount of times the listing api will send requests per second. Somewhere between 1 and 20")
 args = parser.parse_args()
 
+# Randomize my filters, not all that important but filters in order are more likely to be similar next to each other, would rather have it to be totally random
+filters_dict = filters.v1_filters_dict
+keys = list(filters_dict.keys())
+random.shuffle(keys)
+filters_dict_random_order = {k: filters_dict[k] for k in keys}
+
 SearchAndDestroy(order_header=order_header,
                  listing_header=header,
                  time_to_run_for=args.run_time,
                  max_request_per_second=args.max_requests_per_second,
-                 filters_dict=filters.v1_filters_dict,
+                 filters_dict=filters_dict_random_order,
                  bid_amt=config['bid_amt_by_filter'],
                  available_cash=cash_balance,
                  dry_run=args.dry_run,

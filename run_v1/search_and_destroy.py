@@ -1,3 +1,4 @@
+import copy
 import math
 import time
 import threading
@@ -268,10 +269,10 @@ class SearchAndDestroy:
 
                 listing_pings += 1
                 total_throttle_count += throttle_count
-                overlap_bid_amt = self.bid_amt
                 if len(listings_found) > 0:
                     # This lock enforces no duplication on ordering when a listing is found, and aval cash is updated amongst all workers
                     with self.lock:
+                        overlap_bid_amt = copy.deepcopy(self.bid_amt)  # To make the bid dict unique everytime to account for rare bug if the same proper rating filter finds multiple lsitings, the bid amt dict needs to not be modified. 
                         unique_listings = []
                         for listing in listings_found:
                             listing_number = listing['listing_number']

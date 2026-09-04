@@ -1,3 +1,4 @@
+import copy
 import math
 import time
 import threading
@@ -212,9 +213,7 @@ class SearchAndDestroy:
         }
 
         for l in listing_list:
-            prosper_rating = l['prosper_rating']
-            query = l['query']
-            bid_amount = bid_amt[prosper_rating][query]
+            bid_amount = l['bid_amount']
             request['bid_requests'].append({"listing_id": l['listing_number'], "bid_amount": bid_amount})
         # I think will get throttled if over 20 posts to api in one second (I'll never get this issue)
 
@@ -268,10 +267,10 @@ class SearchAndDestroy:
 
                 listing_pings += 1
                 total_throttle_count += throttle_count
-                overlap_bid_amt = self.bid_amt
                 if len(listings_found) > 0:
                     # This lock enforces no duplication on ordering when a listing is found, and aval cash is updated amongst all workers
                     with self.lock:
+                        overlap_bid_amt = copy.deepcopy(self.bid_amt)  # To make the bid dict unique everytime to account for rare bug if the same proper rating filter finds multiple lsitings, the bid amt dict needs to not be modified. 
                         unique_listings = []
                         for listing in listings_found:
                             listing_number = listing['listing_number']
@@ -313,6 +312,7 @@ class SearchAndDestroy:
                                                                 f"OVERLAP1; listing {listing_number} already ordered on, but more bid amt wanted: {bid_amt_diff} diff between amt bidded and this filter")
                                             existing[listing_number] += bid_amt_diff  # Handle cash balance can introude bug..
                                             overlap_bid_amt[rating][query] = bid_amt_diff  # Replaces existing bid_amt dict with the new amount to bid based on overlap
+                                            listing['bid_amount'] = bid_amt_diff
                                             unique_listings.append(listing)
                                             submitted_order_listings_filters[listing_number].append(query)
                                             # End if already bidded follow conventinal way, only do the blanket + self.overlap_extra_bid_amt if first overlap.
@@ -332,11 +332,13 @@ class SearchAndDestroy:
                                             existing[listing_number] += bid_amt_diff # Handle cash balance can introude bug..
                                             submitted_order_listings_filters[listing_number].append(query) # This is a dict with listing_number as key, value is a List of filters.
                                             overlap_bid_amt[rating][query] = bid_amt_diff # Replaces existing bid_amt dict with the new amount to bid based on overlap
+                                            listing['bid_amount'] = bid_amt_diff
                                             unique_listings.append(listing)
 
                             else:
                                 submitted_order_listings.append({listing_number: desired_bid_amt})  # Add if new
                                 submitted_order_listings_filters[listing_number] = [query] # Add if new, this is a dict, List for filter tracking since multiple.
+                                listing['bid_amount'] = desired_bid_amt
                                 unique_listings.append(listing)
                         listings_to_invest, new_bid_amt, new_remaining_cash = self.handle_cash_balance(logger=self.logger,available_cash=self.available_cash, bid_amt=overlap_bid_amt, listings_list=unique_listings)
                         self.available_cash = new_remaining_cash
@@ -453,9 +455,7 @@ class SearchAndDestroy:
         else:
             desired_total_bid_amt = 0
             for l in listings_list:
-                prosper_rating = l['prosper_rating']
-                query = l['query']
-                desired_total_bid_amt += bid_amt[prosper_rating][query]
+                desired_total_bid_amt += l['bid_amount']
         if available_cash < 25:
             logging.log_it_info(logger,
                                 f"Current cash of {available_cash} not enough cash for any bids... LOSER")
@@ -470,11 +470,10 @@ class SearchAndDestroy:
             available_per_bid = round(available_cash / investment_number, 2)
             new_total_bid_amt = available_per_bid * investment_number
             if available_per_bid >= 25:
-                for k, v in bid_amt.items():
-                    for i in v:
-                        bid_amt[k][i] = available_per_bid
-                situation_one_msg = "Current cash of {cash} is not enough available cash for desired bid amount, for {investment_number} listings, but enough for submit bids on all listings, modifying to {new_amt}".format(
-                                                    cash=available_cash, investment_number=investment_number, new_amt=bid_amt)
+                for l in listings_list:
+                    l['bid_amount'] = available_per_bid
+                situation_one_msg = "Current cash of {cash} is not enough available cash for desired bid amount, for {investment_number} listings, but enough for submit bids on all listings, modifying to {new_amt} per bid".format(
+                                                    cash=available_cash, investment_number=investment_number, new_amt=available_per_bid)
                 logging.log_it_info(logger, situation_one_msg)
                 return listings_list, bid_amt, available_cash - new_total_bid_amt
             else:
@@ -485,9 +484,8 @@ class SearchAndDestroy:
                     listings_list.pop(0)
                     available_per_bid = round(available_cash / len(listings_list), 2)
                 new_total_bid_amt = available_per_bid * len(listings_list)
-                for k, v in bid_amt.items():
-                    for i in v:
-                        bid_amt[k][i] = available_per_bid
+                for l in listings_list:
+                    l['bid_amount'] = available_per_bid
 
                 return listings_list, bid_amt, available_cash - new_total_bid_amt
 

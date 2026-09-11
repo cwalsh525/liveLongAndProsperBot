@@ -63,7 +63,7 @@ class SearchAndDestroy:
         while i_got_throttled:
             the_time = time.time()
             r = requests.get(query_get, headers=self.listing_header, timeout=30.0)
-            print(f"{query} Hit API Listings at {datetime.now()}") # For Testing
+            # print(f"{query} Hit API Listings at {datetime.now()}") # For Testing
             # logging.log_it_info(self.logger, f"{query} Hit API Listings at {datetime.now()}") # For testing
             status_code = r.status_code
             # Entering the valley of if statements...Clean this up.
@@ -499,65 +499,48 @@ class SearchAndDestroy:
     """
 
     def handle_creditdata_query(self, query_listing, query):
-        #TODO Add in key error logic if prosper sends back garbage.
-        result_length = len(query_listing['result'])
+        results = query_listing['result']
         listings_found_dict = {}
         listings_found_dict_listing_amt = {}
-        criteria_count = len(filters.transunion_add_on_filters[query])
-        for i in range(result_length):
-            if 'occupation' in query_listing['result'][i]:  # Really dirty band-aid way to ignore no occupation.
-                criteria_hit = 0
-                for x in filters.transunion_add_on_filters[query]:
-                    credit_bureau_value = x['credit_bureau_value']
-                    if x['min_or_max'] == 'min':
-                        min_or_max_value = x['min_or_max_value']
-                        try:
-                            if query_listing['result'][i]['credit_bureau_values_transunion'][
-                                credit_bureau_value] >= min_or_max_value:
-                                criteria_hit += 1
-                                listing_number = query_listing['result'][i]['listing_number']
-                                prosper_rating = query_listing['result'][i]['prosper_rating']
-                                if criteria_hit == criteria_count:
-                                    listings_found_dict[listing_number] = prosper_rating
-                                    listings_found_dict_listing_amt[listing_number] = query_listing['result'][i][
-                                        'listing_amount']
-                        except KeyError as e:
-                            logging.log_it_info(self.logger, f"key error for transunion data: {e}")
-                            return listings_found_dict, listings_found_dict_listing_amt
-                    elif x['min_or_max'] == 'max':
-                        min_or_max_value = x['min_or_max_value']
-                        try:
-                            if query_listing['result'][i]['credit_bureau_values_transunion'][
-                                credit_bureau_value] <= min_or_max_value:
-                                criteria_hit += 1
-                                listing_number = query_listing['result'][i]['listing_number']
-                                prosper_rating = query_listing['result'][i]['prosper_rating']
-                                if criteria_hit == criteria_count:
-                                    listings_found_dict[listing_number] = prosper_rating
-                                    listings_found_dict_listing_amt[listing_number] = query_listing['result'][i][
-                                        'listing_amount']
-                        except KeyError as e:
-                            logging.log_it_info(self.logger, f"key error for transunion data: {e}")
-                            return listings_found_dict, listings_found_dict_listing_amt
-                    elif x['min_or_max'] == 'between':
-                        min_value = x['min_value']
-                        max_value = x['max_value']
-                        try:
-                            if query_listing['result'][i]['credit_bureau_values_transunion'][
-                                credit_bureau_value] >= min_value and \
-                                    query_listing['result'][i]['credit_bureau_values_transunion'][
-                                        credit_bureau_value] <= max_value:
-                                # print("true")
-                                criteria_hit += 1
-                                listing_number = query_listing['result'][i]['listing_number']
-                                prosper_rating = query_listing['result'][i]['prosper_rating']
-                                if criteria_hit == criteria_count:
-                                    listings_found_dict[listing_number] = prosper_rating
-                                    listings_found_dict_listing_amt[listing_number] = query_listing['result'][i][
-                                        'listing_amount']
-                        except KeyError as e:
-                            logging.log_it_info(self.logger, f"key error for transunion data: {e}")
-                            return listings_found_dict, listings_found_dict_listing_amt
+        criteria_list = filters.transunion_add_on_filters[query]
+        criteria_count = len(criteria_list)
+        for result in results:
+            if 'occupation' not in result:  # Really dirty band-aid way to ignore no occupation.
+                continue
+
+            # A missing transunion block means we can't evaluate this listing; skip it (not the whole batch).
+            transunion = result.get('credit_bureau_values_transunion')
+            if transunion is None:
+                continue
+
+            criteria_hit = 0
+            for x in criteria_list:
+                credit_bureau_value = x['credit_bureau_value']
+                try:
+                    value = transunion[credit_bureau_value]
+                except KeyError as e:
+                    logging.log_it_info(self.logger, f"key error for transunion data: {e}")
+                    break  # Skip just this listing, keep processing the rest of the batch.
+
+                min_or_max = x['min_or_max']
+                if min_or_max == 'min':
+                    passed = value >= x['min_or_max_value']
+                elif min_or_max == 'max':
+                    passed = value <= x['min_or_max_value']
+                elif min_or_max == 'between':
+                    passed = x['min_value'] <= value <= x['max_value']
+                else:
+                    passed = False
+
+                if not passed:
+                    break  # All criteria are required; no point checking the rest.
+                criteria_hit += 1
+
+            # Only record the listing if every criterion matched.
+            if criteria_hit == criteria_count:
+                listing_number = result['listing_number']
+                listings_found_dict[listing_number] = result['prosper_rating']
+                listings_found_dict_listing_amt[listing_number] = result['listing_amount']
             # else:
             #     logging.log_it_info(self.logger,
             #                         f"WARNING; blocking TRANSUNION bid occupation key does not exist")

@@ -51,6 +51,20 @@ class Connect:
         result = self.execute_select("select listing_id, sum(bid_amount) as total_bid_amount from bid_requests where created_timestamp > current_date - 7 group by 1;")
         return [{"listing_number": row[0], "bidded_amount": row[1]} for row in result]
 
+    def get_filters_used_for_recent_bids(self):
+        # Returns the (filter, prosper_rating) pairs recorded for listings bid on within the same
+        # 7-day window used by get_bid_listings_with_bid_amount(). Used at startup to reconstruct
+        # the highest configured desire per listing (via self.bid_amt) so a restart tops up rather
+        # than re-bidding a listing from scratch.
+        result = self.execute_select(
+            """select lfu.listing_id, lfu.filter, lfu.prosper_rating
+               from listings_filters_used lfu
+               where lfu.listing_id in (
+                   select listing_id from bid_requests where created_timestamp > current_date - 7
+               );
+            """)
+        return [{"listing_number": row[0], "filter": row[1], "prosper_rating": row[2]} for row in result]
+
     def get_count_of_filter(self, filter, listing_id):
         result = self.execute_select(
             f"""select cnt, sum_bid_amt

@@ -54,8 +54,10 @@ class SearchAndDestroy:
         self.overlap_extra_bid_amt = overlap_extra_bid_amt
         self.wait_time_between_runs = 1 / self.max_request_per_second
 
-    def listing_logic(self, query, query_get, bid_amt):
+    def listing_logic(self, query, query_get, bid_amt, submitted_order_listings_desired, submitted_order_listings_filters):
         already_invested_listings = self.connect.get_bid_listings_with_bid_amount() # Takes a fraction of a second, should be ok. Repetitive as submitted_order_listings will handle it, but perfer cutting the listing logic off if not needed
+        # Frozen snapshot for this call, indexed for O(1) membership + amount lookups (built once, not per listing).
+        invested_by_id = {d["listing_number"]: d["bidded_amount"] for d in already_invested_listings}
         listings_found = []
         throttled_count = 0 # Bad variable name, should be like error count. (sometimes prosper API errors and i want to ignore and re-run)
         track_filters = {} # For tracking of what filters are finding notes
@@ -105,25 +107,25 @@ class SearchAndDestroy:
                                     # With a lot of overlap between filters, it would be nice to check to see if when a listing was already invested,
                                     # if it was a smaller bid_amt to add another order to the amt of this filter since many times it can be larger. This would require a good amount of re-work though.
 
-                                    invested_ids = {d["listing_number"] for d in already_invested_listings}
-                                    if listing_number not in invested_ids:
+                                    if listing_number not in invested_by_id:
                                         self.track_filter(track_filters, listing_number,
                                                              query, prosper_rating)  # populates track_filters dict to be inserted into psql later
                                         listings_found.append(
                                             {"listing_number": listing_number, "prosper_rating": prosper_rating,
                                              "query": query, "max_bid_amt": max_bid_amt})
                                         logging.log_it_info(self.logger, "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(query=query, listing=listing_number, prosper_rating=prosper_rating, current_time=datetime.now()))
-                                    elif listing_number in invested_ids:  # if listing_number has already been bidded.
-                                        already_invested_amount = next(
-                                            (d["bidded_amount"] for d in already_invested_listings if
-                                             d["listing_number"] == listing_number), None)
-
-                                        filter_check_dict = self.connect.get_count_of_filter(query, listing_number)
-                                        if amt_to_bid - already_invested_amount + self.overlap_extra_bid_amt >= 25 and already_invested_amount != max_bid_amt \
-                                                and (filter_check_dict['filter_count'] == 0 or (
-                                                filter_check_dict['filter_count'] > 0 and filter_check_dict[
-                                            'total_bid_amt'] < amt_to_bid)):  # verify existing filter hasnt already bidded.
-                                            logging.log_it_info(self.logger, f"*Listing Logic Method* Another filter: {query} found listing: {listing_number}, has more in bid; with bid amt of {amt_to_bid} being larger than {already_invested_amount}")
+                                    elif listing_number in invested_by_id:  # if listing_number has already been bidded.
+                                        already_invested_amount = invested_by_id.get(listing_number)
+                                        # Target-aware surfacing. The +bonus is earned once a listing has 2+ DISTINCT
+                                        # filters (including this one); a single filter re-finding its own listing does not
+                                        # earn it and only tops up toward its own desired (i.e. if earlier bid was 10%-clamped).
+                                        # thread_worker is the authoritative dedup/sizing; this gate just avoids blocking real top-ups.
+                                        distinct_filters = set(submitted_order_listings_filters.get(listing_number, [])) | {query}
+                                        has_multiple_filters = len(distinct_filters) >= 2
+                                        highest_desired = max(bid_amt[prosper_rating][query], submitted_order_listings_desired.get(listing_number, 0))
+                                        target_total = self.overlap_target(has_multiple_filters, bid_amt[prosper_rating][query], highest_desired, self.overlap_extra_bid_amt)
+                                        if self.should_surface_invested_listing(already_invested_amount, target_total):
+                                            logging.log_it_info(self.logger, f"*Listing Logic Method* Another filter: {query} found listing: {listing_number}, room toward target; already invested {already_invested_amount}, highest desired {highest_desired}")
                                             self.track_filter(track_filters, listing_number,
                                                               query,
                                                               prosper_rating)  # populates track_filters dict to be inserted into psql later
@@ -155,8 +157,7 @@ class SearchAndDestroy:
                                     if max_bid_amt < amt_to_bid:
                                         amt_to_bid = max_bid_amt
 
-                                    invested_ids = {d["listing_number"] for d in already_invested_listings}
-                                    if listing_number not in invested_ids:
+                                    if listing_number not in invested_by_id:
                                         self.track_filter(track_filters, listing_number,
                                                           query,
                                                           prosper_rating)  # populates track_filters dict to be inserted into psql later
@@ -167,16 +168,16 @@ class SearchAndDestroy:
                                                             "filter {query} found listing: {listing} with prosper rating: {prosper_rating} at {current_time}".format(
                                                                 query=query, listing=listing_number,
                                                                 prosper_rating=prosper_rating, current_time=datetime.now()))
-                                    elif listing_number in invested_ids:  # if listing_number has already been bidded.
-                                        already_invested_amount = next(
-                                            (d["bidded_amount"] for d in already_invested_listings if
-                                             d["listing_number"] == listing_number), None)
-
-                                        filter_check_dict = self.connect.get_count_of_filter(query, listing_number)
-                                        if amt_to_bid - already_invested_amount + self.overlap_extra_bid_amt >= 25 and already_invested_amount != max_bid_amt\
-                                                and (filter_check_dict['filter_count'] == 0 or (filter_check_dict['filter_count'] > 0 and filter_check_dict['total_bid_amt'] < amt_to_bid)):  # verify existing filter hasnt already bidded.
+                                    elif listing_number in invested_by_id:  # if listing_number has already been bidded.
+                                        already_invested_amount = invested_by_id.get(listing_number)
+                                        # Target-aware surfacing (see normal path above for rationale).
+                                        distinct_filters = set(submitted_order_listings_filters.get(listing_number, [])) | {query}
+                                        has_multiple_filters = len(distinct_filters) >= 2
+                                        highest_desired = max(bid_amt[prosper_rating][query], submitted_order_listings_desired.get(listing_number, 0))
+                                        target_total = self.overlap_target(has_multiple_filters, bid_amt[prosper_rating][query], highest_desired, self.overlap_extra_bid_amt)
+                                        if self.should_surface_invested_listing(already_invested_amount, target_total):
                                             logging.log_it_info(self.logger,
-                                                                f"*Listing Logic Method* Another filter: {query} found listing: {listing_number}, has more in bid; with bid amt of {amt_to_bid} being larger than {already_invested_amount}")
+                                                                f"*Listing Logic Method* Another filter: {query} found listing: {listing_number}, room toward target; already invested {already_invested_amount}, highest desired {highest_desired}")
                                             self.track_filter(track_filters, listing_number,
                                                               query,
                                                               prosper_rating)  # populates track_filters dict to be inserted into psql later
@@ -240,7 +241,7 @@ class SearchAndDestroy:
             logging.log_it_info(self.logger, "response = {response}".format(response=response_json))
             self.handle_order_sql(response_json, filters_used)
 
-    def thread_worker(self, query, query_get, submitted_order_listings, submitted_order_listings_filters, run_dict, filter_queue):
+    def thread_worker(self, query, query_get, submitted_order_listings, submitted_order_listings_filters, submitted_order_listings_desired, run_dict, filter_queue):
         logging.log_it_info(self.logger, "Started running {query} at {time}".format(query=query, time=datetime.now()))
         listing_pings = 0
         order_pings = 0
@@ -263,7 +264,7 @@ class SearchAndDestroy:
 
             if run_listing:
                 # Submit listing request
-                listings_found, filters_used, throttle_count = self.listing_logic(query=query, query_get=query_get, bid_amt=self.bid_amt) # pass back max bid amt
+                listings_found, filters_used, throttle_count = self.listing_logic(query=query, query_get=query_get, bid_amt=self.bid_amt, submitted_order_listings_desired=submitted_order_listings_desired, submitted_order_listings_filters=submitted_order_listings_filters) # pass back max bid amt
 
                 listing_pings += 1
                 total_throttle_count += throttle_count
@@ -276,6 +277,7 @@ class SearchAndDestroy:
                             listing_number = listing['listing_number']
                             rating = listing['prosper_rating']
                             max_bid_allowed = listing['max_bid_amt']
+                            configured_desired_bid_amt = overlap_bid_amt[rating][query]  # This filter's desired amount BEFORE the 10%-per-bid clamp. Used to track highest demand across filters.
                             desired_bid_amt = overlap_bid_amt[rating][query]
                             if desired_bid_amt > max_bid_allowed: # if my bid is more than 10% of listing amount.
                                 overlap_bid_amt[rating][query] = max_bid_allowed
@@ -284,60 +286,36 @@ class SearchAndDestroy:
                             # Find if the dictionary with this key already exists in the list
                             existing = next((d for d in submitted_order_listings if listing_number in d), None)
                             if existing:
-                                # bid_amt_diff = desired_bid_amt - existing[listing_number]
-                                bid_amt_diff = overlap_bid_amt[rating][query] - existing[listing_number] # No desired_bid_amt for existing, everything changes.
-                                if query not in submitted_order_listings_filters[listing_number] or (query in submitted_order_listings_filters[listing_number] and bid_amt_diff > 0): # Checks to see if same filter already invested. (The same filter can bid again only if max_bid_amt (10% of list) was hit.
-                                    # max_bid_amt_diff = max_bid_allowed - existing[listing_number] # Dont need max_bid_amt_diff since 10% rule is on specific bid only.
+                                # Track the highest configured (pre-clamp) demand seen for this listing across all filters.
+                                # The 10% cap is per-bid only (Option B), so overlaps fill the gap between what's already bid
+                                # and the highest desired amount, rather than measuring against this filter's own (often smaller) config.
+                                highest_desired = max(submitted_order_listings_desired.get(listing_number, 0), configured_desired_bid_amt)
+                                submitted_order_listings_desired[listing_number] = highest_desired
+                                # The +bonus is earned once a listing has 2+ DISTINCT filters (including this one).
+                                # A single filter re-finding its own listing never earns it.
+                                distinct_filters = set(submitted_order_listings_filters[listing_number]) | {query}
+                                has_multiple_filters = len(distinct_filters) >= 2
+                                target_total = self.overlap_target(has_multiple_filters, configured_desired_bid_amt, highest_desired, self.overlap_extra_bid_amt)
+                                target_total, bid_amt_diff = self.compute_overlap_bid(
+                                    target_total=target_total,
+                                    already_bid=existing[listing_number],
+                                    max_bid_allowed=max_bid_allowed)
+                                # Bid only if there is still room to the (filter-appropriate) target.
+                                if bid_amt_diff > 0:
                                     logging.log_it_info(self.logger, f"listing {listing_number} already ordered on")
-                                    if len(submitted_order_listings_filters[listing_number]) >= 2:
-                                        if bid_amt_diff + self.overlap_extra_bid_amt >= 25:  # 25 min order amt. # Check this, this blocks addational orders where we actually want them.
-                                            # if desired_bid_amt != max_bid_allowed:  # Check if already using max bid.
-                                            """
-                                            This is done after the if bid_amt_diff >= 25: to avoid double bids on same filter
-                                            If a filter is overlapped w/ another filter that means all those criteria apply.
-                                            We know these filters have a much lower default rate, ie; an average filter with another slighty better filter is now much stronger and deserves a larger bid amt higher than simply the better filter that found it.
-                                            To avoid pre calculating all the different possibilities, and the expensive search that would require when time is of the essence.
-                                            Simply add a pre determined extra bid amt to add.
-                                            TODO this will create a bug where if there is a third filter that finds a listing,
-                                            the listing_logic() will not return unless there was a $125 larger (the $25 min bid + the $100 added here.
-                                            Not sure how to solve for that since adding the below logic to listings() will not be able to diferente between a listing that i have already invested in (the same filter will constantly ignore already invited in loans based on the bid_amt)
-                                            For the time being, I am ok with this, as i'd rather have the auto + 100 if an overlap on the 2nd request to a listing since this is the overwhelmingly majority of overlap situations
-                                            """
-                                            if bid_amt_diff + self.overlap_extra_bid_amt <= max_bid_allowed:
-                                                bid_amt_diff += self.overlap_extra_bid_amt
-                                            elif (bid_amt_diff + self.overlap_extra_bid_amt) > max_bid_allowed >= 25:
-                                                bid_amt_diff = max_bid_allowed
-
-                                            logging.log_it_info(self.logger,
-                                                                f"OVERLAP1; listing {listing_number} already ordered on, but more bid amt wanted: {bid_amt_diff} diff between amt bidded and this filter")
-                                            existing[listing_number] += bid_amt_diff  # Handle cash balance can introude bug..
-                                            overlap_bid_amt[rating][query] = bid_amt_diff  # Replaces existing bid_amt dict with the new amount to bid based on overlap
-                                            listing['bid_amount'] = bid_amt_diff
-                                            unique_listings.append(listing)
+                                    if bid_amt_diff >= 25:  # 25 min order amt; anything under 25 is skipped (never submitted).
+                                        logging.log_it_info(self.logger, f"OVERLAP; listing {listing_number} already ordered on, topping up by {bid_amt_diff} toward target total of {target_total} (currently {existing[listing_number]})")
+                                        existing[listing_number] += bid_amt_diff  # Handle cash balance can introude bug..
+                                        if query not in submitted_order_listings_filters[listing_number]:
                                             submitted_order_listings_filters[listing_number].append(query)
-                                            # End if already bidded follow conventinal way, only do the blanket + self.overlap_extra_bid_amt if first overlap.
-                                    # if bid_amt_diff >= 25:  # 25 min order amt.
-                                    else: # essentially if len(submitted_order_listings_filters[listing_number]) == 1
-                                        # if desired_bid_amt != max_bid_allowed:  # Check if already using max bid.
-                                        if bid_amt_diff <= 0:
-                                            bid_amt_diff = 0  # This is weird, but its because a smaller bid_amt can be found and we do not want a negative number here. Assign 0 and let the + self.overlap_extra_bid_amt do the rest.
-                                        if bid_amt_diff + self.overlap_extra_bid_amt <= max_bid_allowed:
-                                            bid_amt_diff += self.overlap_extra_bid_amt
-                                        elif (bid_amt_diff + self.overlap_extra_bid_amt) > max_bid_allowed >= 25:
-                                            bid_amt_diff = max_bid_allowed
-                                        #TODO need to solve for bid_amt_diff between 1 and 24. For now will submit a request for less than 25 which will get rejected, but this is error and wont crash my process.
-
-                                        if bid_amt_diff >= 25:
-                                            logging.log_it_info(self.logger, f"OVERLAP2; listing {listing_number} already ordered on, but more bid amt wanted: {bid_amt_diff} diff between amt bidded and this filter")
-                                            existing[listing_number] += bid_amt_diff # Handle cash balance can introude bug..
-                                            submitted_order_listings_filters[listing_number].append(query) # This is a dict with listing_number as key, value is a List of filters.
-                                            overlap_bid_amt[rating][query] = bid_amt_diff # Replaces existing bid_amt dict with the new amount to bid based on overlap
-                                            listing['bid_amount'] = bid_amt_diff
-                                            unique_listings.append(listing)
+                                        overlap_bid_amt[rating][query] = bid_amt_diff  # Replaces existing bid_amt dict with the new amount to bid based on overlap
+                                        listing['bid_amount'] = bid_amt_diff
+                                        unique_listings.append(listing)
 
                             else:
                                 submitted_order_listings.append({listing_number: desired_bid_amt})  # Add if new
                                 submitted_order_listings_filters[listing_number] = [query] # Add if new, this is a dict, List for filter tracking since multiple.
+                                submitted_order_listings_desired[listing_number] = configured_desired_bid_amt  # Track highest desired (pre-clamp) so later overlaps can fill remaining demand toward it
                                 listing['bid_amount'] = desired_bid_amt
                                 unique_listings.append(listing)
                         listings_to_invest, new_bid_amt, new_remaining_cash = self.handle_cash_balance(logger=self.logger,available_cash=self.available_cash, bid_amt=overlap_bid_amt, listings_list=unique_listings)
@@ -378,18 +356,158 @@ class SearchAndDestroy:
         return bid_amt
     def execute(self):
         threads = []
-        submitted_order_listings = []
-        submitted_order_listings_filters = {} # To track just filters
+        # Seed tracking dicts from the DB so a restart continues from prior-run bids (7-day window)
+        # rather than re-bidding already-invested listings in full.
+        submitted_order_listings, submitted_order_listings_filters, submitted_order_listings_desired = self.seed_from_db()
+        logging.log_it_info(self.logger, "Seeded {n} previously-bid listings from DB at startup".format(n=len(submitted_order_listings)))
         m = MaxRequestsQueue(max_request_per_second=self.max_request_per_second, filter_dict=self.filters_dict, time_to_run_for=self.time_to_run_for)
         run_allowance_dict = m.build_allowed_run_dict()
         run_list_queue = m.build_starting_filter_queue()
 
         for query in self.filters_dict:
-            t = threading.Thread(target=self.thread_worker, args=(query, self.filters_dict[query], submitted_order_listings, submitted_order_listings_filters, run_allowance_dict, run_list_queue))
+            t = threading.Thread(target=self.thread_worker, args=(query, self.filters_dict[query], submitted_order_listings, submitted_order_listings_filters, submitted_order_listings_desired, run_allowance_dict, run_list_queue))
             threads.append(t)
             t.start()
         for thread in threads:
             thread.join()
+
+    """
+    Pure bid-sizing helper for the overlap case (listing already bid on by another/same filter).
+
+    Model (Option 1): the total invested in a single listing converges to
+        target_total = highest_desired + overlap_extra_bid_amt
+    where highest_desired is the largest configured (pre-10%-clamp) bid amt across all
+    filters that matched the listing. The overlap bonus is part of the target (added once),
+    NOT per bid, so repeated top-up bids across successive filter arrivals converge to the
+    same total regardless of the order filters find the listing.
+
+    Each individual bid is capped at max_bid_allowed (the per-bid 10% rule); when the gap to
+    the target exceeds one bid, later arrivals close the remainder.
+
+    Returns (target_total, bid_amt_diff) where bid_amt_diff is the amount to top up by on THIS
+    bid (capped, and never negative). The caller still enforces the $25 minimum before placing.
+    """
+    @staticmethod
+    def compute_overlap_bid(target_total, already_bid, max_bid_allowed):
+        bid_amt_diff = target_total - already_bid
+        if bid_amt_diff < 0:
+            bid_amt_diff = 0  # already at/above target; nothing to add
+        if bid_amt_diff > max_bid_allowed:
+            bid_amt_diff = max_bid_allowed  # per-bid 10% cap; remaining gap closed by later arrivals
+        return target_total, bid_amt_diff
+
+    """
+    Computes the effective target total for a listing that has already been bid on.
+
+    The overlap bonus is a CROSS-FILTER signal, earned only once a listing has been matched by 2+
+    DISTINCT filters (more distinct filters == higher conviction). The deciding state is whether the
+    listing has ever had multiple distinct filters, NOT whether this specific re-find is a new filter.
+    This resolves two requirements together:
+      - A single filter re-finding its own listing never conjures a bonus (target = its own desired),
+        so it only bids again to finish reaching its own desired amount (i.e. when its earlier bid was
+        clamped by the per-bid 10% cap). If already at its desired, nothing more is placed.
+      - Once a genuine cross-filter overlap has occurred, the listing has a FIXED target of
+        highest_desired + bonus, and any filter (including ones that already bid) may top up toward it
+        on later polls. This keeps the total order-independent and lets a gap larger than one 10%-capped
+        bid converge across multiple polls.
+
+    :param has_multiple_filters: True if 2+ distinct filters have matched this listing
+    :param this_filter_desired: this filter's own configured desire (pre-10%-clamp)
+    :param highest_desired: highest configured desire across all filters that matched the listing
+    :param overlap_extra_bid_amt: the flat cross-filter bonus
+    """
+    @staticmethod
+    def overlap_target(has_multiple_filters, this_filter_desired, highest_desired, overlap_extra_bid_amt):
+        if has_multiple_filters:
+            return highest_desired + overlap_extra_bid_amt
+        # Only one distinct filter has ever matched: no bonus, just its own desired amount.
+        return this_filter_desired
+
+    """
+    Target-aware decision for whether listing_logic should SURFACE an already-invested listing again.
+
+    This mirrors compute_overlap_bid's target so the cheap per-poll surfacing gate agrees with the
+    authoritative locked bid-sizing in thread_worker. Previously the gate compared a single filter's
+    amt_to_bid against the summed already-invested amount, which prematurely blocked top-ups once the
+    running total exceeded any one filter's amount (e.g. listing stuck at 339 instead of 375).
+
+    Surface iff there is still at least the $25 minimum of room toward target_total (computed by the
+    caller via overlap_target: highest_desired + bonus for a new filter, or this filter's own desired
+    amount for the same filter re-finding its listing).
+    The per-bid 10% cap does NOT gate surfacing (thread_worker clips each bid and later polls top up).
+
+    Termination: once already_invested_amount >= target_total, the remaining gap drops below $25 and
+    this returns False, so a listing cannot be surfaced (and re-bid) forever.
+
+    :return: True if the listing should be surfaced for a (top-up) bid, else False.
+    """
+    @staticmethod
+    def should_surface_invested_listing(already_invested_amount, target_total, min_bid=25):
+        remaining = target_total - already_invested_amount
+        return remaining >= min_bid
+
+    """
+    Reconstructs the highest ORIGINAL configured desire per listing from the filters that bid on it.
+
+    The DB only stores the amount actually bid (bid_requests.bid_amount), not the pre-10%-clamp
+    configured desire. But listings_filters_used records which (filter, rating) bid on each listing,
+    and the configured desire is deterministic: bid_amt[rating][filter]. So the highest desire for a
+    listing is max(bid_amt[rating][filter]) over every filter that bid on it.
+
+    :param filters_used_rows: list of {"listing_number", "filter", "prosper_rating"} from the DB
+    :param bid_amt: the configured bid_amt dict (rating -> filter -> amount)
+    :param bidded_by_listing: {listing_number: total_bidded} fallback when config can't reconstruct a desire
+    :return: {listing_number: highest_desired}
+    """
+    @staticmethod
+    def reconstruct_highest_desired(filters_used_rows, bid_amt, bidded_by_listing):
+        highest_desired = {}
+        for row in filters_used_rows:
+            listing_number = row["listing_number"]
+            rating = row["prosper_rating"]
+            query = row["filter"]
+            # A filter/rating that no longer exists in the current config can't be reconstructed; skip it.
+            configured = bid_amt.get(rating, {}).get(query)
+            if configured is None:
+                continue
+            if configured > highest_desired.get(listing_number, 0):
+                highest_desired[listing_number] = configured
+        # Fallback: any listing we couldn't reconstruct a desire for falls back to what was actually bid,
+        # so its target never drops below the amount already invested. Live filters re-raise it via max(...).
+        for listing_number, bidded in bidded_by_listing.items():
+            if listing_number not in highest_desired:
+                highest_desired[listing_number] = bidded
+        return highest_desired
+
+    """
+    Seeds the in-memory tracking structures from the DB so a restart continues from prior-run bids
+    instead of treating already-bid listings as brand new (which would re-bid them in full).
+    Uses the same 7-day window as get_bid_listings_with_bid_amount() so listing_logic's surfacing
+    gate and thread_worker's in-memory 'existing' lookup agree.
+    """
+    def seed_from_db(self):
+        bidded = self.connect.get_bid_listings_with_bid_amount()  # [{"listing_number", "bidded_amount"}]
+        filters_used_rows = self.connect.get_filters_used_for_recent_bids()
+
+        submitted_order_listings = []
+        submitted_order_listings_filters = {}
+        bidded_by_listing = {}
+        for row in bidded:
+            listing_number = row["listing_number"]
+            bidded_by_listing[listing_number] = row["bidded_amount"]
+            submitted_order_listings.append({listing_number: row["bidded_amount"]})
+            submitted_order_listings_filters[listing_number] = []
+
+        # Record which filters have already bid, so a same-filter re-find is treated as a repeat.
+        for row in filters_used_rows:
+            listing_number = row["listing_number"]
+            if listing_number in submitted_order_listings_filters and row["filter"] not in submitted_order_listings_filters[listing_number]:
+                submitted_order_listings_filters[listing_number].append(row["filter"])
+
+        submitted_order_listings_desired = self.reconstruct_highest_desired(
+            filters_used_rows, self.bid_amt, bidded_by_listing)
+
+        return submitted_order_listings, submitted_order_listings_filters, submitted_order_listings_desired
 
     """
     Utility function to track filters

@@ -79,6 +79,10 @@ class TrackingMetrics(Connect):
             where listing_id = {listing_id} and order_id = '{order_id}';
         """.format(order_id=order_id, bid_status=bid_status, bid_result=bid_result, listing_id=listing_id, modified_timestamp=datetime.datetime.now())
 
+    def get_invested_listing_ids(self, response_object):
+        # Read-only: which listing_ids in this order response are INVESTED (no DB writes).
+        return [l['listing_id'] for l in response_object['bid_requests'] if l['bid_status'] == 'INVESTED']
+
     def update_bid_requests_table(self, order_id, response_object):
         listing_ids = []
         for l in response_object['bid_requests']:
@@ -102,6 +106,36 @@ class TrackingMetrics(Connect):
 
     def insert_note_record(self, response_object, effective_start_date):
         self.execute_insert_or_update(sql_query_utils.insert_notes_query(response_object, effective_start_date, self.logger))
+
+    def fetch_notes_for_listings(self, listing_ids, limit):
+        """
+        Pages through the Prosper notes API and returns {listing_id: note_object} for every requested
+        listing whose note currently EXISTS. Listings whose note has not been created yet by Prosper
+        (the known lag between INVESTED and note availability) simply won't appear in the returned map.
+
+        The caller uses this to gate finalization: an order is only finalized when ALL of its INVESTED
+        listings' notes are present here. Does NOT write anything.
+        """
+        remaining = set(listing_ids)
+        found = {}
+        if not remaining:
+            return found
+        offset = 0
+        response_object = self.get_url_get_request_notes(offset, limit)
+        while remaining and response_object.get('result'):
+            for l in response_object['result']:
+                listing_number = l['listing_number']
+                if listing_number in remaining:
+                    found[listing_number] = l
+                    remaining.discard(listing_number)
+            if not remaining:
+                break
+            offset += limit
+            response_object = self.get_url_get_request_notes(offset, limit)
+        if remaining:
+            self.logger.debug(
+                f"Notes not yet available for listings (order will not be finalized this run): {sorted(remaining)}")
+        return found
 
     def insert_new_note_records(self, listing_ids, limit):
         listing_ids.sort(reverse=True)
@@ -147,35 +181,58 @@ class TrackingMetrics(Connect):
     #TODO add error handling!
     #TODO clean this stuff up
     def execute(self):
-        #TODO Change to a transaction as opposed to individual sql statemnets to avoid issues
-        order_ids = self.build_order_ids_to_get() # list of order_ids that aren't complete
+        # Option 1a (per-order, all-or-nothing): an order is only finalized (order status + bid_requests
+        # + note inserts) once ALL of its INVESTED listings that need a NEW note are actually retrievable
+        # from Prosper's notes API. Prosper lags between marking a bid INVESTED and creating the note, so
+        # finalizing before the note exists silently loses the note (the order/bid drop out of the
+        # IN_PROGRESS/PENDING re-scan window). If any required note is missing, we skip ALL writes for
+        # that order this run, leaving it IN_PROGRESS/PENDING so the next run retries.
+        limit = 20
+        order_ids = self.build_order_ids_to_get()  # order_ids that aren't complete
         print(order_ids)
-        listing_ids = self.build_pending_listing_ids() # list of pending listings
-        listing_ids_deduped = list(set(listing_ids)) # Dedupe as i now can have multiple bid requests with same listing.
-        new_listings_to_insert_note_records = [] # New records to insert to notes table
+        listing_ids = self.build_pending_listing_ids()  # pending listings (candidates for a NEW note)
+        listing_ids_deduped = set(listing_ids)  # dedupe: can have multiple bid requests with same listing
+
+        # ---- Pass 1: read-only. Fetch each order and compute its INVESTED listings. No DB writes. ----
+        orders_pending_finalize = []  # (order_id, response_object, invested_listing_ids)
+        all_required_note_listings = set()  # union of INVESTED listings needing a new note, across orders
         for order in order_ids:
             status_code = 0
             while status_code != 200:
                 # To handle for a problem w/ prosper api.
-                order_response = self.get_order_response_by_order_id(order)  #TODO If this fails it messes up my DB and notes will be missing. w/ prosper API bug it happens.
+                order_response = self.get_order_response_by_order_id(order)
                 status_code = order_response.status_code
                 print(status_code)
             order_response_object = order_response.json()
             print(order_response_object)
+            invested_listing_ids = self.get_invested_listing_ids(order_response_object)
+            orders_pending_finalize.append((order, order_response_object, invested_listing_ids))
+            # Only INVESTED listings that are currently PENDING in bid_requests need a brand-new note.
+            all_required_note_listings.update(l for l in invested_listing_ids if l in listing_ids_deduped)
+
+        # ---- Fetch notes once for the union of required listings (no writes). ----
+        found_notes = self.fetch_notes_for_listings(all_required_note_listings, limit)
+
+        # ---- Pass 2: writes. Finalize only orders whose required notes are ALL present. ----
+        for order, order_response_object, invested_listing_ids in orders_pending_finalize:
+            required_notes = {l for l in invested_listing_ids if l in listing_ids_deduped}
+            missing = required_notes - set(found_notes.keys())
+            if missing:
+                self.logger.debug(
+                    "Skipping order {order} this run; notes not yet available for {missing} (staying IN_PROGRESS/PENDING)".format(
+                        order=order, missing=sorted(missing)))
+                continue
+
+            # All required notes are present: finalize the order end-to-end.
             self.update_order_table(order_response_object)
             self.logger.debug("order being updated: {order}".format(order=order))
-            listing_ids_updated = self.update_bid_requests_table(order, order_response_object) #TODO Verify this order_id add works.
+            listing_ids_updated = self.update_bid_requests_table(order, order_response_object)
             self.logger.debug("lising_ids updated: {listings}".format(listings=listing_ids_updated))
-            # Dedupe listing_ids_updated as i now can have multiple orders on same listing.
-            listing_ids_updated_deduped = list(set(listing_ids_updated))
-            self.logger.debug("lising_ids deduped, now:{listings}".format(listings=listing_ids_updated_deduped))
-            for l in listing_ids_updated_deduped:
-                if l in listing_ids_deduped:
-                    new_listings_to_insert_note_records.append(l)
-                    if len(listing_ids_updated) > len(listing_ids_updated_deduped):
-                        self.logger.debug("listings that need to be inserted to notes {listings}".format(listings=new_listings_to_insert_note_records))
-        # This inserts new note records to notes table that have never existed in the notes table
-        self.insert_new_note_records(list(set(new_listings_to_insert_note_records)), 20)
+            # Insert the brand-new note records for this order's required listings.
+            for l in required_notes:
+                note = found_notes[l]
+                self.insert_note_record(note, note['origination_date'])
+                self.logger.debug("inserted new note for listing {listing}".format(listing=l))
 
         # This updates existing note records and inserts a new record for those existing records (type 2 dim)
         UpdateNotes().execute()

@@ -47,9 +47,10 @@ class Connect:
     def get_bid_listings_with_bid_amount(self):
         # This takes 0.0009644031524658203 seconds
         #TODO have bid requests table be sorted
-        listings = [{}]
+        # bid_amount is a numeric column -> psycopg2 returns Decimal. Cast to float at the boundary so
+        # downstream bid math and json.dumps (order POST) never see a non-serializable Decimal.
         result = self.execute_select("select listing_id, sum(bid_amount) as total_bid_amount from bid_requests where created_timestamp > current_date - 7 group by 1;")
-        return [{"listing_number": row[0], "bidded_amount": row[1]} for row in result]
+        return [{"listing_number": row[0], "bidded_amount": float(row[1]) if row[1] is not None else 0.0} for row in result]
 
     def get_filters_used_for_recent_bids(self):
         # Returns the (filter, prosper_rating) pairs recorded for listings bid on within the same
@@ -75,7 +76,8 @@ class Connect:
                 ;
             """)
 
-        return {"filter_count": result[0][0], "total_bid_amt": result[0][1]}
+        total_bid_amt = result[0][1]
+        return {"filter_count": result[0][0], "total_bid_amt": float(total_bid_amt) if total_bid_amt is not None else 0.0}
 
     def populate_list_from_single_column_sql_query(self, query):
         list_to_return = []

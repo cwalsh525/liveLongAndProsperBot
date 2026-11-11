@@ -104,6 +104,15 @@ class TrackingMetrics(Connect):
         response = requests.get(https_request, headers=self.header, timeout=30.0)
         return response
 
+    def note_already_exists(self, loan_note_id):
+        # True if the notes table already has ANY row for this loan_note_id. The initial-insert path
+        # must never create a second row for a loan_note_id that already exists (subsequent changes go
+        # through the type-2 update path). This guards against duplicate inserts ACROSS runs, e.g. when
+        # a single listing is bid on by multiple orders that finalize on different days.
+        result = self.execute_single_result_select(
+            "select 1 from notes where loan_note_id = '{loan_note_id}' limit 1;".format(loan_note_id=loan_note_id))
+        return result is not None
+
     def insert_note_record(self, response_object, effective_start_date):
         self.execute_insert_or_update(sql_query_utils.insert_notes_query(response_object, effective_start_date, self.logger))
 
@@ -214,6 +223,12 @@ class TrackingMetrics(Connect):
         found_notes = self.fetch_notes_for_listings(all_required_note_listings, limit)
 
         # ---- Pass 2: writes. Finalize only orders whose required notes are ALL present. ----
+        # A single listing can be bid on by MULTIPLE orders that finalize in the same run OR across
+        # different runs. The initial note insert must happen at most once per loan_note_id, so we guard
+        # every insert with a DB existence check (note_already_exists). The DB check covers both the
+        # within-run case (autocommit makes the first insert visible immediately) and the cross-run case
+        # (a prior run's insert is already persisted). Order-status and bid_requests updates still happen
+        # per order.
         for order, order_response_object, invested_listing_ids in orders_pending_finalize:
             required_notes = {l for l in invested_listing_ids if l in listing_ids_deduped}
             missing = required_notes - set(found_notes.keys())
@@ -228,9 +243,14 @@ class TrackingMetrics(Connect):
             self.logger.debug("order being updated: {order}".format(order=order))
             listing_ids_updated = self.update_bid_requests_table(order, order_response_object)
             self.logger.debug("lising_ids updated: {listings}".format(listings=listing_ids_updated))
-            # Insert the brand-new note records for this order's required listings.
+            # Insert the brand-new note records for this order's required listings, once per loan_note_id.
             for l in required_notes:
                 note = found_notes[l]
+                if self.note_already_exists(note['loan_note_id']):
+                    self.logger.debug(
+                        "note for listing {listing} (loan_note_id {lnid}) already exists; skipping duplicate insert".format(
+                            listing=l, lnid=note['loan_note_id']))
+                    continue
                 self.insert_note_record(note, note['origination_date'])
                 self.logger.debug("inserted new note for listing {listing}".format(listing=l))
 
